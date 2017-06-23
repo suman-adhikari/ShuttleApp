@@ -1,0 +1,199 @@
+﻿@model VShuttle.Model.ViewModel.RouteUserinfo
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div id="registerUser" class="row-fluid">
+
+      <div class="col-md-12 error-msg">
+          * Please register your today's location !!
+      </div>
+  
+       @using (Html.BeginForm("Index","Home", FormMethod.Post))
+       {
+        <span class="form-element col-md-3">           
+            @Html.TextBoxFor(m => m.UserInfo.Name, new { placeholder = "Enter Name" })
+        </span>
+        <span class="form-element col-md-3">
+           @Html.DropDownListFor(m=>m.UserInfo.Location,new SelectList(ViewBag.location, "Id","Location"), "Select Location") 
+        </span>
+        <span class="form-element col-md-3">          
+            @Html.TextBoxFor(m => m.UserInfo.SubLocation, new { placeholder = "Enter Sub-location" })
+        </span>
+        <span class="form-element col-md-3">
+            <button class="btn btn-primary" type="submit">Save</button>
+        </span>
+       }
+   
+</div>
+
+<div class="clearfix"></div>
+
+<hr>
+
+<div id="report" class="row-fluid">
+    
+        <div class="col-md-9">
+
+            <div class="row-fluid">
+               
+                 <div class="col-md-offset-3 pull-right search">
+                    
+                     <div class="form-inline">
+                        <input type="text" id="searchName" />
+                        <button id="ajaxgridSearch" >Search</button>
+                        <button id="ajaxgridExport" onclick="location.href='@Url.Action("ExportToExcel","Home")'">Export</button>
+                    </div>
+                    
+                </div>
+
+              
+
+            </div>
+
+            <table class="table table-bordered table-responsive table-striped" id="UserInfoList">
+                <thead>
+                    <tr>
+                        <th><a class="table-header" field-name="Id">Id</a></th>
+                        <th class="sorting"><a class="table-header" field-name="Name">Name</a></th>
+                        <th class="sorting"><a class="table-header" field-name="Location">Location</a></th>
+                        <th><a class="table-header" field-name="SubLocation">SubLocation</a></th>
+                        <th><a class="table-header" field-name="Date">Date</a></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    <div class="col-md-3">
+        <table class="table table-bordered table-responsive table-striped" id="UserInfoTotal">
+            <thead>
+                <tr>
+                    <th><a class="table-header" field-name="Location">Location</a></th>
+                    <th><a class="table-header" field-name="Total">Total</a></th>                   
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <hr>
+
+    <div class="col-md-12 route-info">
+       Route Information
+    </div>
+
+    @{ int i = -1; var routearray = new string[] { "One", "Two", "Three", "Four", "Five","Six","Seven" }; }
+    @foreach (var route in Model.Routes)
+    {
+        i++;
+        var routes = @route.RouteLocations.Replace(",", " -> ");
+        <div class="col-md-3 route">
+            <div>
+                <span class="route-header">Route @routearray[i]</span>
+                <span class="route-body">@routes</span>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+<script>
+
+    $(function () {
+
+        $('#UserInfoList').ajaxGrid({
+            pageSize: 2,
+            defaultSortExpression: 'Id',
+            defaultSortOrder: 'DESC',
+            tableHeading: '.table-header',
+            url: '@Url.Action("FindAll","Home")',
+            requestType: 'get',
+            loadingImage: $('#loading-msg-subscribers-management'),
+            NoRecordsFound: 'No Records Found',
+            postContent: [
+                {
+                    control: $('<button type="button" class="btn btn-primary" ' +
+                    'onclick=\'showEditForm(this,"Edit", "@Url.Action("Form","Home")",300,300)\'>' +
+                    '<small class="glyphicon glyphicon-edit"></small></small>' +
+                    '</button>')
+                },
+                {
+                    control: $('<form action="@Url.Action("Delete","Home")" method="POST" style="display:inline-block">' +
+                    '<input type="hidden" name="Id" id="Id"/>' +
+                    '<input type="hidden" name="UserId" id="UserId"/>' +
+                    '<button type="submit" class="btn btn-danger" ' +
+                    'onclick=\'return confirm("Are you sure you want to Remove this List?")\'>' +
+                    '<span class="glyphicon glyphicon-remove"></span></button></form>'),
+                    properties: [
+                        {
+                            propertyField: 'input[type=hidden]#Id',
+                            property: 'value',
+                            propertyValue: 'Id'
+                        },
+                        {
+                            propertyField: 'input[type=hidden]#UserId',
+                            property: 'value',
+                            propertyValue: 'UserId'
+                        }
+                    ]
+                }
+            ],
+            afterAjaxCallComplete: function () {
+                
+                $("#UserInfoList").find("tr").each(function (k, v) {
+
+                    var _date = parseInt($(this).find("td:eq(4)").text().replace(/\/Date\(/g, "").replace(/\)\//, ""));
+                    if (!isNaN(_date)) {
+                        var x = new Date(_date);
+                        var finaldate = x.getMonth() + 1 + "/" + x.getDate() + "/" + x.getFullYear();
+                        $(this).find("td:eq(4)").text(finaldate)
+                    }                  
+                })
+
+                debugger;
+                $("#UserInfoList .btn").prop("disabled", true);
+                $("#UserInfoList #UserId").each(function (k, v) {
+                    if($(this).val() == "@Session["Id"]"){
+                        $(this).closest("tr").find(".btn").prop("disabled",false);
+                    }
+                });
+            },
+            id: 'Id'
+        });
+    });
+   
+    $("#ajaxgridSearch").on('click', function () {
+        
+        var name = $("#searchName").val();
+        $('#UserInfoList').trigger('refreshGrid', { Name: name });
+        $("#searchName").val("");
+    });
+
+    $('#UserInfoTotal').ajaxGrid({
+        pageSize: 2,
+        defaultSortExpression: 'Id',
+        defaultSortOrder: 'DESC',
+        tableHeading: '.table-header',
+        url: '@Url.Action("FindAllTotal","Home")',
+        requestType: 'get',
+        loadingImage: $('#loading-msg-subscribers-management'),
+        NoRecordsFound: 'No Records Found',
+        afterAjaxCallComplete: function () {
+           
+            
+        }
+    });
+
+    $("#UserInfo_Name").val("@Session["UserName"]");
+
+
+</script>
+
+
+
+

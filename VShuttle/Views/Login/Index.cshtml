@@ -1,0 +1,23 @@
+﻿@model VShuttle.Model.Users
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="login-page">
+    <div class="form">
+   
+        @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @class = "login-form" }))
+        {
+           <div class="error-msg">@ViewData["error"]</div>           
+           @Html.TextBoxFor(m => m.UserId, new { placeholder = "iNumber" })
+           @Html.PasswordFor(m => m.Password, new { placeholder = "password" })        
+
+           <button type="submit">Login</button>
+           <p class="message"> Not registered? <a href="@Url.Action("Index", "Register")"> Register </a></p>         
+
+        }
+
+    </div>
+</div>
+

@@ -1,0 +1,50 @@
+﻿@model VShuttle.Model.UserInfo
+@{
+
+    Layout = null;
+}
+
+@using (Html.BeginForm("Index","Home", FormMethod.Post))
+{
+    <div class="main-form">
+
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="col-md-12">
+            @Html.TextBoxFor(m=>m.Name, new { placeholder = "Enter Location" })
+        </div>
+
+        <div class="col-md-12">
+            @Html.DropDownListFor(m => m.Location, new SelectList(ViewBag.location, "Id", "Location"), "Select Location")           
+        </div>
+
+        <div class="col-md-12">
+            @Html.TextBoxFor(m => m.SubLocation, new { placeholder = "Enter Location" })
+        </div>
+
+        <div class="col-md-12">
+            @Html.TextBoxFor(m => m.Date, new { placeholder = "Enter Location" })
+        </div>
+
+        <div class="col-md-6">
+            <button class="btn btn-primary" type="submit">Update </button>
+        </div>
+
+        <div class="col-md-6">
+            <button class="btn btn-danger" onclick="closeDialog(this)" type="button">Cancel</button>
+        </div>
+
+    </div>
+}
+<script>
+    $(function () {
+        $("#Date").datepicker({ dateFormat: 'yy-mm-dd' });
+        debugger;
+        $("#Location").val(@Model.Location);
+
+    });
+
+    
+
+</script>
+

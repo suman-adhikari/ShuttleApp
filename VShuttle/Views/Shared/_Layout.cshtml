@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/fontawesome")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand">Verscend shuttle</a>
+            </div>
+
+                    
+            <div class="navbar-header right-header pull-right">
+                @if (Session["Id"] != null)
+                {
+                    <i class="navbar-brand headerlogin">Welcome, @Session["UserName"]</i>
+                    <a class="navbar-brand headerlogin" href="@Url.Action("Index","Logout")">Logout</a>
+                }
+                else
+                {
+                   <a class="navbar-brand headerlogin" href="@Url.Action("Index","Login")">Login</a>
+                }
+               
+            </div>
+
+        </div>
+    </nav>
+    
+    <div class="container">
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/ajaxGrid")
+        @Scripts.Render("~/bundles/Shared")
+        
+        @RenderSection("scripts", required: false)
+        @RenderBody()
+       
+    </div>
+   
+</body>
+</html>

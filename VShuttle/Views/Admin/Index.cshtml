@@ -1,0 +1,135 @@
+﻿@model VShuttle.Model.ViewModel.LocationRoute
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 route-info">
+    Update Location
+</div>
+
+<div class="row">
+    
+
+    @using (Html.BeginForm())
+    {
+       // @Html.HiddenFor(m => m.Location.Id);
+
+        <span class="form-element col-md-3 pull-right">
+            <button type="submit">Submit</button>       
+        </span>
+
+        <span class="form-element col-md-3 pull-right">
+            @Html.TextBoxFor(m => m.Location.Location, new { placeholder = "Enter Location" })
+        </span>
+    }
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-responsive table-striped" id="location">
+            <thead>
+                <tr>
+                    <th><a class="table-header" field-name="Id">Id</a></th>
+                    <th><a class="table-header" field-name="Location">Location</a></th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+
+    <div class="col-md-12 route-info">
+        Update Route Information
+    </div>
+
+    @using (Html.BeginForm("UpdateRoute","Admin", FormMethod.Post))
+    {
+        <div class="route-form col-md-6">
+
+            @*<div class="form-group col-md-12">
+               <span>Route one</span> 
+               <input type="text" name="route1" class="form-control" />
+            </div>
+            <div class="form-group col-md-12">
+                <span>Route Two</span>
+                <input type="text" name="route2" class="form-control" />
+            </div>
+            <div class="form-group col-md-12">
+                <span>Route Three</span>
+                 <input type="text" name="route3" class="form-control" />
+            </div>
+            <div class="form-group col-md-12">
+                <span>Route Four</span> 
+                <input type="text" name="route4" class="form-control" />
+            </div>*@
+            @{int i = 0; var ar = new string[] { "One", "Two", "Three", "Four","Five","Six","Seven" }; }
+
+                @foreach (var item in Model.Route)
+            {
+                    i++;
+                    var name = "Route" + i;
+                <div class="form-group col-md-12">
+                    <span>Route @ar[i-1]</span>
+                    <input type="text" name=@name class="form-control" value="@item.RouteLocations" />
+                </div>
+            }
+
+            <div class="form-group col-md-12">
+               <button class="btn btn-block btn-success" type="submit">Save Route</button>
+            </div>
+
+        </div>
+       
+    }
+
+</div>
+
+<script>
+
+    $(function () {
+        
+        $('#location').ajaxGrid({
+            pageSize: 2,
+            defaultSortExpression: 'Id',
+            defaultSortOrder: 'DESC',
+            tableHeading: '.table-header',
+            url: '@Url.Action("FindAll", "Admin")',
+            requestType: 'get',
+            loadingImage: $('#loading-msg-subscribers-management'),
+            NoRecordsFound: 'No Records Found',
+            postContent: [
+                {
+                    control: $('<button type="button" class="btn btn-primary" ' +
+                    'onclick=\'showEditForm(this,"Edit", "@Url.Action("Form","Admin")",300,200)\'>' +
+                    '<small class="glyphicon glyphicon-edit"></small></small>' +
+                    '</button>')
+                },
+                {
+                    control: $('<form action="@Url.Action("Delete","Admin")" method="POST" style="display:inline-block">' +
+                    '<input type="hidden" name="Id" id="Id" />' +
+                    '<button type="submit" class="btn btn-danger" ' +
+                    'onclick=\'return confirm("Are you sure you want to Remove this List?")\'>' +
+                    '<span class="glyphicon glyphicon-remove"></span></button></form>'),
+                    properties: [
+                        {
+                            propertyField: 'input[type=hidden]#Id',
+                            property: 'value',
+                            propertyValue: 'Id'
+                        }
+                    ]
+                }
+            ],
+            id: 'Id'
+        });
+    });
+</script>
+
+
+
