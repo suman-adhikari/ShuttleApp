@@ -11,7 +11,7 @@ namespace VShuttle.Repository
 
         public Users CheckUser(Users users)
         {
-            var user = db.User.FirstOrDefault(Model => Model.UserId == users.UserId && Model.Password == users.Password);          
+            var user = db.User.FirstOrDefault(m => m.INumber == users.INumber && m.Password == users.Password);          
             return user;
         }
 
@@ -19,8 +19,14 @@ namespace VShuttle.Repository
         {
             users.UserRole = 2;
             db.User.Add(users);
-            db.SaveChanges();
-            return true;
+            var result = db.SaveChanges();
+            return result==1;
+        }
+
+        public bool CheckINumber(string iNumber)
+        {
+            var IsINumberUsed = db.User.FirstOrDefault(m => m.INumber == iNumber);
+            return IsINumberUsed == null;
         }
 
 

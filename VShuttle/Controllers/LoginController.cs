@@ -21,7 +21,7 @@ namespace VShuttle.Controllers
                 if (loginData != null)
                 {
                     Session["Id"] = loginData.Id;
-                    Session["UserId"] = loginData.UserId;
+                    Session["UserId"] = loginData.INumber;
                     Session["UserName"] = loginData.UserName;
                     Session["UserRole"] = loginData.UserRole;
                     if(loginData.UserRole==1)

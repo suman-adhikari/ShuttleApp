@@ -7,7 +7,7 @@ namespace VShuttle.Controllers
     public class RegisterController : Controller
     {
         UserRepository userRepository = new UserRepository();
-        // GET: Register
+        
         public ActionResult Index()
         {
             return View();
@@ -16,11 +16,18 @@ namespace VShuttle.Controllers
         [HttpPost]
         public ActionResult Index(Users users)
         {
-            var loginData = userRepository.Add(users);
-            if (loginData)
-                return RedirectToAction("Index", "Login");
-            else
-                return View();
+            var IsINumberAvailabel = userRepository.CheckINumber(users.INumber);
+            if (IsINumberAvailabel)
+            {
+                var loginData = userRepository.Add(users);
+                if (loginData)
+                    return RedirectToAction("Index", "Login");
+                else
+                    return View();
+            }           
+              ViewData["error"] = "iNumber is already in use";
+              return View();
+            
         }
     }
 }

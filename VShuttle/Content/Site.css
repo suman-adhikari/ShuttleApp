@@ -322,18 +322,7 @@ table button {
   width: 50px;
 } 
 
-body {
-    /*background-color:rgba(0, 0, 0, 0.2);*/
-}
-
-/* Set padding to keep content from hitting the edges */
-
-
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
 .dl-horizontal dt {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */

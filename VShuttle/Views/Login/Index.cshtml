@@ -10,8 +10,8 @@
         @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @class = "login-form" }))
         {
            <div class="error-msg">@ViewData["error"]</div>           
-           @Html.TextBoxFor(m => m.UserId, new { placeholder = "iNumber" })
-           @Html.PasswordFor(m => m.Password, new { placeholder = "password" })        
+           @Html.TextBoxFor(m => m.INumber, new { placeholder = "iNumber" , @required="required" })
+           @Html.PasswordFor(m => m.Password, new { placeholder = "password", @required = "required" })        
 
            <button type="submit">Login</button>
            <p class="message"> Not registered? <a href="@Url.Action("Index", "Register")"> Register </a></p>         

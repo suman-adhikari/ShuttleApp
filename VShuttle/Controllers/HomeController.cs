@@ -20,11 +20,19 @@ namespace VShuttle.Controllers
         public ActionResult Index()
         {
            RouteUserinfo routeUserinfo = new RouteUserinfo();
+            var userinfo = new UserInfo();
            var locationList = locationRepository.FindAllLocation();
-           var routes = routeRepository.FindAll();       
+           var routes = routeRepository.FindAll();
+            if (Convert.ToInt32(Session["Id"]) > 0)
+            {
+                userinfo = userInfoRepository.GetUserInfoById(Convert.ToInt32((Session["Id"])));
+            }
+            
+
            ViewBag.location = locationList;
            routeUserinfo.Routes = routes;
-           routeUserinfo.UserInfo = new UserInfo();     
+           routeUserinfo.UserInfo = userinfo;
+
            return View(routeUserinfo);
         }
 

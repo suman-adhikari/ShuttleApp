@@ -57,6 +57,13 @@ namespace VShuttle.Repository
             return db.UserInfos.FirstOrDefault(Model => Model.Id == id);
         }
 
+        public UserInfo GetUserInfoById(int userid)
+        {
+            return db.UserInfos.FirstOrDefault(m => m.UserId == userid && DbFunctions.TruncateTime(m.Date) == DbFunctions.TruncateTime(DateTime.Now));
+        }
+
+        
+
         public bool Delete(int id)
         {
             var UserInfo = db.UserInfos.FirstOrDefault(Models => Models.Id == id);

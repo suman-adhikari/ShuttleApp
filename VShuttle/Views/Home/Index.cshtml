@@ -3,7 +3,7 @@
     ViewBag.Title = "Home Page";
 }
 
-@if (Convert.ToInt32(Session["Id"]) > 0)
+@if (Convert.ToInt32(Session["Id"]) > 0 && Model.UserInfo == null )
 {
 
 <div id="registerUser" class="row-fluid">

@@ -9,7 +9,7 @@ namespace VShuttle.Model
     {
         public int Id { get; set; }
 
-        public string UserId { get; set; }
+        public string INumber { get; set; }
 
         public string UserName { get; set; }
 

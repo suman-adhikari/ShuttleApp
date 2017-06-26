@@ -55,26 +55,10 @@
     @using (Html.BeginForm("UpdateRoute","Admin", FormMethod.Post))
     {
         <div class="route-form col-md-6">
-
-            @*<div class="form-group col-md-12">
-               <span>Route one</span> 
-               <input type="text" name="route1" class="form-control" />
-            </div>
-            <div class="form-group col-md-12">
-                <span>Route Two</span>
-                <input type="text" name="route2" class="form-control" />
-            </div>
-            <div class="form-group col-md-12">
-                <span>Route Three</span>
-                 <input type="text" name="route3" class="form-control" />
-            </div>
-            <div class="form-group col-md-12">
-                <span>Route Four</span> 
-                <input type="text" name="route4" class="form-control" />
-            </div>*@
+           
             @{int i = 0; var ar = new string[] { "One", "Two", "Three", "Four","Five","Six","Seven" }; }
 
-                @foreach (var item in Model.Route)
+            @foreach (var item in Model.Route)
             {
                     i++;
                     var name = "Route" + i;
@@ -85,7 +69,7 @@
             }
 
             <div class="form-group col-md-12">
-               <button class="btn btn-block btn-success" type="submit">Save Route</button>
+               <button class="btn btn-block btn-primary" type="submit">Save Route</button>
             </div>
 
         </div>

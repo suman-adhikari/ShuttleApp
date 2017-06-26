@@ -11,9 +11,9 @@
         {
             <div class="error-msg">@ViewData["error"]</div>
             
-            @Html.TextBoxFor(m => m.UserId, new { placeholder = "UserId" })         
-            @Html.TextBoxFor(m => m.UserName, new { placeholder = "username" })
-            @Html.PasswordFor(m => m.Password, new { placeholder = "password" })
+            @Html.TextBoxFor(m => m.INumber, new { placeholder = "UserId" , @required = "required" })         
+            @Html.TextBoxFor(m => m.UserName, new { placeholder = "username" , @required = "required" })
+            @Html.PasswordFor(m => m.Password, new { placeholder = "password" , @required = "required" })
 
             <button type="submit">Register</button>
             <p class="message"> Already registered? <a href="@Url.Action("Index", "Login")"> Login </a></p>
