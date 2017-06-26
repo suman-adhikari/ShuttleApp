@@ -7,13 +7,13 @@ using System.Web.Routing;
 
 namespace VShuttle
 {
-    public class AuthorizeLoginUser : AuthorizeAttribute
+    public class AuthorizeAdmin : AuthorizeAttribute
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var userId = Convert.ToInt32(httpContext.Session["UserRole"]);
 
-            return userId == 2;
+            return userId == 1;
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
@@ -22,7 +22,7 @@ namespace VShuttle
                 new RouteValueDictionary(
                     new
                     {
-                        controller = "Login",
+                        controller = "Home",
                         action = "Index"
                     })
                 );

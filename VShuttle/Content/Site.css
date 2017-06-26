@@ -144,6 +144,7 @@ table .btn{
 
 .main-form {
   padding: 12px 0px;
+  font-family:"Roboto", sans-serif;
 }
 
 .main-form input {
@@ -160,11 +161,26 @@ table .btn{
     font-size:12px !important;
 }
 
+.add-route{
+    margin-bottom:10px;
+}
+
+.add-route button{
+   width:154px;
+   font-family:"Roboto", sans-serif;
+   
+}
+
+.add-route input{
+    padding:5px;
+}
    
 .main-form button {
     border-radius:0px;
     width:100%;
 }
+
+
 
 /* Login */
 
@@ -274,7 +290,7 @@ table .btn{
         border-radius: 0px;
     }
 
-    #registerUser input, button, select {
+    #registerUser input, #registerUser button, #registerUser select {
         margin-bottom: 5px;
         padding: 7px;
         width: 230px;

@@ -9,13 +9,14 @@ using VShuttle.Repository;
 
 namespace VShuttle.Controllers
 {
+
+    [AuthorizeAdmin]
     public class AdminController : Controller
     {
               
         RoutesRepository routeRepository = new RoutesRepository();
         LocationRepository locationRepository = new LocationRepository();
-       
-        // [AuthorizeLoginUser]
+            
         public ActionResult Index()
         {
             var routes = routeRepository.FindAll();        

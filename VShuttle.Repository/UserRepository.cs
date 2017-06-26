@@ -17,6 +17,7 @@ namespace VShuttle.Repository
 
         public bool Add(Users users)
         {
+            users.UserRole = 2;
             db.User.Add(users);
             db.SaveChanges();
             return true;

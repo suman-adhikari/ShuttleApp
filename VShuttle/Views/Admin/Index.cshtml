@@ -13,15 +13,18 @@
 
     @using (Html.BeginForm())
     {
-       // @Html.HiddenFor(m => m.Location.Id);
+        // @Html.HiddenFor(m => m.Location.Id);
+        <div class="row add-route">
 
-        <span class="form-element col-md-3 pull-right">
-            <button type="submit">Submit</button>       
-        </span>
+            <span class="form-element col-md-2 pull-right">
+                <button class="btn btn-primary " type="submit">Save Location</button>
+            </span>
 
-        <span class="form-element col-md-3 pull-right">
-            @Html.TextBoxFor(m => m.Location.Location, new { placeholder = "Enter Location" })
-        </span>
+            <span class="form-element col-md-2 pull-right">
+                @Html.TextBoxFor(m => m.Location.Location, new { placeholder = "Enter Location", @required = "required" })             
+            </span>
+
+        </div>
     }
 
 </div>

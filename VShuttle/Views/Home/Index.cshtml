@@ -3,22 +3,25 @@
     ViewBag.Title = "Home Page";
 }
 
+@if (Convert.ToInt32(Session["Id"]) > 0)
+{
+
 <div id="registerUser" class="row-fluid">
 
       <div class="col-md-12 error-msg">
           * Please register your today's location !!
       </div>
   
-       @using (Html.BeginForm("Index","Home", FormMethod.Post))
+       @using (Html.BeginForm("Index", "Home", FormMethod.Post))
        {
         <span class="form-element col-md-3">           
-            @Html.TextBoxFor(m => m.UserInfo.Name, new { placeholder = "Enter Name" })
+            @Html.TextBoxFor(m => m.UserInfo.Name, new { placeholder = "Enter Name", @required = "required" })
         </span>
         <span class="form-element col-md-3">
-           @Html.DropDownListFor(m=>m.UserInfo.Location,new SelectList(ViewBag.location, "Id","Location"), "Select Location") 
+           @Html.DropDownListFor(m => m.UserInfo.Location, new SelectList(ViewBag.location, "Id", "Location"), "Select Location", new { @required = "required" }) 
         </span>
         <span class="form-element col-md-3">          
-            @Html.TextBoxFor(m => m.UserInfo.SubLocation, new { placeholder = "Enter Sub-location" })
+            @Html.TextBoxFor(m => m.UserInfo.SubLocation, new { placeholder = "Enter Sub-location", @required = "required" })
         </span>
         <span class="form-element col-md-3">
             <button class="btn btn-primary" type="submit">Save</button>
@@ -27,9 +30,13 @@
    
 </div>
 
+
+
 <div class="clearfix"></div>
 
 <hr>
+
+}
 
 <div id="report" class="row-fluid">
     
@@ -106,8 +113,9 @@
 
     $(function () {
 
+
         $('#UserInfoList').ajaxGrid({
-            pageSize: 2,
+            pageSize: 7,
             defaultSortExpression: 'Id',
             defaultSortOrder: 'DESC',
             tableHeading: '.table-header',

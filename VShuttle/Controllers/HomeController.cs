@@ -34,7 +34,7 @@ namespace VShuttle.Controllers
             if (userInfo.Id > 0)
                 userInfoRepository.Update(userInfo);
             else
-                userInfoRepository.Add(userInfo, Convert.ToInt32(Session["id"]));  
+                userInfoRepository.Add(userInfo, Convert.ToInt32(Session["Id"]));  
             return RedirectToAction("Index"); 
         }
 
@@ -42,9 +42,9 @@ namespace VShuttle.Controllers
         {
 
             AjaxGridResult result = new AjaxGridResult();
-            result.Data = userInfoRepository.FindAll();
+            result.Data = userInfoRepository.FindAll(offset, rowNumber, Name);
             result.pageNumber = pageNumber;
-            result.RowCount = rowNumber;
+            result.RowCount = userInfoRepository.GetCount(Name);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -130,7 +130,7 @@ namespace VShuttle.Controllers
                     for (int k = 0; k < table.Columns.Count; k++)
                     {        
                         string newValue = table.Rows[j].ItemArray[k].ToString();                      
-                         if (k+1==4)
+                         if (k+1==3)
 
                         {                         
                             if(newValue == previousValue){
@@ -183,7 +183,7 @@ namespace VShuttle.Controllers
             excelApp.Quit();
             Marshal.ReleaseComObject(excelApp);
 
-            return null;
+            return RedirectToAction("Index","Home");
         }
     }
 }
