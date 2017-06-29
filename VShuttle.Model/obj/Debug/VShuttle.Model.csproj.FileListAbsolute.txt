@@ -1,5 +1,4 @@
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\VShuttle.Model.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\VShuttle.Model.pdb
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\obj\Debug\VShuttle.Model.csprojResolveAssemblyReference.cache
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\obj\Debug\VShuttle.Model.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\obj\Debug\VShuttle.Model.pdb

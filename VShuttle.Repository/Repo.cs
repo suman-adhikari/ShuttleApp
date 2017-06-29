@@ -10,11 +10,6 @@ namespace VShuttle.Repository
         public Repo()
         {
             db = new VShuttleContext();
-        }
-
-        public string connection() {
-            connectionString = ConfigurationManager.ConnectionStrings["connectionstring"].ConnectionString;
-            return connectionString;        
-        }
+        }     
     }
 }

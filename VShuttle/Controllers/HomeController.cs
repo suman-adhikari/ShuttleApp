@@ -1,34 +1,48 @@
 ﻿using System.Web.Mvc;
 using VShuttle.Model;
 using VShuttle.Model.ViewModel;
-using VShuttle.Repository;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Data;
 using System.Drawing;
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using VShuttle.Repository.Interface;
 
 namespace VShuttle.Controllers
 {
     public class HomeController : Controller
     {
+
+        private readonly IUserInfoRepository userInfoRepository;
+        private readonly IRoutesRepository routesRepository;
+        private readonly ILocationRepository locationRepository;
+        private string UserId ="";
+
+       
+
+        public HomeController(IUserInfoRepository userInfoRepository, IRoutesRepository routesRepository, ILocationRepository locationRepository)
+        {
+            this.userInfoRepository = userInfoRepository;
+            this.routesRepository = routesRepository;
+            this.locationRepository = locationRepository;
       
-        UserInfoRepository userInfoRepository = new UserInfoRepository();
-        LocationRepository locationRepository = new LocationRepository();
-        RoutesRepository routeRepository = new RoutesRepository();
+        }
 
         public ActionResult Index()
         {
+
+           UserId = Session["Id"] != null ? Session["Id"].ToString() : "";
            RouteUserinfo routeUserinfo = new RouteUserinfo();
+
            var userinfo = new UserInfo();
-           var usedDate= "abc";
+           var usedDate= "empty";
            var locationList = locationRepository.FindAllLocation();
-           var routes = routeRepository.FindAll();
-            if (Session["Id"] != null)
+           var routes = routesRepository.FindAll();
+            if (UserId != "")
             {
-                userinfo = userInfoRepository.GetUserInfoById(Session["Id"].ToString());
-                usedDate = userInfoRepository.GetUsedDate(Session["Id"].ToString());
+                userinfo = userInfoRepository.GetUserInfoById(UserId);
+                usedDate = userInfoRepository.GetUsedDate(UserId);
             }
 
             ViewBag.UsedDate = usedDate;
@@ -58,7 +72,7 @@ namespace VShuttle.Controllers
                 foreach (var item in day)
                 {
                     userInfo.Date = date.AddDays(Convert.ToInt32(item));
-                    userInfo.INumber = Session["Id"].ToString();
+                    userInfo.INumber = UserId;
                     userInfoRepository.Add(userInfo);
                 }
             }         
@@ -71,10 +85,10 @@ namespace VShuttle.Controllers
             List<UserInfoLocation> userdata;
             int count=0;
 
-            if (Session["Id"] != null)
+            if (UserId != "")
             {
-                userdata = userInfoRepository.FindAllByInumber(offset, rowNumber, Session["Id"].ToString());
-                count = userInfoRepository.GetCountByInumber(Session["Id"].ToString());
+                userdata = userInfoRepository.FindAllByInumber(offset, rowNumber, UserId);
+                count = userInfoRepository.GetCountByInumber(UserId);
             }
             else
             {

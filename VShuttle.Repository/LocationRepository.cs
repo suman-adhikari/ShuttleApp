@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VShuttle.Model;
+using VShuttle.Repository.Interface;
 
 namespace VShuttle.Repository
 {
-    public class LocationRepository : Repo
+    public class LocationRepository : Repo, ILocationRepository
     {
 
         public bool Add(Locations location)

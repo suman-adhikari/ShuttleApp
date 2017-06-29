@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using VShuttle.Model;
 using VShuttle.Model.ViewModel;
 using VShuttle.Repository;
+using VShuttle.Repository.Interface;
 
 namespace VShuttle.Controllers
 {
@@ -14,9 +15,15 @@ namespace VShuttle.Controllers
     public class AdminController : Controller
     {
               
-        RoutesRepository routeRepository = new RoutesRepository();
-        LocationRepository locationRepository = new LocationRepository();
+        private readonly IRoutesRepository routeRepository;
+        private readonly ILocationRepository locationRepository;
             
+        public AdminController(IRoutesRepository routeRepository, ILocationRepository locationRepository)
+        {
+            this.routeRepository = routeRepository;
+            this.locationRepository = locationRepository;
+        }
+
         public ActionResult Index()
         {
             var routes = routeRepository.FindAll();        

@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Configuration;
-using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Web.Mvc;
 using VShuttle.Model;
-using VShuttle.Repository;
+
 
 namespace VShuttle.Controllers
 {
     public class LoginController : Controller
     {
-        UserRepository userRepository = new UserRepository();
+      
         // GET: Admin
         public ActionResult Index()
         {

@@ -5,10 +5,11 @@ using System.Data.Entity;
 using System.Linq;
 using VShuttle.Model;
 using VShuttle.Model.ViewModel;
+using VShuttle.Repository.Interface;
 
 namespace VShuttle.Repository
 {
-    public class UserInfoRepository : Repo
+    public class UserInfoRepository : Repo, IUserInfoRepository
     {
         public bool Add(UserInfo userInfo)
         {
@@ -80,7 +81,6 @@ namespace VShuttle.Repository
         }
 
         
-
         public UserInfo Get(int id)
         {
             return db.UserInfos.FirstOrDefault(Model => Model.Id == id);

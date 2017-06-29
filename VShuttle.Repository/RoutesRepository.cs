@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using VShuttle.Model;
+using VShuttle.Repository.Interface;
 
 namespace VShuttle.Repository
 {
-    public class RoutesRepository : Repo
+    public class RoutesRepository : Repo, IRoutesRepository
     {
         public bool UpdateRoutes(int id, string routelocation)
         {

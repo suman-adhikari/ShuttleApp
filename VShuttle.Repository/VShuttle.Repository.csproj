@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\ILocationRepository.cs" />
+    <Compile Include="Interface\IUserInfoRepository.cs" />
+    <Compile Include="Interface\IRoutesRepository.cs" />
     <Compile Include="LocationRepository.cs" />
     <Compile Include="Migrations\201706270929381_initial.cs" />
     <Compile Include="Migrations\201706270929381_initial.Designer.cs">
@@ -95,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
-    <Folder Include="Interface\" />
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
