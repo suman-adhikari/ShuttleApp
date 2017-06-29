@@ -8,5 +8,9 @@ C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Reposito
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\bin\Debug\EntityFramework.xml
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\obj\Debug\VShuttle.Repository.csprojResolveAssemblyReference.cache
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\obj\Debug\VShuttle.Repository.Migrations.initial.resources
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\obj\Debug\VShuttle.Repository.Migrations.newcolumnadded_userinfo.resources
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\obj\Debug\VShuttle.Repository.Migrations.columndropped_userinfo.resources
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\obj\Debug\VShuttle.Repository.csproj.GenerateResource.Cache
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\obj\Debug\VShuttle.Repository.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Repository\obj\Debug\VShuttle.Repository.pdb

@@ -3,17 +3,55 @@
     ViewBag.Title = "Home Page";
 }
 
-@if (Convert.ToInt32(Session["Id"]) > 0 && Model.UserInfo == null )
+@if (Session["Id"] !=null)
 {
 
 <div id="registerUser" class="row-fluid">
 
-      <div class="col-md-12 error-msg">
-          * Please register your today's location !!
-      </div>
-  
+      <div class="col-md-12 route-info">
+        Register Location
+      </div> 
+
        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
        {
+
+        <span class="form-element row">
+            <div class="col-md-12 checkbox-row" >
+
+                @*<div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" name="all" id="all" value="5">
+                    <label for="all"> All </label>
+                </div>*@
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" name="mon" id="mon" value="0">
+                    <label for="mon"> Monday </label>
+                </div>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" name="tue" id="tue" value="1">
+                    <label for="tue"> Tuesday </label>
+                </div>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" name="wed" id="wed" value="2">
+                    <label for="wed"> Wednesday </label>
+                </div>
+
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" name="thu" id="thu" value="3">
+                    <label for="thu"> Thursday </label>
+                </div>
+
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" name="fri" id="fri" value="4">
+                    <label for="fri"> Friday </label>
+                </div>
+
+            </div>
+
+            @Html.Hidden("days", new{ @id="days", @name="days" })
+            
+        </span>  
+
+     
         <span class="form-element col-md-3">           
             @Html.TextBoxFor(m => m.UserInfo.Name, new { placeholder = "Enter Name", @required = "required" })
         </span>
@@ -24,12 +62,11 @@
             @Html.TextBoxFor(m => m.UserInfo.SubLocation, new { placeholder = "Enter Sub-location", @required = "required" })
         </span>
         <span class="form-element col-md-3">
-            <button class="btn btn-primary" type="submit">Save</button>
+            <button class="btn btn-primary" onclick="GetDate();" type="submit">Save</button>
         </span>
        }
    
 </div>
-
 
 
 <div class="clearfix"></div>
@@ -38,25 +75,29 @@
 
 }
 
+<div class="col-md-12 route-info">
+    Location Details
+</div>
+
 <div id="report" class="row-fluid">
-    
+
+         
         <div class="col-md-9">
 
-            <div class="row-fluid">
-               
-                 <div class="col-md-offset-3 pull-right search">
+            @if (Session["Id"] == null)
+            {
+                <div class="row-fluid">              
+                     <div class="col-md-offset-3 pull-right search">
                     
-                     <div class="form-inline">
-                        <input type="text" id="searchName" />
-                        <button id="ajaxgridSearch" >Search</button>
-                        <button id="ajaxgridExport" onclick="location.href='@Url.Action("ExportToExcel","Home")'">Export</button>
+                         <div class="form-inline">
+                            <input type="text" id="searchName" />
+                            <button id="ajaxgridSearch" >Search</button>
+                            <button id="ajaxgridExport" onclick="location.href='@Url.Action("ExportToExcel", "Home")'">Export</button>
+                        </div>
+                    
                     </div>
-                    
                 </div>
-
-              
-
-            </div>
+            }
 
             <table class="table table-bordered table-responsive table-striped" id="UserInfoList">
                 <thead>
@@ -93,7 +134,7 @@
        Route Information
     </div>
 
-    @{ int i = -1; var routearray = new string[] { "One", "Two", "Three", "Four", "Five","Six","Seven" }; }
+    @{ int i = -1; var routearray = new string[] { "One", "Two", "Three", "Four"}; }
     @foreach (var route in Model.Routes)
     {
         i++;
@@ -112,7 +153,6 @@
 <script>
 
     $(function () {
-
 
         $('#UserInfoList').ajaxGrid({
             pageSize: 7,
@@ -133,7 +173,7 @@
                 {
                     control: $('<form action="@Url.Action("Delete","Home")" method="POST" style="display:inline-block">' +
                     '<input type="hidden" name="Id" id="Id"/>' +
-                    '<input type="hidden" name="UserId" id="UserId"/>' +
+                    '<input type="hidden" name="INumber" id="INumber"/>' +
                     '<button type="submit" class="btn btn-danger" ' +
                     'onclick=\'return confirm("Are you sure you want to Remove this List?")\'>' +
                     '<span class="glyphicon glyphicon-remove"></span></button></form>'),
@@ -144,15 +184,15 @@
                             propertyValue: 'Id'
                         },
                         {
-                            propertyField: 'input[type=hidden]#UserId',
+                            propertyField: 'input[type=hidden]#INumber',
                             property: 'value',
-                            propertyValue: 'UserId'
+                            propertyValue: 'INumber'
                         }
                     ]
                 }
             ],
             afterAjaxCallComplete: function () {
-                
+
                 $("#UserInfoList").find("tr").each(function (k, v) {
 
                     var _date = parseInt($(this).find("td:eq(4)").text().replace(/\/Date\(/g, "").replace(/\)\//, ""));
@@ -160,12 +200,11 @@
                         var x = new Date(_date);
                         var finaldate = x.getMonth() + 1 + "/" + x.getDate() + "/" + x.getFullYear();
                         $(this).find("td:eq(4)").text(finaldate)
-                    }                  
+                    }
                 })
 
-                debugger;
                 $("#UserInfoList .btn").prop("disabled", true);
-                $("#UserInfoList #UserId").each(function (k, v) {
+                $("#UserInfoList #INumber").each(function (k, v) {
                     if($(this).val() == "@Session["Id"]"){
                         $(this).closest("tr").find(".btn").prop("disabled",false);
                     }
@@ -173,10 +212,38 @@
             },
             id: 'Id'
         });
+
+        var weekday = new Array(7);
+        weekday[0] = "mon";
+        weekday[1] = "tue";
+        weekday[2] = "wed";
+        weekday[3] = "thu";
+        weekday[4] = "fri";
+
+
+        $("input[type='checkbox']").each(function (k, v) {
+            var today = new Date().getDay();
+            if ($(this).val() < (today - 1)) {
+                $(this).prop('disabled', true);
+            }
+        });
+
+        if("@ViewBag.UsedDate" != "abc")
+        {
+            var dates = "@ViewBag.UsedDate".split(',');
+            var date = new Date();
+            var today = date.getDate();
+            var day = date.getDay()-1;
+            for(var i=0;i<dates.length;i++){               
+                var selector = "#" + weekday[day + (dates[i]-today)];
+                $(selector).prop('disabled',true);         
+              }
+        }
+
     });
-   
+
     $("#ajaxgridSearch").on('click', function () {
-        
+
         var name = $("#searchName").val();
         $('#UserInfoList').trigger('refreshGrid', { Name: name });
         $("#searchName").val("");
@@ -192,12 +259,30 @@
         loadingImage: $('#loading-msg-subscribers-management'),
         NoRecordsFound: 'No Records Found',
         afterAjaxCallComplete: function () {
-           
-            
         }
+
     });
 
     $("#UserInfo_Name").val("@Session["UserName"]");
+
+    //$("#all").click(function () {
+    //    var checked = $(this).prop('checked');
+    //    $("input[type='checkbox']").prop('checked',checked);
+    //});
+
+    //$("input[type='checkbox']:not('#all')").click(function () {
+    //    $("#all").prop('checked', false);
+    //});
+
+    function GetDate() {
+        var day = "";
+        $("input[type='checkbox']").each(function (k, v) {
+            if ($(this).prop('checked')) {
+                day += " " + $(this).val();
+            }
+        })
+        $("#days").val(day);
+    }
 
 
 </script>

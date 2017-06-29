@@ -7,7 +7,7 @@ namespace VShuttle.Model.ViewModel
     {
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        public string INumber { get; set; }
 
         public string Name { get; set; }
 

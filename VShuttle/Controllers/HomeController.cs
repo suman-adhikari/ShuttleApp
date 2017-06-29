@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace VShuttle.Controllers
 {
@@ -20,16 +21,18 @@ namespace VShuttle.Controllers
         public ActionResult Index()
         {
            RouteUserinfo routeUserinfo = new RouteUserinfo();
-            var userinfo = new UserInfo();
+           var userinfo = new UserInfo();
+           var usedDate= "abc";
            var locationList = locationRepository.FindAllLocation();
            var routes = routeRepository.FindAll();
-            if (Convert.ToInt32(Session["Id"]) > 0)
+            if (Session["Id"] != null)
             {
-                userinfo = userInfoRepository.GetUserInfoById(Convert.ToInt32((Session["Id"])));
+                userinfo = userInfoRepository.GetUserInfoById(Session["Id"].ToString());
+                usedDate = userInfoRepository.GetUsedDate(Session["Id"].ToString());
             }
-            
 
-           ViewBag.location = locationList;
+            ViewBag.UsedDate = usedDate;
+            ViewBag.location = locationList;
            routeUserinfo.Routes = routes;
            routeUserinfo.UserInfo = userinfo;
 
@@ -37,22 +40,52 @@ namespace VShuttle.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(UserInfo userInfo)
+        public ActionResult Index(UserInfo userInfo, string days)
         {
+
             if (userInfo.Id > 0)
+            {
                 userInfoRepository.Update(userInfo);
+            }
             else
-                userInfoRepository.Add(userInfo, Convert.ToInt32(Session["Id"]));  
+            {
+                var date = DateTime.Now;
+                while (date.DayOfWeek.ToString() != "Monday")
+                {
+                    date = date.AddDays(-1);
+                }
+                var day = days.Trim().Split(' ');
+                foreach (var item in day)
+                {
+                    userInfo.Date = date.AddDays(Convert.ToInt32(item));
+                    userInfo.INumber = Session["Id"].ToString();
+                    userInfoRepository.Add(userInfo);
+                }
+            }         
             return RedirectToAction("Index"); 
         }
 
         public ActionResult FindAll(int offset, int rowNumber, string sortExpression, string sortOrder, int pageNumber, string Name="")
         {
+           
+            List<UserInfoLocation> userdata;
+            int count=0;
 
+            if (Session["Id"] != null)
+            {
+                userdata = userInfoRepository.FindAllByInumber(offset, rowNumber, Session["Id"].ToString());
+                count = userInfoRepository.GetCountByInumber(Session["Id"].ToString());
+            }
+            else
+            {
+                userdata = userInfoRepository.FindAll(offset, rowNumber, Name);
+                count = userInfoRepository.GetCount(Name);
+            }
+              
             AjaxGridResult result = new AjaxGridResult();
-            result.Data = userInfoRepository.FindAll(offset, rowNumber, Name);
+            result.Data = userdata;
             result.pageNumber = pageNumber;
-            result.RowCount = userInfoRepository.GetCount(Name);
+            result.RowCount = count;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

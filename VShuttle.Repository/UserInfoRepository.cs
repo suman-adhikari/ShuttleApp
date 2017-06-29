@@ -10,10 +10,8 @@ namespace VShuttle.Repository
 {
     public class UserInfoRepository : Repo
     {
-        public bool Add(UserInfo userInfo, int id)
+        public bool Add(UserInfo userInfo)
         {
-            userInfo.Date = DateTime.Now;
-            userInfo.UserId = id;
             db.UserInfos.Add(userInfo);
             db.SaveChanges();
             return false;
@@ -25,11 +23,11 @@ namespace VShuttle.Repository
             var userinfo = (from userinfos in db.UserInfos
                             join loc in db.Locations
                             on userinfos.Location equals loc.Id
-                            where DbFunctions.TruncateTime(userinfos.Date) == DbFunctions.TruncateTime(DateTime.Now)
+                            where DbFunctions.TruncateTime(userinfos.Date) == DbFunctions.TruncateTime(DateTime.Now)  
                             select new UserInfoLocation
                             {
                                 Id = userinfos.Id,
-                                UserId = userinfos.UserId,
+                                INumber = userinfos.INumber,
                                 Name = userinfos.Name,
                                 Location = loc.Location,
                                 SubLocation = userinfos.SubLocation,
@@ -39,30 +37,67 @@ namespace VShuttle.Repository
 
             if (name != "")
             {
-                userinfo = userinfo.Where(n => n.Name == name);
+                userinfo = userinfo.Where(n => n.Name.Contains(name));
             }
             userinfo = userinfo.OrderByDescending(n=>n.Id).Skip(offset).Take(rowNumber);
             return userinfo.ToList();
         }
 
+        public List<UserInfoLocation> FindAllByInumber(int offset, int rowNumber, string iNumber)
+        {
+
+            var userinfo = (from userinfos in db.UserInfos
+                            join loc in db.Locations
+                            on userinfos.Location equals loc.Id
+                            where (DbFunctions.TruncateTime(userinfos.Date) >= DbFunctions.TruncateTime(DateTime.Now) && userinfos.INumber== iNumber)
+                            select new UserInfoLocation
+                            {
+                                Id = userinfos.Id,
+                                INumber = userinfos.INumber,
+                                Name = userinfos.Name,
+                                Location = loc.Location,
+                                SubLocation = userinfos.SubLocation,
+                                Date = userinfos.Date
+                            }
+                            );
+          
+            userinfo = userinfo.OrderByDescending(n => n.Id).Skip(offset).Take(rowNumber);
+            return userinfo.ToList();
+        }
+
+        
+
         public int GetCount(string name)
         {   
             if(name!="")
-                return db.UserInfos.Where(l=> DbFunctions.TruncateTime(l.Date) == DbFunctions.TruncateTime(DateTime.Now)).Count(n=>n.Name == name);
+                return db.UserInfos.Where(l=> DbFunctions.TruncateTime(l.Date) == DbFunctions.TruncateTime(DateTime.Now)).Count(n=>n.Name.Contains(name));
             return db.UserInfos.Where(l => DbFunctions.TruncateTime(l.Date) == DbFunctions.TruncateTime(DateTime.Now)).Count();
         }
+
+        public int GetCountByInumber(string iNumber)
+        {       
+            return db.UserInfos.Where(l => DbFunctions.TruncateTime(l.Date) >= DbFunctions.TruncateTime(DateTime.Now) && l.INumber==iNumber ).Count();
+        }
+
+        
 
         public UserInfo Get(int id)
         {
             return db.UserInfos.FirstOrDefault(Model => Model.Id == id);
         }
 
-        public UserInfo GetUserInfoById(int userid)
+        public UserInfo GetUserInfoById(string userid)
         {
-            return db.UserInfos.FirstOrDefault(m => m.UserId == userid && DbFunctions.TruncateTime(m.Date) == DbFunctions.TruncateTime(DateTime.Now));
+            return db.UserInfos.FirstOrDefault(m => m.INumber == userid && DbFunctions.TruncateTime(m.Date) == DbFunctions.TruncateTime(DateTime.Now));
         }
 
-        
+        public string GetUsedDate(string userid)
+        {
+            var x = db.UserInfos.Where(m => m.INumber == userid && DbFunctions.TruncateTime(m.Date) >= DbFunctions.TruncateTime(DateTime.Now))
+                                 .Select(m=>m.Date.Day).ToArray();
+            return string.Join(",",x);
+        }
+
 
         public bool Delete(int id)
         {

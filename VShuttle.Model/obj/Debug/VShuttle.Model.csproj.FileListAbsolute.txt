@@ -1,15 +1,5 @@
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\VShuttle.Model.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\VShuttle.Model.pdb
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\obj\Debug\VShuttle.Model.csprojResolveAssemblyReference.cache
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\obj\Debug\VShuttle.Model.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\obj\Debug\VShuttle.Model.pdb
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.Mvc.dll
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.Razor.dll
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.WebPages.Razor.dll
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.WebPages.dll
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\Microsoft.Web.Infrastructure.dll
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.WebPages.Deployment.dll
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.Mvc.xml
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.Razor.xml
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.WebPages.Razor.xml
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.WebPages.xml
-C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle.Model\bin\Debug\System.Web.WebPages.Deployment.xml

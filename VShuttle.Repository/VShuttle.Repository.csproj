@@ -52,6 +52,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LocationRepository.cs" />
+    <Compile Include="Migrations\201706270929381_initial.cs" />
+    <Compile Include="Migrations\201706270929381_initial.Designer.cs">
+      <DependentUpon>201706270929381_initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706271155375_newcolumnadded_userinfo.cs" />
+    <Compile Include="Migrations\201706271155375_newcolumnadded_userinfo.Designer.cs">
+      <DependentUpon>201706271155375_newcolumnadded_userinfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706271159049_columndropped_userinfo.cs" />
+    <Compile Include="Migrations\201706271159049_columndropped_userinfo.Designer.cs">
+      <DependentUpon>201706271159049_columndropped_userinfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
@@ -71,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="obj\Debug\VShuttle.Repository.csprojResolveAssemblyReference.cache" />
     <None Include="packages.config" />
@@ -82,7 +95,19 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
+    <Folder Include="Interface\" />
     <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201706270929381_initial.resx">
+      <DependentUpon>201706270929381_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706271155375_newcolumnadded_userinfo.resx">
+      <DependentUpon>201706271155375_newcolumnadded_userinfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706271159049_columndropped_userinfo.resx">
+      <DependentUpon>201706271159049_columndropped_userinfo.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
