@@ -12,7 +12,7 @@ namespace VShuttle.Controllers
         public ActionResult Index()
         {
             Session.Abandon();
-            return RedirectToAction("Index", "Login");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

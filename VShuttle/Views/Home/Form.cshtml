@@ -1,6 +1,5 @@
 ﻿@model VShuttle.Model.UserInfo
 @{
-
     Layout = null;
 }
 
@@ -9,9 +8,12 @@
     <div class="main-form">
 
         @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.INumber)
+        @Html.HiddenFor(m => m.Name)
+        @Html.HiddenFor(m => m.Date)
 
         <div class="col-md-12">
-            @Html.TextBoxFor(m=>m.Name, new { placeholder = "Enter Location", @disabled="disabled" })
+            @Html.TextBoxFor(m=>m.Name, new { placeholder = "Enter Name", @disabled="disabled" })
         </div>
 
         <div class="col-md-12">
@@ -19,11 +21,11 @@
         </div>
 
         <div class="col-md-12">
-            @Html.TextBoxFor(m => m.SubLocation, new { placeholder = "Enter Location" })
+            @Html.TextBoxFor(m => m.SubLocation, new { placeholder = "Enter Sub-Location" })
         </div>
 
         <div class="col-md-12">
-            @Html.TextBoxFor(m => m.Date, new { placeholder = "Enter Location" })
+            @Html.TextBoxFor(m => m.Date, new { placeholder = "Enter Date", @disabled = "disabled" })
         </div>
 
         <div class="col-md-6">
@@ -39,12 +41,10 @@
 <script>
     $(function () {
         $("#Date").datepicker({ dateFormat: 'yy-mm-dd' });
-        debugger;
+       // $("#Date").datetimepicker();
         $("#Location").val(@Model.Location);
 
     });
-
-    
 
 </script>
 

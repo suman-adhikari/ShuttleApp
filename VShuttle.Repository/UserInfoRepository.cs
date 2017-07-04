@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using VShuttle.Model;
 using VShuttle.Model.ViewModel;
 using VShuttle.Repository.Interface;
 
 namespace VShuttle.Repository
 {
-    public class UserInfoRepository : Repo, IUserInfoRepository
+    public class UserInfoRepository : Repo<UserInfo>, IUserInfoRepository
     {
-        public bool Add(UserInfo userInfo)
-        {
-            db.UserInfos.Add(userInfo);
-            db.SaveChanges();
-            return false;
-        }
+       
 
         public List<UserInfoLocation> FindAll(int offset, int rowNumber, string name)
         {
@@ -66,7 +62,15 @@ namespace VShuttle.Repository
             return userinfo.ToList();
         }
 
-        
+        public int Count(Expression<Func<UserInfo, bool>> filter=null)
+        {
+            var query = db.UserInfos.Where(l => DbFunctions.TruncateTime(l.Date) == DbFunctions.TruncateTime(DateTime.Now));
+            if(filter != null)
+            {
+                query.Where(filter);
+            }
+            return query.Count();
+        }
 
         public int GetCount(string name)
         {   
@@ -80,10 +84,9 @@ namespace VShuttle.Repository
             return db.UserInfos.Where(l => DbFunctions.TruncateTime(l.Date) >= DbFunctions.TruncateTime(DateTime.Now) && l.INumber==iNumber ).Count();
         }
 
-        
-        public UserInfo Get(int id)
+        public int CountLocation(int locationId)
         {
-            return db.UserInfos.FirstOrDefault(Model => Model.Id == id);
+            return db.UserInfos.Where(l =>l.Location == locationId).Count();
         }
 
         public UserInfo GetUserInfoById(string userid)
@@ -98,25 +101,6 @@ namespace VShuttle.Repository
             return string.Join(",",x);
         }
 
-
-        public bool Delete(int id)
-        {
-            var UserInfo = db.UserInfos.FirstOrDefault(Models => Models.Id == id);
-            db.UserInfos.Remove(UserInfo);
-            db.SaveChanges();
-            return true;
-        }
-
-        public bool Update(UserInfo userInfo)
-        {
-            var userInfos = db.UserInfos.FirstOrDefault(Models => Models.Id == userInfo.Id);
-            userInfos.Name = userInfo.Name;
-            userInfos.Location = userInfo.Location;
-            userInfos.SubLocation = userInfo.SubLocation;
-            userInfos.Date = userInfo.Date;
-            db.SaveChanges();
-            return true;
-        }
 
         public List<TotalUsers> GetTotalUser()
         {
@@ -140,9 +124,8 @@ namespace VShuttle.Repository
             return Results;
         }
 
-        public DataSet GetData()
-        {
-            DataSet ds = new DataSet();
+        public DataTable GetData()
+        {          
             DataTable dt = new DataTable();
 
             var userInfo = (from userinfo in db.UserInfos
@@ -159,15 +142,8 @@ namespace VShuttle.Repository
                                 Date = userinfo.Date
                             }).OrderBy(l=>l.Location);
 
-          //List<UserInfo> userInfo = new List<UserInfo>() {
-          //    new UserInfo{ Id=1, UserId=1, Name="Abc",  Location=1,  SubLocation="subloc",   Date=DateTime.Now},
-          //    new UserInfo{ Id=2, UserId=2, Name="Abc1", Location=1, SubLocation="subloc1",  Date=DateTime.Now},
-          //    new UserInfo{ Id=2, UserId=2, Name="Abc1", Location=1, SubLocation="subloc1",  Date=DateTime.Now},
-          //    new UserInfo{ Id=2, UserId=2, Name="Abc1", Location=2, SubLocation="subloc1",  Date=DateTime.Now},
-          //    new UserInfo{ Id=2, UserId=2, Name="Abc1", Location=2, SubLocation="subloc1",  Date=DateTime.Now}          
-          //};
-
-          dt.Columns.Add("Id");
+        
+            dt.Columns.Add("Id");
             dt.Columns.Add("Name");
             dt.Columns.Add("Location");
             dt.Columns.Add("Total");
@@ -177,9 +153,8 @@ namespace VShuttle.Repository
             foreach (var item in userInfo.ToList())
             {
                 dt.Rows.Add(item.Id, item.Name, item.Location, "", item.SubLocation, item.Date);
-            }
-            ds.Tables.Add(dt);
-            return ds;
+            }            
+            return dt;
         }
 
     }

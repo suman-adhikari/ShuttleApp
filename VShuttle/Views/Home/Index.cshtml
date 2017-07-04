@@ -16,12 +16,13 @@
        {
 
         <span class="form-element row">
-            <div class="col-md-12 checkbox-row" >
+            <div class="col-md-12 checkbox-row" required>
 
                 @*<div class="checkbox checkbox-success checkbox-inline">
                     <input type="checkbox" name="all" id="all" value="5">
                     <label for="all"> All </label>
                 </div>*@
+
                 <div class="checkbox checkbox-success checkbox-inline">
                     <input type="checkbox" name="mon" id="mon" value="0">
                     <label for="mon"> Monday </label>
@@ -45,15 +46,19 @@
                     <label for="fri"> Friday </label>
                 </div>
 
+                <div id="selectday-msg" class="checkbox-inline">
+                    <span>* Please select at least a day !</span>
+                </div>
+
             </div>
 
-            @Html.Hidden("days", new{ @id="days", @name="days" })
-            
+            @Html.Hidden("days", new { @id = "days", @name = "days" })
+            @Html.HiddenFor(m => m.UserInfo.Name)
         </span>  
 
      
         <span class="form-element col-md-3">           
-            @Html.TextBoxFor(m => m.UserInfo.Name, new { placeholder = "Enter Name", @required = "required" })
+            @Html.TextBoxFor(m => m.UserInfo.Name, new { placeholder = "Enter Name", @required = "required", @disabled="disabled"})
         </span>
         <span class="form-element col-md-3">
            @Html.DropDownListFor(m => m.UserInfo.Location, new SelectList(ViewBag.location, "Id", "Location"), "Select Location", new { @required = "required" }) 
@@ -62,16 +67,17 @@
             @Html.TextBoxFor(m => m.UserInfo.SubLocation, new { placeholder = "Enter Sub-location", @required = "required" })
         </span>
         <span class="form-element col-md-3">
-            <button class="btn btn-primary" onclick="GetDate();" type="submit">Save</button>
+            <button class="btn btn-primary" onclick="return GetDate();" type="submit">Save</button>
         </span>
        }
    
-</div>
 
+
+</div>
 
 <div class="clearfix"></div>
 
-<hr>
+<hr id="registerHr">
 
 }
 
@@ -240,6 +246,10 @@
               }
         }
 
+        if ($("input:checkbox:not(:disabled)").length<1) {
+            $("#registerUser,#registerHr").hide();
+        }
+
     });
 
     $("#ajaxgridSearch").on('click', function () {
@@ -265,16 +275,7 @@
 
     $("#UserInfo_Name").val("@Session["UserName"]");
 
-    //$("#all").click(function () {
-    //    var checked = $(this).prop('checked');
-    //    $("input[type='checkbox']").prop('checked',checked);
-    //});
-
-    //$("input[type='checkbox']:not('#all')").click(function () {
-    //    $("#all").prop('checked', false);
-    //});
-
-    function GetDate() {
+    function GetDate() {    
         var day = "";
         $("input[type='checkbox']").each(function (k, v) {
             if ($(this).prop('checked')) {
@@ -282,8 +283,16 @@
             }
         })
         $("#days").val(day);
+        if (day == "") {
+            $("#selectday-msg").css("display", "inline-block");
+            return false;
+        } else
+            return true;
     }
 
+    $("input[type='checkbox']").on('click', function () {
+        $("#selectday-msg").css("display", "none");
+    });
 
 </script>
 

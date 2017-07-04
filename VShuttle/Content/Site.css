@@ -1,6 +1,21 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 @import url(https://fonts.googleapis.com/css?family=Bubbler+One);
 
+
+/* days */
+
+#selectday-msg{
+    color:red;
+    font-size:12px;
+    display:none;
+}
+
+/* Jquery UI */
+
+.ui-datepicker{
+    width:auto !important;
+}
+
 /* CheckBox */
 
 .checkbox-row{
@@ -209,8 +224,7 @@ body {
 
 table tr td, table th {
     vertical-align: middle !important;
-    padding: 3px !important;
-    font-size: 15px;
+    padding: 3px !important;    
     text-align:center;
     font-family: "Roboto", sans-serif;
     color:black;
@@ -382,6 +396,8 @@ table .btn{
         margin-bottom: 5px;
         padding: 7px;
         width: 230px;
+        border:1px solid rebeccapurple;
+
     }
 
     #registerUser select {
@@ -390,13 +406,19 @@ table .btn{
 
     #registerUser button{
         font-size:17px;
-        background-color: rebeccapurple;
+        background-color: white;
         border-color:rebeccapurple;
+        color:rebeccapurple;
     }
+
+     #registerUser button:hover{
+        background-color: rebeccapurple;
+        color:white;
+     }
 
 
     table, th, td {
-        border: 1px solid black;
+        /*border: 1px solid black;*/
     }
 
 .form-element > button {

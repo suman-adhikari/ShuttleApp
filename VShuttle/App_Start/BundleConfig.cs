@@ -18,7 +18,7 @@ namespace VShuttle
                         "~/Scripts/DataTables/*.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-{version}.js"));
+                        "~/Scripts/jquery-ui-1.10.3.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ajaxGrid").Include(
                         "~/Scripts/chart.js",
