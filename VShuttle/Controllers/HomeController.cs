@@ -19,8 +19,7 @@ namespace VShuttle.Controllers
         private readonly ILocationRepository locationRepository;
         private static string UserId ="";
 
-       
-
+      
         public HomeController(IUserInfoRepository userInfoRepository, IRoutesRepository routesRepository, ILocationRepository locationRepository)
         {
             this.userInfoRepository = userInfoRepository;

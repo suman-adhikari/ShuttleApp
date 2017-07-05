@@ -83,11 +83,14 @@ namespace VShuttle.Controllers
         public ActionResult UpdateRoute(FormCollection formdata)
         {
             int id = 0;
+            var status = false;
             foreach (string route in formdata)
             {
                 id++;
-                routeRepository.UpdateRoutes(id, formdata[route]);
-            }          
+                status = routeRepository.UpdateRoutes(id, formdata[route]);
+            }
+            Session["Status"] = status ? "Success" : "Failed";
+            Session["Message"] = status ? "Route Successfully Updated" : "Route Update Failed";
             return RedirectToAction("Index");
         }
      

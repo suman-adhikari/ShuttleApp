@@ -10,7 +10,6 @@ namespace VShuttle.Controllers
     {
 
         // GET: Admin
-        [OutputCache(NoStore = true, Duration = 0)]
         public ActionResult Index()
         {
             if (Session["Id"] != null)
