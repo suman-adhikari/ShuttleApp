@@ -7,21 +7,16 @@ using VShuttle.Repository.Interface;
 
 namespace VShuttle.Repository
 {
-    public class RoutesRepository : Repo, IRoutesRepository
+    public class RoutesRepository : Repo<Routes>, IRoutesRepository
     {
         public bool UpdateRoutes(int id, string routelocation)
         {
-
             var route = db.Route.FirstOrDefault(x => x.Id == id);
             route.RouteLocations = routelocation;
             db.SaveChanges();
             return true;           
         } 
-
-        public List<Routes> FindAll()
-        {
-           return db.Route.ToList();
-        }
+     
 
     }
 }

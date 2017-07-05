@@ -42,6 +42,9 @@
         @Scripts.Render("~/bundles/Shared")
         
         @RenderSection("scripts", required: false)
+
+        @Html.Partial("~/Views/Shared/_confirmationMessage.cshtml")
+
         @RenderBody()
        
     </div>

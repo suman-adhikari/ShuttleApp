@@ -56,6 +56,7 @@
 /// <reference path="jquery-3.1.1.min.js" />
 /// <reference path="jquery-3.1.1.slim.min.js" />
 /// <reference path="jquery-ui-1.10.3.min.js" />
+/// <reference path="jquery-ui-1.12.js" />
 /// <reference path="json2.js" />
 /// <reference path="modernizr-2.6.2.js" />
 /// <reference path="prettify.js" />

@@ -1,23 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq.Expressions;
 using VShuttle.Model;
 using VShuttle.Model.ViewModel;
 
 namespace VShuttle.Repository.Interface
 {
-    public interface IUserInfoRepository
+    public interface IUserInfoRepository: IRepo<UserInfo>
     {
-        bool Add(UserInfo userInfo);
-        bool Delete(int id);
+  
         List<UserInfoLocation> FindAll(int offset, int rowNumber, string name);
         List<UserInfoLocation> FindAllByInumber(int offset, int rowNumber, string iNumber);
-        UserInfo Get(int id);
+      
         int GetCount(string name);
         int GetCountByInumber(string iNumber);
-        DataSet GetData();
+
+        int Count(Expression<Func<UserInfo, bool>> filter = null);
+
+        int CountLocation(int locationId);
+
+        DataTable GetData();
         List<TotalUsers> GetTotalUser();
+
         string GetUsedDate(string userid);
-        UserInfo GetUserInfoById(string userid);
-        bool Update(UserInfo userInfo);
+        UserInfo GetUserInfoById(string userid);       
     }
 }

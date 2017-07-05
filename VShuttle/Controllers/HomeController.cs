@@ -2,12 +2,12 @@
 using VShuttle.Model;
 using VShuttle.Model.ViewModel;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Data;
 using System.Drawing;
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using VShuttle.Repository.Interface;
+using Microsoft.Win32;
 
 namespace VShuttle.Controllers
 {
@@ -17,10 +17,9 @@ namespace VShuttle.Controllers
         private readonly IUserInfoRepository userInfoRepository;
         private readonly IRoutesRepository routesRepository;
         private readonly ILocationRepository locationRepository;
-        private string UserId ="";
+        private static string UserId ="";
 
-       
-
+      
         public HomeController(IUserInfoRepository userInfoRepository, IRoutesRepository routesRepository, ILocationRepository locationRepository)
         {
             this.userInfoRepository = userInfoRepository;
@@ -34,10 +33,9 @@ namespace VShuttle.Controllers
 
            UserId = Session["Id"] != null ? Session["Id"].ToString() : "";
            RouteUserinfo routeUserinfo = new RouteUserinfo();
-
            var userinfo = new UserInfo();
            var usedDate= "empty";
-           var locationList = locationRepository.FindAllLocation();
+           var locationList = locationRepository.FindAll();
            var routes = routesRepository.FindAll();
             if (UserId != "")
             {
@@ -56,10 +54,14 @@ namespace VShuttle.Controllers
         [HttpPost]
         public ActionResult Index(UserInfo userInfo, string days)
         {
-
+            var status = false;
+            var successAction = "Added";
+            var FailedAction = "Addition";       
             if (userInfo.Id > 0)
             {
-                userInfoRepository.Update(userInfo);
+                status = userInfoRepository.Update(userInfo);
+                successAction = "Updated";
+                FailedAction = "Update";
             }
             else
             {
@@ -73,9 +75,13 @@ namespace VShuttle.Controllers
                 {
                     userInfo.Date = date.AddDays(Convert.ToInt32(item));
                     userInfo.INumber = UserId;
-                    userInfoRepository.Add(userInfo);
+                    status = userInfoRepository.Add(userInfo);
                 }
-            }         
+            }
+          
+            Session["Status"] = status?"Success":"Failed";
+            Session["Message"] = status?"UserInfo Successfully "+ successAction + "": "UserInfo "+ FailedAction + " Failed";
+           
             return RedirectToAction("Index"); 
         }
 
@@ -89,11 +95,14 @@ namespace VShuttle.Controllers
             {
                 userdata = userInfoRepository.FindAllByInumber(offset, rowNumber, UserId);
                 count = userInfoRepository.GetCountByInumber(UserId);
+                //var c1 = userInfoRepository.Count(UserId);
+
             }
             else
             {
                 userdata = userInfoRepository.FindAll(offset, rowNumber, Name);
                 count = userInfoRepository.GetCount(Name);
+                //var c = userInfoRepository.Count(Name);
             }
               
             AjaxGridResult result = new AjaxGridResult();
@@ -112,25 +121,25 @@ namespace VShuttle.Controllers
         }
 
         public ActionResult Delete(int id) {
-            userInfoRepository.Delete(id);
+            var status = userInfoRepository.Delete(id);            
+            Session["Status"] = status ? "Success" : "Failed";
+            Session["Message"] = status ? "UserInfo Successfully Deleted" : "UserInfo Deletion Failed";
             return RedirectToAction("Index");
         }
 
         public ActionResult FindAllTotal(AjaxModel ajaxGrid)
         {          
            var totalUsers = userInfoRepository.GetTotalUser();
-
             AjaxGridResult result = new AjaxGridResult();
             result.Data = totalUsers;
             result.pageNumber = ajaxGrid.pageNumber;
             result.RowCount = ajaxGrid.rowNumber;
-
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ExportToExcel()
         {
-            
+            string location = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "{374DE290-123F-4565-9164-39C4925E467B}", string.Empty).ToString();
             Excel.Application excelApp = new Excel.Application();
             Excel.Workbook excelWorkBook;
             Excel.Worksheet excelWorkSheet;
@@ -139,8 +148,8 @@ namespace VShuttle.Controllers
             Excel.Range range;
             excelApp.DisplayAlerts = false;
 
-            string location = DateTime.Now.ToLongTimeString().Replace(":", "").Replace(" ", "") + ".xlsx";
-            excelWorkBook.SaveAs(@"E:\"+location+"");
+            string fileName ="VShuttle "+ DateTime.Now.ToLongTimeString().Replace(":", "").Replace(" ", "") + ".xlsx";
+            excelWorkBook.SaveAs(location + "\\"+ fileName + "");
 
             Excel.Style headerStyle = excelWorkBook.Styles.Add("NewStyle");
             headerStyle.Font.Size = 10;
@@ -152,27 +161,20 @@ namespace VShuttle.Controllers
             
 
             excelWorkSheet = excelWorkBook.Sheets.Add();
-            range = excelWorkSheet.get_Range("A1", "G1");
+            range = excelWorkSheet.get_Range("A1", "F1");
             range.Style = "NewStyle";
-            range.Columns.AutoFit();
+            range.Columns.ColumnWidth = 20;
             range.Resize.RowHeight = 20;
             range.Borders.Color = Color.Black;
            
-
             excelWorkSheet.Columns.EntireColumn.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             excelWorkSheet.Columns.EntireColumn.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter;
 
-            for (int i = 3; i <= 7; i++)
-            {
-                excelWorkSheet.Columns[i].ColumnWidth = 15;             
-            }
-           
-            var ds = userInfoRepository.GetData();
+
+            var table = userInfoRepository.GetData();
             string previousValue = "";
 
-            foreach (DataTable table in ds.Tables)
-            {              
-
+                      
                 for (int i = 1; i < table.Columns.Count + 1; i++)
                 {
                       excelWorkSheet.Cells[1, i] = table.Columns[i - 1].ColumnName;
@@ -202,8 +204,7 @@ namespace VShuttle.Controllers
                             else
                             {                                                            
                                 excelWorkSheet.Cells.Replace("replace", count);
-                                excelWorkSheet.Cells.Replace("", 1);
-                                //excelWorkSheet.Cells[NoResetCount, 7] =  count;                                                                                                                             
+                                excelWorkSheet.Cells.Replace("", 1);                                                                                                                           
                                 count = 1;
                             }
                             
@@ -213,9 +214,9 @@ namespace VShuttle.Controllers
                         {
                             excelWorkSheet.Cells.Replace("", count);
                            
-                            Excel.Range finalTotal = excelWorkSheet.Range[excelWorkSheet.Cells[j + 3, 1], excelWorkSheet.Cells[j + 3, 7]];
+                            Excel.Range finalTotal = excelWorkSheet.Range[excelWorkSheet.Cells[j + 3, 1], excelWorkSheet.Cells[j + 3, 6]];
                             Excel.Range finalTotalLeft = excelWorkSheet.Range[excelWorkSheet.Cells[j + 3, 1], excelWorkSheet.Cells[j + 3, 4]];
-                            Excel.Range finalTotalRight = excelWorkSheet.Range[excelWorkSheet.Cells[j + 3, 5], excelWorkSheet.Cells[j + 3, 7]];
+                            Excel.Range finalTotalRight = excelWorkSheet.Range[excelWorkSheet.Cells[j + 3, 5], excelWorkSheet.Cells[j + 3, 6]];
                             finalTotalLeft.Merge(Type.Missing);
                             finalTotalRight.Merge(Type.Missing);
                             finalTotalLeft.Value = "Total";
@@ -227,17 +228,20 @@ namespace VShuttle.Controllers
                             finalTotal.EntireColumn.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
                             finalTotal.EntireColumn.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter;
                         }
-                        excelWorkSheet.Cells[j + 2, k + 1] = newValue;
-                       
+                        excelWorkSheet.Cells[j + 2, k + 1] = newValue;                   
                     }                   
                 }
-            }
+            
 
             excelWorkBook.Save();
             excelWorkBook.Close(true,misValue,misValue);
             excelApp.Quit();
             Marshal.ReleaseComObject(excelApp);
-
+            if (table.Rows.Count > 0)
+            {
+                Session["Status"] = "Success";
+                Session["Message"] = "UserInfo Successfully Exported to Excel";
+            }
             return RedirectToAction("Index","Home");
         }
     }

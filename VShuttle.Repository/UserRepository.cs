@@ -6,7 +6,7 @@ using VShuttle.Model;
 
 namespace VShuttle.Repository
 {
-    public class UserRepository : Repo
+    public class UserRepository : Repo<Users>
     {
 
         public Users CheckUser(Users users)
@@ -15,13 +15,7 @@ namespace VShuttle.Repository
             return user;
         }
 
-        public bool Add(Users users)
-        {
-            users.UserRole = 2;
-            db.User.Add(users);
-            var result = db.SaveChanges();
-            return result==1;
-        }
+     
 
         public bool CheckINumber(string iNumber)
         {

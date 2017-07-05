@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interface\ILocationRepository.cs" />
+    <Compile Include="Interface\IRepo.cs" />
     <Compile Include="Interface\IUserInfoRepository.cs" />
     <Compile Include="Interface\IRoutesRepository.cs" />
     <Compile Include="LocationRepository.cs" />

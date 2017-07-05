@@ -3,9 +3,8 @@ using VShuttle.Model;
 
 namespace VShuttle.Repository.Interface
 {
-    public interface IRoutesRepository
+    public interface IRoutesRepository : IRepo<Routes>
     {
-        List<Routes> FindAll();
         bool UpdateRoutes(int id, string routelocation);
     }
 }

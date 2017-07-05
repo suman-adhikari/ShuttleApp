@@ -8,10 +8,12 @@ namespace VShuttle.Controllers
 {
     public class LoginController : Controller
     {
-      
+
         // GET: Admin
         public ActionResult Index()
         {
+            if (Session["Id"] != null)
+                return RedirectToAction("Index", "Home");
             return View();
         }
      
@@ -37,26 +39,6 @@ namespace VShuttle.Controllers
             }
             ViewData["error"] = "Invalid username or password !!!";
             return View();
-
-            //string domain = ConfigurationManager.AppSettings["Domain"];
-            //string path = ConfigurationManager.AppSettings["DomainPath"];
-            //string username = "";
-            //string password = "";
-            //string domainAndUsername = domain + @"\" + username;
-            //DirectoryEntry entry = new DirectoryEntry(path, domainAndUsername,password);
-            //var loginData = userRepository.CheckUser(users);
-            //if (loginData != null)
-            //{
-            //    Session["Id"] = loginData.Id;
-            //    Session["UserId"] = loginData.INumber;
-            //    Session["UserName"] = loginData.UserName;
-            //    Session["UserRole"] = loginData.UserRole;
-            //    if(loginData.UserRole==1)
-            //      return RedirectToAction("Index", "Admin");
-            //    return RedirectToAction("Index", "Home");
-            //}
-            //
-
         }
 
     }
