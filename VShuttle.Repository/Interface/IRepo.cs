@@ -15,5 +15,7 @@ namespace VShuttle.Repository.Interface
         List<T> FindAll();
 
         bool Delete(int id);
+
+        // just for test 
     }
 }
