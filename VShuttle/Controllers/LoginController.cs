@@ -2,6 +2,8 @@
 using System.DirectoryServices.AccountManagement;
 using System.Web.Mvc;
 using VShuttle.Model;
+using System.Configuration;
+
 
 
 namespace VShuttle.Controllers
@@ -24,12 +26,13 @@ namespace VShuttle.Controllers
             PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
             bool isValid = ctx.ValidateCredentials(users.INumber, users.Password);
             UserPrincipal user = UserPrincipal.FindByIdentity(ctx, users.INumber);
+            var admin = ConfigurationManager.AppSettings["AdminINumber"];
             if (isValid)
             {               
                 string INumber = users.INumber;
                 Session["Id"] = INumber;
                 Session["UserName"] = user.Name;
-                if(INumber == "i10244") 
+                if(INumber == admin) 
                     Session["UserRole"] = 1;
                 else
                     Session["UserRole"] = 2;

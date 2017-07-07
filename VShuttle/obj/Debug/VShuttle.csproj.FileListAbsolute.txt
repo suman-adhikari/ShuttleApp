@@ -16,8 +16,11 @@ C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\VShu
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\Antlr3.Runtime.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\Bootstrapper.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\Bootstrapper.UnityExtension.dll
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\ClosedXML.dll
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\DocumentFormat.OpenXml.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\EntityFramework.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\EntityFramework.SqlServer.dll
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\ExcelLibrary.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\Microsoft.AspNet.Identity.Core.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\Microsoft.AspNet.Identity.Owin.dll
@@ -52,6 +55,8 @@ C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\WebA
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\WebGrease.dll
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\VShuttle.Model.pdb
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\VShuttle.Repository.pdb
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\ClosedXML.pdb
+C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\ClosedXML.xml
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\EntityFramework.xml
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\EntityFramework.SqlServer.xml
 C:\Users\i10244\documents\visual studio 2015\Projects\VShuttle\VShuttle\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml

@@ -1,13 +1,10 @@
 ﻿using System.Web.Mvc;
 using VShuttle.Model;
 using VShuttle.Model.ViewModel;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Drawing;
 using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using VShuttle.Repository.Interface;
-using Microsoft.Win32;
+using ClosedXML.Excel;
 
 namespace VShuttle.Controllers
 {
@@ -139,112 +136,93 @@ namespace VShuttle.Controllers
 
         public ActionResult ExportToExcel()
         {
-            string location = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "{374DE290-123F-4565-9164-39C4925E467B}", string.Empty).ToString();
-            Excel.Application excelApp = new Excel.Application();
-            Excel.Workbook excelWorkBook;
-            Excel.Worksheet excelWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-            excelWorkBook = excelApp.Workbooks.Add(misValue);
-            Excel.Range range;
-            excelApp.DisplayAlerts = false;
-           
+       
             string fileName = "VShuttle " + DateTime.Now.ToLongTimeString().Replace(":", "").Replace(" ", "") + ".xlsx";
-            string path =  Server.MapPath("~")+"exports\\"+fileName;
-            excelWorkBook.SaveAs(path);
-
-            Excel.Style headerStyle = excelWorkBook.Styles.Add("NewStyle");
-            headerStyle.Font.Size = 10;
-            excelWorkBook.InactiveListBorderVisible = true;
-            headerStyle.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            headerStyle.Font.Color = ColorTranslator.ToOle(Color.White);
-            headerStyle.Interior.Color = ColorTranslator.ToOle(Color.Gray);
-            headerStyle.Interior.Pattern = Excel.XlPattern.xlPatternSolid;
-
-
-            excelWorkSheet = excelWorkBook.Sheets.Add();
-            range = excelWorkSheet.get_Range("A1", "F1");
-            range.Style = "NewStyle";
-            range.Columns.ColumnWidth = 20;
-            range.Resize.RowHeight = 20;
-            range.Borders.Color = Color.Black;
-
-            excelWorkSheet.Columns.EntireColumn.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            excelWorkSheet.Columns.EntireColumn.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter;
-
-
+            string path =  Server.MapPath("~")+"exports\\"+fileName;                 
             var table = userInfoRepository.GetData();
-            string previousValue = "";
-
+            var WorkBook = new XLWorkbook();
+            var WorkSheet = WorkBook.Worksheets.Add("Sheet 1");
+            int TotalColumns = table.Columns.Count;
 
             for (int i = 1; i < table.Columns.Count + 1; i++)
             {
-                excelWorkSheet.Cells[1, i] = table.Columns[i - 1].ColumnName;
+                WorkSheet.Cell(1, i).Value = table.Columns[i - 1].ColumnName;
             }
 
-            int count = 1;
+            WorkSheet.Style
+                .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center)
+                .Alignment.SetVertical(XLAlignmentVerticalValues.Center);
 
+
+            int count = 1;
+            string previousValue = "";
+            IXLRange range_total = null;
             for (int j = 0; j < table.Rows.Count; j++)
             {
                 for (int k = 0; k < table.Columns.Count; k++)
-                {
-                    string newValue = table.Rows[j].ItemArray[k].ToString();
+                {                 
+                    var newValue = table.Rows[j].ItemArray[k].ToString();
                     if (k + 1 == 3)
-
                     {
-                        if (newValue == previousValue) {
+                        if (newValue == previousValue)
+                        {
                             count++;
-                            Excel.Range r = excelWorkSheet.Range[excelWorkSheet.Cells[j + 2 - 1, k + 1], excelWorkSheet.Cells[j + 2, k + 1]];
-                            Excel.Range total = excelWorkSheet.Range[excelWorkSheet.Cells[j + 2 - 1, k + 2], excelWorkSheet.Cells[j + 2, k + 2]];
-                            r.Merge(Type.Missing);
-                            total.Merge(Type.Missing);
-                            total.Value = "replace";
-                            if (j == table.Rows.Count - 1)
-                                excelWorkSheet.Cells.Replace("replace", count);
+                            var range = WorkSheet.Range("C" + (j-(count-2)+1) + ":C" + (j+2));
+                            range_total = WorkSheet.Range("D" + (j-(count-2)+1) + ":D" + (j+2));
+                            range.Merge();
+                            range_total.Merge();                            
 
                         }
                         else
                         {
-                            excelWorkSheet.Cells.Replace("replace", count);
-                            excelWorkSheet.Cells.Replace("", 1);
+                            if (count > 1)
+                            {
+                                 range_total.Value = count;                               
+                            }
                             count = 1;
+                        }
+                        if(j== table.Rows.Count - 1)
+                        {
+                            range_total.Value = count;
+                            var right = WorkSheet.Range("A" + (table.Rows.Count + 2) + ":C" + (table.Rows.Count + 2));
+                            var left = WorkSheet.Range("D" + (table.Rows.Count + 2) + ":F" + (table.Rows.Count + 2));
+                            right.Merge().Value = "Total";
+                            left.Merge().Value = table.Rows.Count;                   
                         }
 
                         previousValue = table.Rows[j].ItemArray[k].ToString();
-                    }
-                    if (j == table.Rows.Count - 1)
-                    {
-                        excelWorkSheet.Cells.Replace("", count);
 
-                        Excel.Range finalTotal = excelWorkSheet.Range[excelWorkSheet.Cells[j + 3, 1], excelWorkSheet.Cells[j + 3, 6]];
-                        Excel.Range finalTotalLeft = excelWorkSheet.Range[excelWorkSheet.Cells[j + 3, 1], excelWorkSheet.Cells[j + 3, 4]];
-                        Excel.Range finalTotalRight = excelWorkSheet.Range[excelWorkSheet.Cells[j + 3, 5], excelWorkSheet.Cells[j + 3, 6]];
-                        finalTotalLeft.Merge(Type.Missing);
-                        finalTotalRight.Merge(Type.Missing);
-                        finalTotalLeft.Value = "Total";
-                        finalTotalRight.Value = j + 1;
-
-                        finalTotal.Style = "NewStyle";
-                        finalTotal.Resize.RowHeight = 20;
-                        finalTotal.Borders.Color = Color.Black;
-                        finalTotal.EntireColumn.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                        finalTotal.EntireColumn.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter;
                     }
-                    excelWorkSheet.Cells[j + 2, k + 1] = newValue;
+                    var value = table.Rows[j].ItemArray[k].ToString();
+                    WorkSheet.Cell(j + 2, k + 1).Value = value==""?"1":value;
                 }
             }
 
+            WorkSheet.Columns().Width = 20;
+            WorkSheet.Rows().Height = 20;
 
-            excelWorkBook.Save();
-            excelWorkBook.Close(true, misValue, misValue);
-            excelApp.Quit();
-            Marshal.ReleaseComObject(excelApp);
+            var rngData = WorkSheet.Range(WorkSheet.FirstCellUsed(), WorkSheet.LastCellUsed());
+            var AllCell = rngData.Cells(c => c.Value != "");
+            AllCell.ForEach(c => c.Style.Fill.BackgroundColor = XLColor.WhiteSmoke);
+            AllCell.ForEach(c => c.Style.Border.OutsideBorder = XLBorderStyleValues.Thin);
+            AllCell.ForEach(c => c.Style.Border.OutsideBorderColor = XLColor.Gray);
+
+            var totalRange = WorkSheet.Range("A" + (table.Rows.Count + 2) + ":F" + (table.Rows.Count + 2));
+            totalRange.Style.Fill.BackgroundColor = XLColor.BlueGray;
+            totalRange.Style.Font.FontColor = XLColor.White;
+
+            var header = WorkSheet.Cells("A1:F1");
+            header.Style.Fill.BackgroundColor = XLColor.BlueGray;
+            header.Style.Font.FontColor = XLColor.White;
+
+            WorkBook.SaveAs(path);
 
             Response.Buffer = true;
             Response.ContentType = "application/vnd.ms-excel";
             Response.AddHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
             Response.TransmitFile(path);
             Response.End();
-            //System.IO.File.Delete(path);
+            System.IO.File.Delete(path);
 
             if (table.Rows.Count > 0)
             {
