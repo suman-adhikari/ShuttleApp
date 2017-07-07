@@ -136,17 +136,17 @@ namespace VShuttle.Controllers
 
         public ActionResult ExportToExcel()
         {
-       
+
             string fileName = "VShuttle " + DateTime.Now.ToLongTimeString().Replace(":", "").Replace(" ", "") + ".xlsx";
-            string path =  Server.MapPath("~")+"exports\\"+fileName;                 
+            string path = Server.MapPath("~") + "exports\\" + fileName;
             var table = userInfoRepository.GetData();
             var WorkBook = new XLWorkbook();
             var WorkSheet = WorkBook.Worksheets.Add("Sheet 1");
             int TotalColumns = table.Columns.Count;
 
-            for (int i = 1; i < table.Columns.Count + 1; i++)
+            for (int i = 2; i < table.Columns.Count + 1; i++)
             {
-                WorkSheet.Cell(1, i).Value = table.Columns[i - 1].ColumnName;
+                WorkSheet.Cell(1, i - 1).Value = table.Columns[i - 1].ColumnName;
             }
 
             WorkSheet.Style
@@ -159,42 +159,42 @@ namespace VShuttle.Controllers
             IXLRange range_total = null;
             for (int j = 0; j < table.Rows.Count; j++)
             {
-                for (int k = 0; k < table.Columns.Count; k++)
-                {                 
-                    var newValue = table.Rows[j].ItemArray[k].ToString();
-                    if (k + 1 == 3)
+                for (int k = 0; k < table.Columns.Count - 1; k++)
+                {
+                    var newValue = table.Rows[j].ItemArray[k + 1].ToString();
+                    if (k + 1 == 2)
                     {
                         if (newValue == previousValue)
                         {
                             count++;
-                            var range = WorkSheet.Range("C" + (j-(count-2)+1) + ":C" + (j+2));
-                            range_total = WorkSheet.Range("D" + (j-(count-2)+1) + ":D" + (j+2));
+                            var range = WorkSheet.Range("B" + (j - (count - 2) + 1) + ":B" + (j + 2));
+                            range_total = WorkSheet.Range("C" + (j - (count - 2) + 1) + ":C" + (j + 2));
                             range.Merge();
-                            range_total.Merge();                            
+                            range_total.Merge();
 
                         }
                         else
                         {
                             if (count > 1)
                             {
-                                 range_total.Value = count;                               
+                                range_total.Value = count;
                             }
                             count = 1;
                         }
-                        if(j== table.Rows.Count - 1)
+                        if (j == table.Rows.Count - 1)
                         {
                             range_total.Value = count;
                             var right = WorkSheet.Range("A" + (table.Rows.Count + 2) + ":C" + (table.Rows.Count + 2));
-                            var left = WorkSheet.Range("D" + (table.Rows.Count + 2) + ":F" + (table.Rows.Count + 2));
+                            var left = WorkSheet.Range("D" + (table.Rows.Count + 2) + ":E" + (table.Rows.Count + 2));
                             right.Merge().Value = "Total";
-                            left.Merge().Value = table.Rows.Count;                   
+                            left.Merge().Value = table.Rows.Count;
                         }
 
-                        previousValue = table.Rows[j].ItemArray[k].ToString();
+                        previousValue = table.Rows[j].ItemArray[k + 1].ToString();
 
                     }
-                    var value = table.Rows[j].ItemArray[k].ToString();
-                    WorkSheet.Cell(j + 2, k + 1).Value = value==""?"1":value;
+                    var value = table.Rows[j].ItemArray[k + 1].ToString();
+                    WorkSheet.Cell(j + 2, k + 1).Value = value == "" ? "1" : value;
                 }
             }
 
@@ -207,11 +207,11 @@ namespace VShuttle.Controllers
             AllCell.ForEach(c => c.Style.Border.OutsideBorder = XLBorderStyleValues.Thin);
             AllCell.ForEach(c => c.Style.Border.OutsideBorderColor = XLColor.Gray);
 
-            var totalRange = WorkSheet.Range("A" + (table.Rows.Count + 2) + ":F" + (table.Rows.Count + 2));
+            var totalRange = WorkSheet.Range("A" + (table.Rows.Count + 2) + ":E" + (table.Rows.Count + 2));
             totalRange.Style.Fill.BackgroundColor = XLColor.BlueGray;
             totalRange.Style.Font.FontColor = XLColor.White;
 
-            var header = WorkSheet.Cells("A1:F1");
+            var header = WorkSheet.Cells("A1:E1");
             header.Style.Fill.BackgroundColor = XLColor.BlueGray;
             header.Style.Font.FontColor = XLColor.White;
 
@@ -229,7 +229,7 @@ namespace VShuttle.Controllers
                 Session["Status"] = "Success";
                 Session["Message"] = "UserInfo Successfully Exported to Excel";
             }
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
