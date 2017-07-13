@@ -143,6 +143,7 @@ namespace VShuttle.Controllers
             var WorkBook = new XLWorkbook();
             var WorkSheet = WorkBook.Worksheets.Add("Sheet 1");
             int TotalColumns = table.Columns.Count;
+            int TotalRows = table.Rows.Count;
 
             for (int i = 2; i < table.Columns.Count + 1; i++)
             {
@@ -153,22 +154,22 @@ namespace VShuttle.Controllers
                 .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center)
                 .Alignment.SetVertical(XLAlignmentVerticalValues.Center);
 
-
+            string[] ExcelRangeCharacter = new string[] {"A","B","C","D","E","F","G","H"};
             int count = 1;
             string previousValue = "";
             IXLRange range_total = null;
-            for (int j = 0; j < table.Rows.Count; j++)
+            for (int j = 0; j < TotalRows; j++)
             {
-                for (int k = 0; k < table.Columns.Count - 1; k++)
+                for (int k = 0; k < TotalColumns - 1; k++)
                 {
                     var newValue = table.Rows[j].ItemArray[k + 1].ToString();
-                    if (k + 1 == 2)
+                    if (table.Columns[k + 1].ColumnName=="Location")
                     {
                         if (newValue == previousValue)
                         {
                             count++;
-                            var range = WorkSheet.Range("B" + (j - (count - 2) + 1) + ":B" + (j + 2));
-                            range_total = WorkSheet.Range("C" + (j - (count - 2) + 1) + ":C" + (j + 2));
+                            var range = WorkSheet.Range(ExcelRangeCharacter[k] + (j - (count - 2) + 1) + ":" + ExcelRangeCharacter[k]+(j + 2));
+                            range_total = WorkSheet.Range(ExcelRangeCharacter[k+1] + (j - (count - 2) + 1) + ":"+ExcelRangeCharacter[k+1] + (j + 2));
                             range.Merge();
                             range_total.Merge();
 
@@ -181,13 +182,13 @@ namespace VShuttle.Controllers
                             }
                             count = 1;
                         }
-                        if (j == table.Rows.Count - 1)
+                        if (j == TotalRows - 1)
                         {
                             range_total.Value = count;
-                            var right = WorkSheet.Range("A" + (table.Rows.Count + 2) + ":C" + (table.Rows.Count + 2));
-                            var left = WorkSheet.Range("D" + (table.Rows.Count + 2) + ":E" + (table.Rows.Count + 2));
+                            var right = WorkSheet.Range(ExcelRangeCharacter[0] + (TotalRows + 2) + ":" + ExcelRangeCharacter[(TotalColumns/2)-1] + (TotalRows + 2));
+                            var left = WorkSheet.Range(ExcelRangeCharacter[(TotalColumns/2)] + (TotalRows + 2) + ":"+ ExcelRangeCharacter[TotalColumns-2] + (TotalRows + 2));
                             right.Merge().Value = "Total";
-                            left.Merge().Value = table.Rows.Count;
+                            left.Merge().Value = TotalRows;
                         }
 
                         previousValue = table.Rows[j].ItemArray[k + 1].ToString();
@@ -207,7 +208,7 @@ namespace VShuttle.Controllers
             AllCell.ForEach(c => c.Style.Border.OutsideBorder = XLBorderStyleValues.Thin);
             AllCell.ForEach(c => c.Style.Border.OutsideBorderColor = XLColor.Gray);
 
-            var totalRange = WorkSheet.Range("A" + (table.Rows.Count + 2) + ":E" + (table.Rows.Count + 2));
+            var totalRange = WorkSheet.Range(ExcelRangeCharacter[0] + (TotalRows + 2) + ":"+ ExcelRangeCharacter[TotalColumns-2] + (TotalRows + 2));
             totalRange.Style.Fill.BackgroundColor = XLColor.BlueGray;
             totalRange.Style.Font.FontColor = XLColor.White;
 
