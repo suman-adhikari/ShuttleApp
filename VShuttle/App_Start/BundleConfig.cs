@@ -20,7 +20,7 @@ namespace VShuttle
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-1.10.3.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/ajaxGrid").Include(
+            bundles.Add(new ScriptBundle("~/bundles/ajaxGrid").Include(                      
                         "~/Scripts/chart.js",
                         "~/Scripts/query.ui.timepicker.js",
                         "~/Scripts/dateTimepicker.js",

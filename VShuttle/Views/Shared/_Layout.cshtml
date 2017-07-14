@@ -35,16 +35,19 @@
     </nav>
     
     <div class="container">
+       
         @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/bootstrap")    
         @Scripts.Render("~/bundles/jqueryui")
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq0QcBfmGJaAq5Lu1Ik57BxqRKyY93_jw&libraries=places"  type="text/javascript"></script>
         @Scripts.Render("~/bundles/ajaxGrid")
         @Scripts.Render("~/bundles/Shared")
         
         @RenderSection("scripts", required: false)
 
         @Html.Partial("~/Views/Shared/_confirmationMessage.cshtml")
-
+        <script src="~/Scripts/pickMap.js" type="text/javascript"></script>
+        <script src="~/Scripts/map.js" type="text/javascript"></script>
         @RenderBody()
        
     </div>

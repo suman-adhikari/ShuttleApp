@@ -2,6 +2,21 @@
 @import url(https://fonts.googleapis.com/css?family=Bubbler+One);
 
 
+/* MapModel */
+
+#map-canvas{ 
+  height: 500px;
+}
+
+.modal-dialog {
+  min-height:500px;
+  width:100%;
+}
+
+.modal-body{
+   height:100%;
+}
+
 /* days */
 
 #selectday-msg{
@@ -392,7 +407,7 @@ table .btn{
         border-radius: 0px;
     }
 
-    #registerUser input[type="text"] , #registerUser button, #registerUser select {
+    #registerUser input[type="text"] , #registerUser select {
         margin-bottom: 5px;
         padding: 7px;
         width: 230px;
@@ -400,16 +415,23 @@ table .btn{
 
     }
 
+        
+
+
     #registerUser select {
         padding:10px;
     }
 
     #registerUser button{
-        font-size:17px;
+        font-size:16px;
         background-color: white;
-        border-color:rebeccapurple;
+        border-color:rebeccapurple;     
         color:rebeccapurple;
     }
+
+    .btn-save {
+            width:240px;
+        }
 
      #registerUser button:hover{
         background-color: rebeccapurple;

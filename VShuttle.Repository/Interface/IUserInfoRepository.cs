@@ -22,6 +22,7 @@ namespace VShuttle.Repository.Interface
 
         DataTable GetData();
         List<TotalUsers> GetTotalUser();
+        List<LatLng> GetLocations();   
 
         string GetUsedDate(string userid);
         UserInfo GetUserInfoById(string userid);       

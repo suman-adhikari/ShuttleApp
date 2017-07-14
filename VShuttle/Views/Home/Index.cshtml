@@ -15,6 +15,8 @@
        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
        {
 
+        <input type="hidden" id="latnag" />
+
         <span class="form-element row">
             <div class="col-md-12 checkbox-row" required>
 
@@ -54,6 +56,8 @@
 
             @Html.Hidden("days", new { @id = "days", @name = "days" })
             @Html.HiddenFor(m => m.UserInfo.Name)
+            @Html.HiddenFor(m => m.UserInfo.Latitude)
+            @Html.HiddenFor(m=>m.UserInfo.Longitude)
         </span>  
 
      
@@ -63,11 +67,16 @@
         <span class="form-element col-md-3">
            @Html.DropDownListFor(m => m.UserInfo.Location, new SelectList(ViewBag.location, "Id", "Location"), "Select Location", new { @required = "required" }) 
         </span>
-        <span class="form-element col-md-3">          
+        <span class="form-element col-md-2">          
             @Html.TextBoxFor(m => m.UserInfo.SubLocation, new { placeholder = "Enter Sub-location", @required = "required" })
         </span>
+
+        <span class="form-element col-md-1">
+            <button class="btn btn-primary" id="loadMap" type="button" data-toggle="modal" data-target="#mapModel" ><i class="glyphicon glyphicon-map-marker"></i></button>
+        </span>
+
         <span class="form-element col-md-3">
-            <button class="btn btn-primary" onclick="return GetDate();" type="submit">Save</button>
+            <button class="btn btn-primary btn-save" onclick="return GetDate();" type="submit">Save</button>
         </span>
        }
    
@@ -147,18 +156,50 @@
         var routes = @route.RouteLocations.Replace(",", " -> ");
         <div class="col-md-3 route">
             <div>
-                <span class="route-header">Route @routearray[i]</span>
-                <span class="route-body">@routes</span>
+                <span class="route-header">Route @routearray[i]
+                    <a class="" id="routeMap" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i></a>          
+                 </span>
+                <span class="route-body"></span>
             </div>
         </div>
     }
 
 </div>
 
+<div class="modal fade" id="mapModel" role="dialog">
+    
+    <div class="modal-dialog">
+        
+        <div class="modal-content">
+
+            <div class="modal-body">              
+                    <div id="map-canvas"></div>  
+                    <div id="map-canvas-showlocation"></div>             
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<input type="hidden" id="route_location"/>
 
 <script>
 
+
     $(function () {
+
+       
+       
+        $("#loadMap").on("click", function () {
+            initialize();            
+        })
+        
+        $("#routeMap").on("click", function () {
+            LoadMap();
+        })
 
         $('#UserInfoList').ajaxGrid({
             pageSize: 7,
@@ -293,6 +334,24 @@
     $("input[type='checkbox']").on('click', function () {
         $("#selectday-msg").css("display", "none");
     });
+
+
+    function setRoute() {
+        var alllocation = $("#route_location").val();
+        $(".route-body").text(alllocation);
+    }
+
+    function LoadMap() {
+        $.ajax({
+            url: '@Url.Action("GetLocation", "Home")',
+            success: function (result) {
+                initializeRouteMap(result);
+            }
+        });
+    }
+
+    LoadMap();
+   
 
 </script>
 

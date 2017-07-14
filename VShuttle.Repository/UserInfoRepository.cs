@@ -157,5 +157,19 @@ namespace VShuttle.Repository
             return dt;
         }
 
+        public List<LatLng> GetLocations()
+        {
+
+            var query = (from userinfo in db.UserInfos
+                         where DbFunctions.TruncateTime(userinfo.Date) == DbFunctions.TruncateTime(DateTime.Now)
+                         select new LatLng
+                         {
+                             Latitude = userinfo.Latitude,
+                             Longitude = userinfo.Longitude
+                         });
+
+            return query.ToList();
+
+        }
     }
 }
