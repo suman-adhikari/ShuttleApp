@@ -157,7 +157,7 @@
         <div class="col-md-3 route">
             <div>
                 <span class="route-header">Route @routearray[i]
-                    <a class="" id="routeMap" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i></a>          
+                    <a class="routeMap" id="routeMap1" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i></a>          
                  </span>
                 <span class="route-body"></span>
             </div>
@@ -165,20 +165,23 @@
     }
 
 </div>
-
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
 <div class="modal fade" id="mapModel" role="dialog">
     
     <div class="modal-dialog">
         
         <div class="modal-content">
 
+            <div class="modal-title">               
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">X</button>
+            </div>
             <div class="modal-body">              
                     <div id="map-canvas"></div>  
                     <div id="map-canvas-showlocation"></div>             
             </div>
-            <div class="modal-footer">
+            @*<div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+            </div>*@
         </div>
 
     </div>
@@ -191,13 +194,14 @@
 
     $(function () {
 
+        LoadMap();
        
        
         $("#loadMap").on("click", function () {
             initialize();            
         })
         
-        $("#routeMap").on("click", function () {
+        $(".routeMap").on("click", function () {
             LoadMap();
         })
 
@@ -336,22 +340,22 @@
     });
 
 
-    function setRoute() {
-        var alllocation = $("#route_location").val();
-        $(".route-body").text(alllocation);
-    }
+    
 
     function LoadMap() {
         $.ajax({
             url: '@Url.Action("GetLocation", "Home")',
             success: function (result) {
-                initializeRouteMap(result);
+
+                setTimeout(function () {
+                    initializeRouteMap(result);
+                }, 100)
+                
+
+                
             }
         });
     }
-
-    LoadMap();
-   
 
 </script>
 

@@ -18,7 +18,7 @@ function initializeRouteMap(latlngList) {
         zoom: 16,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    mapPoints.push(new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng))
+    mapPoints.push(originOfc);
     var path = new google.maps.MVCArray();
     var directionsService = new google.maps.DirectionsService();
     var poly = new google.maps.Polyline({ map: map, strokeColor: 'red' });
@@ -81,6 +81,20 @@ function initializeRouteMap(latlngList) {
         var allLocation = unique.join(" -> ");
         $("#route_location").val(allLocation);
         setRoute();
+        SetMapCenter();
+    }
+
+    function SetMapCenter() {
+        map.setCenter(new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng));
+        map.setZoom(13);
+       // bounds = new google.maps.LatLngBounds();
+       // map.fitBounds(bounds);       
+       // map.panToBounds(bounds);
+    }
+
+    function setRoute() {
+        var alllocation = $("#route_location").val();
+        $(".route-body").text(alllocation);
     }
 
     // selecting destination
@@ -213,10 +227,10 @@ function initializeRouteMap(latlngList) {
         });
     }
 
+   
     google.maps.event.addListenerOnce(map, 'idle', function () {
         google.maps.event.trigger(map, 'resize');
     });
-
    
 
 }
