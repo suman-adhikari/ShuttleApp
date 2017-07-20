@@ -165,17 +165,20 @@
     }
 
 </div>
-<input id="pac-input" class="controls" type="text" placeholder="Search Box">
 <div class="modal fade" id="mapModel" role="dialog">
     
     <div class="modal-dialog">
+       
         
+        <input id="pac-input" class="controls" type="text" placeholder="Search location">  
         <div class="modal-content">
 
             <div class="modal-title">               
                 <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">X</button>
             </div>
-            <div class="modal-body">              
+            
+            <div class="modal-body">    
+                            
                     <div id="map-canvas"></div>  
                     <div id="map-canvas-showlocation"></div>             
             </div>
@@ -202,7 +205,12 @@
         })
         
         $(".routeMap").on("click", function () {
-            LoadMap();
+             LoadMap();
+
+           // google.maps.event.addListenerOnce(map, 'idle', function () {
+              //  google.maps.event.trigger(map, 'resize');
+           // });
+
         })
 
         $('#UserInfoList').ajaxGrid({
@@ -347,9 +355,9 @@
             url: '@Url.Action("GetLocation", "Home")',
             success: function (result) {
 
-                setTimeout(function () {
+                //setTimeout(function () {
                     initializeRouteMap(result);
-                }, 100)
+               // }, 100)
                 
 
                 

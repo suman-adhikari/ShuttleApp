@@ -17,7 +17,7 @@
         display: none;
       }
 
-      #map #infowindow-content {
+      #map-canvas #infowindow-content {
         display: inline;
       }
 
@@ -35,6 +35,8 @@
       #pac-container {
         padding-bottom: 12px;
         margin-right: 12px;
+        z-index:1000000 !important;
+        display:block !important;
       }
 
       .pac-controls {
@@ -57,6 +59,10 @@
         padding: 0 11px 0 13px;
         text-overflow: ellipsis;
         width: 400px;
+        /*position: absolute;
+        top: 47px;
+        z-index: 2;
+        left: 110px;*/
       }
 
       #pac-input:focus {
