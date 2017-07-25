@@ -8,14 +8,17 @@ var totalDistance = 0;
 var map;
 var directionsService 
 var directionsRenderer
+var service;
+
 var originOfc;
 var officeLatLng;
 var optimizedRouteLatLong;
+var _location = new Array();
+var _sublocation = new Array();
 
-var location = new Array();
-var sublocation = new Array();
-
+var limit = 0;
 function initializeRouteMap(latlngList) {
+  
     officeLatLng = { lat: 27.711753319439183, lng: 85.32223284244537 };
     var mapDiv = document.getElementById('map-canvas');
     mapPoints = new Array();
@@ -24,11 +27,15 @@ function initializeRouteMap(latlngList) {
     HideSearchInput();
     originOfc = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
     
+   
+
     map = new google.maps.Map(mapDiv, {
         center: originOfc,
         zoom: 16,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
+
+   //service = new google.maps.places.PlacesService(map);
 
     mapPoints.push(originOfc);   
     directionsService = new google.maps.DirectionsService();   
@@ -50,13 +57,13 @@ function initializeRouteMap(latlngList) {
     };   
 
     getDesination();
+    
    
     google.maps.event.addListenerOnce(map, 'idle', function () {
         google.maps.event.trigger(map, 'resize');
     }); 
    
 }
-
 
 
 function HideSearchInput() {
@@ -93,7 +100,6 @@ function AddMarker(lat, lng) {
     });
     allMarker.push(mark);
 }
-
 
 function GetMapPoints(latlngList) {
     latlngList.forEach(function (item) {
@@ -179,8 +185,8 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
 
     //This will take the request and draw the route and return response and status as output
     directionsService.route(_request, function (_response, _status) {
+        debugger;
         if (_status == google.maps.DirectionsStatus.OK) {
-            debugger;
             directionsRenderer.setDirections(_response);
             placeIdList = _response.geocoded_waypoints;
             var i = -1;
@@ -188,12 +194,14 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
             if (_response.request.waypoints != undefined) {
                 _response.request.waypoints.forEach(function (item) {
                     i++;
-                    optimizedRouteLatLong.push(_response.request.waypoints[_response.routes[0].waypoint_order.indexOf(i)].location);
+                    debugger;
+                    optimizedRouteLatLong.push(_response.request.waypoints[_response.routes[0].waypoint_order[i]].location);
+                    //optimizedRouteLatLong.push(item.location);
                 });
             }
             optimizedRouteLatLong.push(_response.request.destination);
-            //getlocnameFromLatLong(optimizedRouteLatLong);
-            getlocname(placeIdList);
+            getlocnameFromLatLong(optimizedRouteLatLong);
+           // getlocname(placeIdList);
           
             //var legs = _response.routes[0].legs;
             //var totalDuration = 0;
@@ -210,81 +218,77 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
     });
 }
 
-function getlocnameFromLatLong(IsLastValue,latlng) {
-    var i = 0;
-
-
-
-        var request = {
-            location: latlng,
-            radius: '500',
-            types: ['bus_station']
-        };
-        var service = new google.maps.places.PlacesService(map);        
-       // service.nearbySearch(request, callbackSearchNearByPlaces);
-        service.nearbySearch(request, function (result, status) {
-            i++;
-            callbackSearchNearByPlaces(IsLastValue, result, status)
-        });
-
-    function callbackSearchNearByPlaces(printLocation,result, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-            
-            var subloc = result[0].name;
-            var loc = result[0].vicinity;
-           
-            location.push(result[0].name);
-            sublocation.push(result[0].vicinity);
-            if (printLocation) {
-                locationstring(location)
-             };
-        }
-
-       
-  
-    }
-}
-
-
 function getlocname(placeIdList) {
-    debugger;
-    var i = 0;
-    var location = new Array();
-    var sublocation = new Array();
-    placeIdList.forEach(function (item) {
-        var service = new google.maps.places.PlacesService(map);
+  
+    var index = 0;
+   // var service = new google.maps.places.PlacesService(map);
+    placeIdList.forEach(function (item) {      
         service.getDetails({
             placeId: item.place_id
         }, function (place, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                i++;
+            debugger;
+            if (status === google.maps.places.PlacesServiceStatus.OK) {             
+                index++;
                 debugger;
+                 getlocnameFromLatLong(index, place.geometry.location);
 
-                getlocnameFromLatLong(i==placeIdList.length-1, place.geometry.location);
-
-                //var city = place.address_components[0].long_name + ": " + place.address_components[1].long_name;
-                //location.push(place.address_components[0].long_name);
-                //sublocation.push(place.address_components[1].long_name);
-                //if (i == placeIdList.length-1) {
-                  //  locationstring(sublocation)
-               // };
+                //_location.push(place.address_components[0].long_name);
+                //_sublocation.push(place.address_components[1].long_name);
+                //if (index == placeIdList.length - 1) {
+                //  locationstring()
+                // };
 
             }
         });
 
     });
+    
+}
+
+function getlocnameFromLatLong(optimizedRouteLatLong) {
+    debugger;
+    //var service = new google.maps.places.PlacesService(map);
+    optimizedRouteLatLong.forEach(function (item) {
+        var request = {
+            location: item,
+            radius: '500',
+            types: ['bus_station']
+        };
+
+        
+        // service.nearbySearch(request, callbackSearchNearByPlaces);
+        service.nearbySearch(request, function (result, status) {          
+            callbackSearchNearByPlaces(result, status)
+        });
+
+        function callbackSearchNearByPlaces(result, status) {
+            debugger;      
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                var subloc = result[0].name;
+                var loc = result[0].vicinity;
+
+                _location.push(result[0].name);
+                _sublocation.push(result[0].vicinity);
+                if (_location.length > 3) {
+                    locationstring(_location)
+                };
+            }
+
+        }
+
+
+    })
+
+   
 
 }
 
 
-
-function locationstring(sublocation) {
-    var unique = sublocation.filter(function (elem, index, self) {
+function locationstring() {
+    var unique = _location.filter(function (elem, index, self) {
         return index == self.indexOf(elem);
-    })
-    debugger;
-    //var allLocation = unique.map(function (x) { return x.place; }).join(" -> ");
-    var allLocation = unique.join(" -> ");
+    })    
+    var allLocation = unique.map(function (item) { return item.replace("Bus Stop", "").replace("Bus Stand",""); }).join(" -> ");
     $("#route_location").val(allLocation);
     setRoute();
     SetMapCenter();

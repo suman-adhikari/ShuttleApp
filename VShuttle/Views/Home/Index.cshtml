@@ -198,19 +198,13 @@
     $(function () {
 
         LoadMap();
-       
-       
+           
         $("#loadMap").on("click", function () {
             initialize();            
         })
         
         $(".routeMap").on("click", function () {
-             LoadMap();
-
-           // google.maps.event.addListenerOnce(map, 'idle', function () {
-              //  google.maps.event.trigger(map, 'resize');
-           // });
-
+            LoadMap();
         })
 
         $('#UserInfoList').ajaxGrid({
@@ -354,12 +348,7 @@
         $.ajax({
             url: '@Url.Action("GetLocation", "Home")',
             success: function (result) {
-
-                //setTimeout(function () {
                     initializeRouteMap(result);
-               // }, 100)
-                
-
                 
             }
         });

@@ -61,6 +61,7 @@
 /// <reference path="map.js" />
 /// <reference path="modernizr-2.6.2.js" />
 /// <reference path="pickmap.js" />
+/// <reference path="pointinmap.js" />
 /// <reference path="prettify.js" />
 /// <reference path="respond.js" />
 /// <reference path="shared.js" />
