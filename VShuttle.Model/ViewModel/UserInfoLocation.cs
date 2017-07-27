@@ -13,6 +13,8 @@ namespace VShuttle.Model.ViewModel
 
         public string Location { get; set; }
 
+        public string Route { get; set; }
+
         public string SubLocation { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]

@@ -1,11 +1,10 @@
 ﻿var map;
-var allMarker = new Array();
 var mapPoints = new Array();
 var latlng = new Array();
 
-function initialize() {
-  
-    var mapDiv = document.getElementById('map-canvas');
+function initialize(div_id) {
+    debugger;
+    var mapDiv = document.getElementById(div_id);   
     var officeLatLng = { lat: 27.711703, lng: 85.321949 };
     var centerlatLng = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
 
@@ -15,20 +14,30 @@ function initialize() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
+
+
     mapPoints.push(centerlatLng)
     AddMarker(officeLatLng.lat, officeLatLng.lng);
    
     map.addListener('click', function (args) {
         debugger;
-        AddMarker(args.latLng.lat(), args.latLng.lng());
+        var lat = args.latLng.lat();
+        var lng = args.latLng.lng();
+        var LatLng = new google.maps.LatLng(lat, lng);
+        //console.log(args.latLng.lat() + ' : ' + args.latLng.lng())
+        AddMarker(lat, lng);
         mapPoints.push(args.latLng);
-        $("#UserInfo_Latitude").val(args.latLng.lat());
-        $("#UserInfo_Longitude").val(args.latLng.lng());
+        getLocnameFromPinnedAddress(LatLng)
+        $("#UserInfo_Latitude").val(lat);
+        $("#UserInfo_Longitude").val(lng);
+        //for update
+        $("#Latitude").val(lat);
+        $("#Longitude").val(lng);      
     });
   
     //search location in google map
-    initAutocomplete();
-    showSuggestion();
+    //initAutocomplete();
+    //showSuggestion();
 
     google.maps.event.addListenerOnce(map, 'idle', function () {
         google.maps.event.trigger(map, 'resize');
@@ -36,15 +45,33 @@ function initialize() {
 
 }
 
-function AddMarker(lat, lng) {
-    var latLng = new google.maps.LatLng(lat, lng)
-    var mark = new google.maps.Marker({
-        position: latLng,
-        map: map,
-        title: 'Home',
-        description: 'Home'
-    });
-    allMarker.push(mark);
+function getLocnameFromPinnedAddress(LatLng) {
+
+    var service = new google.maps.places.PlacesService(map);
+   
+        var request = {
+            location: LatLng,
+            radius: '500',
+            types: ['bus_station']
+        };
+
+
+        // service.nearbySearch(request, callbackSearchNearByPlaces);
+        service.nearbySearch(request, function (result, status) {
+            callbackSearchNearByPlaces(result, status)
+        });
+
+        function callbackSearchNearByPlaces(result, status) {
+            debugger;
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                var subloc = result[0].name;
+                var loc = result[0].vicinity;
+                subloc = ExtractLocation(subloc);
+                $("#UserInfo_SubLocation").val(subloc);
+                $("#SubLocation").val(subloc);
+            }
+
+        }
 }
 
 function initAutocomplete() {

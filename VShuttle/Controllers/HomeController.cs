@@ -41,7 +41,7 @@ namespace VShuttle.Controllers
             }
 
             ViewBag.UsedDate = usedDate;
-            ViewBag.location = locationList;
+            ViewBag.route = routes;
             routeUserinfo.Routes = routes;
             routeUserinfo.UserInfo = userinfo;
 
@@ -112,8 +112,8 @@ namespace VShuttle.Controllers
         public ActionResult Form(int id)
         {
             var userinfo = userInfoRepository.Get(id);
-            var location = locationRepository.FindAll();
-            ViewBag.location = location;
+            var route = routesRepository.FindAll();
+            ViewBag.route = route;
             return View(userinfo);
         }
 
@@ -134,8 +134,9 @@ namespace VShuttle.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetLocation() {
-            var loctaions = userInfoRepository.GetLocations();
+        public JsonResult GetLocation(string id)
+        {
+            var loctaions = userInfoRepository.GetLocations(int.Parse(id));
             return Json(loctaions, JsonRequestBehavior.AllowGet);
         }
 

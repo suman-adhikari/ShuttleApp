@@ -1,6 +1,24 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 @import url(https://fonts.googleapis.com/css?family=Bubbler+One);
 
+/* pick location */
+
+.picklocationcontainer{
+    height:550px;
+    width:100%;
+}
+
+#picklocation {
+   height:100%;
+   width:100%;
+}
+
+#update-location {
+  height:500px;
+  width:100%;
+}
+
+
 /*Map search Box*/
 
  #description {

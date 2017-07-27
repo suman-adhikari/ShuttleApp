@@ -582,6 +582,7 @@
     <Content Include="Scripts\jquery.validationEngine.js" />
     <Content Include="Scripts\json2.js" />
     <Content Include="Scripts\map.js" />
+    <Content Include="Scripts\mapcommons.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\pickMap.js" />
     <Content Include="Scripts\PointInmap.js" />

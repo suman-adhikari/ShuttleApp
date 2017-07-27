@@ -22,7 +22,7 @@ namespace VShuttle.Repository.Interface
 
         DataTable GetData();
         List<TotalUsers> GetTotalUser();
-        List<LatLng> GetLocations();   
+        List<LatLng> GetLocations(int id);   
 
         string GetUsedDate(string userid);
         UserInfo GetUserInfoById(string userid);       

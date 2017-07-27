@@ -1,9 +1,9 @@
-﻿var allMarker;
-var mapPoints;
+﻿var mapPoints;
 var distanceList
 var destination;
 var distance = 0;
 var totalDistance = 0;
+var routeid;
 
 var map;
 var directionsService 
@@ -13,12 +13,14 @@ var service;
 var originOfc;
 var officeLatLng;
 var optimizedRouteLatLong;
-var _location = new Array();
-var _sublocation = new Array();
+var _location;
+var _sublocation;
 
 var limit = 0;
-function initializeRouteMap(latlngList) {
-  
+function initializeRouteMap(latlngList, _routeid) {
+    routeid = _routeid;
+    _location = new Array();
+    _sublocation = new Array();
     officeLatLng = { lat: 27.711753319439183, lng: 85.32223284244537 };
     var mapDiv = document.getElementById('map-canvas');
     mapPoints = new Array();
@@ -35,7 +37,7 @@ function initializeRouteMap(latlngList) {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-   //service = new google.maps.places.PlacesService(map);
+   service = new google.maps.places.PlacesService(map);
 
     mapPoints.push(originOfc);   
     directionsService = new google.maps.DirectionsService();   
@@ -98,7 +100,6 @@ function AddMarker(lat, lng) {
         title: 'Home',
         description: 'Home'
     });
-    allMarker.push(mark);
 }
 
 function GetMapPoints(latlngList) {
@@ -161,6 +162,7 @@ function getRoutePointsAndWaypoints() {
 }
 
 function drawRoute(originAddress, destinationAddress, _waypoints) {
+    debugger;
     var _request = '';
     optimizedRouteLatLong = new Array();
     //This is for more then two locatins
@@ -171,8 +173,9 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
             origin: originAddress,
             destination: destinationAddress, //destinationAddress,destination
             waypoints: _waypoints,
-            optimizeWaypoints: true, //set to true to determine the shortest route
+            optimizeWaypoints: false, //set to true to determine the shortest route
             travelMode: google.maps.DirectionsTravelMode.DRIVING
+ 
         };
     } else {
         //This is for one or two locations. Here noway point is used.
@@ -194,7 +197,7 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
             if (_response.request.waypoints != undefined) {
                 _response.request.waypoints.forEach(function (item) {
                     i++;
-                    debugger;
+                    
                     optimizedRouteLatLong.push(_response.request.waypoints[_response.routes[0].waypoint_order[i]].location);
                     //optimizedRouteLatLong.push(item.location);
                 });
@@ -226,10 +229,10 @@ function getlocname(placeIdList) {
         service.getDetails({
             placeId: item.place_id
         }, function (place, status) {
-            debugger;
+            
             if (status === google.maps.places.PlacesServiceStatus.OK) {             
                 index++;
-                debugger;
+                
                  getlocnameFromLatLong(index, place.geometry.location);
 
                 //_location.push(place.address_components[0].long_name);
@@ -246,7 +249,7 @@ function getlocname(placeIdList) {
 }
 
 function getlocnameFromLatLong(optimizedRouteLatLong) {
-    debugger;
+  
     //var service = new google.maps.places.PlacesService(map);
     optimizedRouteLatLong.forEach(function (item) {
         var request = {
@@ -262,33 +265,31 @@ function getlocnameFromLatLong(optimizedRouteLatLong) {
         });
 
         function callbackSearchNearByPlaces(result, status) {
-            debugger;      
+      
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var subloc = result[0].name;
                 var loc = result[0].vicinity;
 
                 _location.push(result[0].name);
                 _sublocation.push(result[0].vicinity);
-                if (_location.length > 3) {
+                if (_location.length > optimizedRouteLatLong.length-1) {
                     locationstring(_location)
                 };
             }
 
         }
-
-
     })
-
-   
-
 }
+
 
 
 function locationstring() {
     var unique = _location.filter(function (elem, index, self) {
         return index == self.indexOf(elem);
     })    
-    var allLocation = unique.map(function (item) { return item.replace("Bus Stop", "").replace("Bus Stand",""); }).join(" -> ");
+    var allLocation = unique.map(function (item) { return ExtractLocation(item) }).join(" -> ");
+    debugger;
+    $("#route_location").val("");
     $("#route_location").val(allLocation);
     setRoute();
     SetMapCenter();
@@ -300,8 +301,9 @@ function SetMapCenter() {
 }
 
 function setRoute() {
+    debugger; 
     var alllocation = $("#route_location").val();
-    $(".route-body").text(alllocation);
+    $("#route-body-"+routeid).text(alllocation);
 }
 
 function GetlatLngFromPlaceId(placeId) {

@@ -18,15 +18,15 @@ namespace VShuttle.Repository
         {
 
             var userinfo = (from userinfos in db.UserInfos
-                            join loc in db.Locations
-                            on userinfos.Location equals loc.Id
+                            join route in db.Route
+                            on userinfos.RouteId equals route.Id
                             where DbFunctions.TruncateTime(userinfos.Date) == DbFunctions.TruncateTime(DateTime.Now)  
                             select new UserInfoLocation
                             {
                                 Id = userinfos.Id,
                                 INumber = userinfos.INumber,
                                 Name = userinfos.Name,
-                                Location = loc.Location,
+                                Route = route.RouteLocations,
                                 SubLocation = userinfos.SubLocation,
                                 Date = userinfos.Date
                             }
@@ -44,15 +44,15 @@ namespace VShuttle.Repository
         {
 
             var userinfo = (from userinfos in db.UserInfos
-                            join loc in db.Locations
-                            on userinfos.Location equals loc.Id
+                            join route in db.Route
+                            on userinfos.RouteId equals route.Id
                             where (DbFunctions.TruncateTime(userinfos.Date) >= DbFunctions.TruncateTime(DateTime.Now) && userinfos.INumber== iNumber)
                             select new UserInfoLocation
                             {
                                 Id = userinfos.Id,
                                 INumber = userinfos.INumber,
                                 Name = userinfos.Name,
-                                Location = loc.Location,
+                                Route = route.RouteLocations,
                                 SubLocation = userinfos.SubLocation,
                                 Date = userinfos.Date
                             }
@@ -86,7 +86,7 @@ namespace VShuttle.Repository
 
         public int CountLocation(int locationId)
         {
-            return db.UserInfos.Where(l =>l.Location == locationId).Count();
+            return db.UserInfos.Where(l =>l.RouteId == locationId).Count();
         }
 
         public UserInfo GetUserInfoById(string userid)
@@ -116,10 +116,10 @@ namespace VShuttle.Repository
 
             //                 };                     
 
-            string sqlQuery = @"select l.Location, count(u.Location) as Total from UserInfoes u
-                                join Locations l on u.Location = l.Id
+            string sqlQuery = @"select r.RouteLocations as Route, count(u.RouteId) as Total from UserInfoes u
+                                join Routes r on u.Routeid = r.Id
                                 where  cast(u.Date as date) = cast(CURRENT_TIMESTAMP as date)
-                                group by l.Location, cast(u.Date as date)";
+                                group by r.RouteLocations, cast(u.Date as date)";
             var Results = db.Database.SqlQuery<TotalUsers>(sqlQuery).ToList();
             return Results;
         }
@@ -129,18 +129,18 @@ namespace VShuttle.Repository
             DataTable dt = new DataTable();
 
             var userInfo = (from userinfo in db.UserInfos
-                            join loc in db.Locations
-                            on userinfo.Location equals loc.Id
+                            join route in db.Route
+                            on userinfo.RouteId equals route.Id
                             where DbFunctions.TruncateTime(userinfo.Date) == DbFunctions.TruncateTime(DateTime.Now)
                             select new
                             {
                                 Id = userinfo.Id,                                
                                 Name = userinfo.Name,
-                                Location = loc.Location,
+                                Route = route.RouteLocations,
                                 Total = "",
                                 SubLocation = userinfo.SubLocation,
                                 Date = userinfo.Date
-                            }).OrderBy(l=>l.Location);
+                            }).OrderBy(l=>l.Route);
 
         
             dt.Columns.Add("Id");
@@ -152,16 +152,17 @@ namespace VShuttle.Repository
 
             foreach (var item in userInfo.ToList())
             {
-                dt.Rows.Add(item.Id, item.Name, item.Location, "", item.SubLocation, item.Date);
+                dt.Rows.Add(item.Id, item.Name, item.Route, "", item.SubLocation, item.Date);
             }            
             return dt;
         }
 
-        public List<LatLng> GetLocations()
+        public List<LatLng> GetLocations(int routeid)
         {
 
             var query = (from userinfo in db.UserInfos
                          where DbFunctions.TruncateTime(userinfo.Date) == DbFunctions.TruncateTime(DateTime.Now)
+                         && userinfo.RouteId == routeid
                          select new LatLng
                          {
                              Latitude = userinfo.Latitude,

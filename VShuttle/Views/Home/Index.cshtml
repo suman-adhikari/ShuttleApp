@@ -18,7 +18,7 @@
         <input type="hidden" id="latnag" />
 
         <span class="form-element row">
-            <div class="col-md-12 checkbox-row" required>
+            <div class="col-md-6 checkbox-row" required>
 
                 @*<div class="checkbox checkbox-success checkbox-inline">
                     <input type="checkbox" name="all" id="all" value="5">
@@ -54,39 +54,40 @@
 
             </div>
 
+            <span class="form-element col-md-3">
+                @Html.DropDownListFor(m => m.UserInfo.RouteId, new SelectList(ViewBag.route, "Id", "RouteLocations"), "Select Route", new { @required = "required" })
+            </span>
+
+            <span class="form-element col-md-3">
+                <button class="btn btn-primary btn-save" onclick="return GetDate();" type="submit">Save</button>
+            </span>
+
             @Html.Hidden("days", new { @id = "days", @name = "days" })
             @Html.HiddenFor(m => m.UserInfo.Name)
             @Html.HiddenFor(m => m.UserInfo.Latitude)
-            @Html.HiddenFor(m=>m.UserInfo.Longitude)
+            @Html.HiddenFor(m => m.UserInfo.Longitude)
+            @Html.HiddenFor(m=>m.UserInfo.SubLocation)
         </span>  
-
-     
-        <span class="form-element col-md-3">           
-            @Html.TextBoxFor(m => m.UserInfo.Name, new { placeholder = "Enter Name", @required = "required", @disabled="disabled"})
-        </span>
-        <span class="form-element col-md-3">
-           @Html.DropDownListFor(m => m.UserInfo.Location, new SelectList(ViewBag.location, "Id", "Location"), "Select Location", new { @required = "required" }) 
-        </span>
-        <span class="form-element col-md-2">          
-            @Html.TextBoxFor(m => m.UserInfo.SubLocation, new { placeholder = "Enter Sub-location", @required = "required" })
-        </span>
-
-        <span class="form-element col-md-1">
-            <button class="btn btn-primary" id="loadMap" type="button" data-toggle="modal" data-target="#mapModel" ><i class="glyphicon glyphicon-map-marker"></i></button>
-        </span>
-
-        <span class="form-element col-md-3">
-            <button class="btn btn-primary btn-save" onclick="return GetDate();" type="submit">Save</button>
-        </span>
        }
    
 
+    <div class="picklocationcontainer">
+        <input id="pac-input" class="controls" type="text" placeholder="Search location">  
+        <div id="picklocation"></div>
+    </div>
 
 </div>
+
+
+
 
 <div class="clearfix"></div>
 
 <hr id="registerHr">
+
+    <script>
+        initialize("picklocation");
+    </script>
 
 }
 
@@ -119,7 +120,7 @@
                     <tr>
                         <th><a class="table-header" field-name="Id">Id</a></th>
                         <th class="sorting"><a class="table-header" field-name="Name">Name</a></th>
-                        <th class="sorting"><a class="table-header" field-name="Location">Location</a></th>
+                        <th class="sorting"><a class="table-header" field-name="Route">Route</a></th>
                         <th><a class="table-header" field-name="SubLocation">SubLocation</a></th>
                         <th><a class="table-header" field-name="Date">Date</a></th>
                         <th>Actions</th>
@@ -133,7 +134,7 @@
         <table class="table table-bordered table-responsive table-striped" id="UserInfoTotal">
             <thead>
                 <tr>
-                    <th><a class="table-header" field-name="Location">Location</a></th>
+                    <th><a class="table-header" field-name="Route">Route</a></th>
                     <th><a class="table-header" field-name="Total">Total</a></th>                   
                 </tr>
             </thead>
@@ -153,13 +154,15 @@
     @foreach (var route in Model.Routes)
     {
         i++;
-        var routes = @route.RouteLocations.Replace(",", " -> ");
+        var routeId = @route.Id;
+        var routebodyId = "route-body-" + routeId;
         <div class="col-md-3 route">
             <div>
-                <span class="route-header">Route @routearray[i]
+                <span class="route-header">@route.RouteLocations
                     <a class="routeMap" id="routeMap1" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i></a>          
                  </span>
-                <span class="route-body"></span>
+                <input type="hidden" id="hiddenrouteid" value="@routeId" />
+                <span id=@routebodyId ></span>
             </div>
         </div>
     }
@@ -170,15 +173,16 @@
     <div class="modal-dialog">
        
         
-        <input id="pac-input" class="controls" type="text" placeholder="Search location">  
+        @*<input id="pac-input" class="controls" type="text" placeholder="Search location">*@  
         <div class="modal-content">
 
             <div class="modal-title">               
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">X</button>
+                <button type="button" id="closemodal" class="btn btn-danger pull-right" data-dismiss="modal">X</button>
             </div>
             
             <div class="modal-body">    
                             
+                    @*<div id="update-location"></div>*@
                     <div id="map-canvas"></div>  
                     <div id="map-canvas-showlocation"></div>             
             </div>
@@ -196,15 +200,17 @@
 
 
     $(function () {
-
-        LoadMap();
-           
-        $("#loadMap").on("click", function () {
-            initialize();            
-        })
+        
+        //LoadMap();
+        // give map control back to add location function
+        $("#closemodal").on("click", function () {
+            //initialize("picklocation");
+        });
         
         $(".routeMap").on("click", function () {
-            LoadMap();
+            debugger;
+            var id = $(this).closest("div").find("input").val();
+            LoadMap(id);
         })
 
         $('#UserInfoList').ajaxGrid({
@@ -344,11 +350,12 @@
 
     
 
-    function LoadMap() {
+    function LoadMap(id) {
         $.ajax({
+            data:"id="+id,
             url: '@Url.Action("GetLocation", "Home")',
             success: function (result) {
-                    initializeRouteMap(result);
+                    initializeRouteMap(result,id);
                 
             }
         });

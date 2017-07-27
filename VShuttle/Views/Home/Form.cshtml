@@ -11,22 +11,24 @@
         @Html.HiddenFor(m => m.INumber)
         @Html.HiddenFor(m => m.Name)
         @Html.HiddenFor(m => m.Date)
+        @Html.HiddenFor(m => m.Latitude)
+        @Html.HiddenFor(m => m.Longitude)
+        @Html.HiddenFor(m => m.SubLocation)
+        
 
         <div class="col-md-12">
-            @Html.TextBoxFor(m=>m.Name, new { placeholder = "Enter Name", @disabled="disabled" })
+            @Html.DropDownListFor(m => m.RouteId, new SelectList(ViewBag.route, "Id", "RouteLocations"), "Select Location")           
         </div>
 
-        <div class="col-md-12">
-            @Html.DropDownListFor(m => m.Location, new SelectList(ViewBag.location, "Id", "Location"), "Select Location")           
-        </div>
-
-        <div class="col-md-12">
+        @*<div class="col-md-12">
             @Html.TextBoxFor(m => m.SubLocation, new { placeholder = "Enter Sub-Location" })
-        </div>
+        </div>*@
 
-        <div class="col-md-12">
-            @Html.TextBoxFor(m => m.Date, new { placeholder = "Enter Date", @disabled = "disabled" })
+
+        <div class="col-md-12" style="margin-bottom:10px;">
+            <button class="btn btn-success" id="updatelocation-btn" type="button" data-toggle="modal" data-target="#mapModel" >Pick Location</button>
         </div>
+       
 
         <div class="col-md-6">
             <button class="btn btn-primary" type="submit">Update </button>
@@ -42,7 +44,12 @@
     $(function () {
         $("#Date").datepicker({ dateFormat: 'yy-mm-dd' });
        // $("#Date").datetimepicker();
-        $("#Location").val(@Model.Location);
+        $("#Location").val(@Model.RouteId);
+
+        $("#updatelocation-btn").on("click", function () {
+            debugger;
+            initialize("map-canvas");
+        })
 
     });
 

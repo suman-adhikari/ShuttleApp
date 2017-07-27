@@ -10,9 +10,9 @@ namespace VShuttle.Model
         public string INumber { get; set; }
 
         public string Name { get; set; }
-        
-        public int Location { get; set; }
 
+        public int RouteId { get; set;}
+        
         public string SubLocation { get; set; }
 
         public DateTime Date { get; set; }
