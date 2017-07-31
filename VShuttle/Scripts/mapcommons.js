@@ -1,13 +1,19 @@
 ﻿
-function AddMarker(lat, lng) {
-    debugger;
+function AddMarker(lat, lng, map) {
     var latLng = new google.maps.LatLng(lat, lng)
-    var mark = new google.maps.Marker({
-        position: latLng,
+     mark = new google.maps.Marker({
+         position: latLng,
         map: map,
         title: 'Home',
         description: 'Home'
-    });
+     });
+     return mark;
+}
+
+function RemoveMarker(allMarker) {
+    while (allMarker.length) {
+        allMarker.pop().setMap(null);
+    }
 }
 
 function ExtractLocation(location) {

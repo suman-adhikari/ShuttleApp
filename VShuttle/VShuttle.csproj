@@ -394,7 +394,14 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\Image\30.gif" />
+    <Content Include="Content\Image\45.gif" />
+    <Content Include="Content\Image\a.gif" />
+    <Content Include="Content\Image\b.gif" />
+    <Content Include="Content\Image\c.gif" />
+    <Content Include="Content\Image\d.gif" />
     <Content Include="Content\Image\error.png" />
+    <Content Include="Content\Image\loading.gif" />
     <Content Include="Content\Image\success.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="favicon.ico" />

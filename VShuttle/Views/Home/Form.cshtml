@@ -15,7 +15,9 @@
         @Html.HiddenFor(m => m.Longitude)
         @Html.HiddenFor(m => m.SubLocation)
         
-
+        
+        @*<label id="updatelocation-error" class="error-msg col-md-12">*please select location in map</label>*@
+        
         <div class="col-md-12">
             @Html.DropDownListFor(m => m.RouteId, new SelectList(ViewBag.route, "Id", "RouteLocations"), "Select Location")           
         </div>
@@ -24,14 +26,14 @@
             @Html.TextBoxFor(m => m.SubLocation, new { placeholder = "Enter Sub-Location" })
         </div>*@
 
-
-        <div class="col-md-12" style="margin-bottom:10px;">
-            <button class="btn btn-success" id="updatelocation-btn" type="button" data-toggle="modal" data-target="#mapModel" >Pick Location</button>
+        <div class="col-md-12" style="margin-bottom:15px;">
+            <button class="btn updatelocation-btn" id="updatelocation-btn" type="button" data-toggle="modal" data-target="#mapModel" >Pick Location <i class="glyphicon glyphicon-map-marker map-icon-color"></i></button>
         </div>
+       
        
 
         <div class="col-md-6">
-            <button class="btn btn-primary" type="submit">Update </button>
+            <button id="updatelocation" class="btn btn-primary" type="submit">Update </button>
         </div>
 
         <div class="col-md-6">
@@ -46,8 +48,13 @@
        // $("#Date").datetimepicker();
         $("#Location").val(@Model.RouteId);
 
-        $("#updatelocation-btn").on("click", function () {
-            debugger;
+        //$("#updatelocation").on("click", function () {        
+        //    if($("#SubLocation").val() ==""){
+        //        return false;
+        //    };
+        //})
+
+        $("#updatelocation-btn").on("click", function () {           
             initialize("map-canvas");
         })
 

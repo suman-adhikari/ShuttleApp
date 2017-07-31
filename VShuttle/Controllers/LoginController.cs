@@ -37,7 +37,7 @@ namespace VShuttle.Controllers
                 else
                     Session["UserRole"] = 2;
                 if(Convert.ToInt32(Session["UserRole"]) == 1)
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "Home");
                  return RedirectToAction("Index", "Home");
             }
             ViewData["error"] = "Invalid username or password !!!";

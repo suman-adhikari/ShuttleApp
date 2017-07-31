@@ -162,7 +162,7 @@
                     <a class="routeMap" id="routeMap1" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i></a>          
                  </span>
                 <input type="hidden" id="hiddenrouteid" value="@routeId" />
-                <span id=@routebodyId ></span>
+                <span id=@routebodyId >Generating Route <img src="~/Content/Image/d.gif"></span>
             </div>
         </div>
     }
@@ -200,17 +200,16 @@
 
 
     $(function () {
-        
-        //LoadMap();
-        // give map control back to add location function
-        $("#closemodal").on("click", function () {
-            //initialize("picklocation");
-        });
-        
-        $(".routeMap").on("click", function () {
-            debugger;
+
+         LoadMap(1);
+         setTimeout(function () { LoadMap(2); }, 6000);
+         setTimeout(function () { LoadMap(3); }, 8000);
+         setTimeout(function () { LoadMap(4); }, 10000);
+       
+        $(".routeMap").on("click", function () {        
+            var OnlyMap = false;
             var id = $(this).closest("div").find("input").val();
-            LoadMap(id);
+            LoadMap(id, OnlyMap);
         })
 
         $('#UserInfoList').ajaxGrid({
@@ -225,7 +224,7 @@
             postContent: [
                 {
                     control: $('<button type="button" class="btn btn-primary" ' +
-                    'onclick=\'showEditForm(this,"Edit", "@Url.Action("Form","Home")",300,300)\'>' +
+                    'onclick=\'showEditForm(this,"Edit", "@Url.Action("Form","Home")",300,250)\'>' +
                     '<small class="glyphicon glyphicon-edit"></small></small>' +
                     '</button>')
                 },
@@ -272,6 +271,7 @@
             id: 'Id'
         });
 
+
         var weekday = new Array(7);
         weekday[0] = "mon";
         weekday[1] = "tue";
@@ -294,7 +294,10 @@
             var today = date.getDate();
             var day = date.getDay()-1;
             for(var i=0;i<dates.length;i++){               
-                var selector = "#" + weekday[day + (dates[i]-today)];
+                var selector = "#" + weekday[day + (dates[i] - today)];
+                if (selector == "#undefined") {
+                    selector = "#" + weekday[dates[i]];
+                }
                 $(selector).prop('disabled',true);         
               }
         }
@@ -328,7 +331,7 @@
 
     $("#UserInfo_Name").val("@Session["UserName"]");
 
-    function GetDate() {    
+    function GetDate() {
         var day = "";
         $("input[type='checkbox']").each(function (k, v) {
             if ($(this).prop('checked')) {
@@ -350,12 +353,12 @@
 
     
 
-    function LoadMap(id) {
+    function LoadMap(id, OnlyMap) {
         $.ajax({
             data:"id="+id,
             url: '@Url.Action("GetLocation", "Home")',
             success: function (result) {
-                    initializeRouteMap(result,id);
+                initializeRouteMap(result, id, OnlyMap);
                 
             }
         });

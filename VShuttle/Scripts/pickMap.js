@@ -1,31 +1,35 @@
-﻿var map;
+﻿var map_pickmap;
 var mapPoints = new Array();
 var latlng = new Array();
+var allMarker = new Array();
+
 
 function initialize(div_id) {
-    debugger;
     var mapDiv = document.getElementById(div_id);   
     var officeLatLng = { lat: 27.711703, lng: 85.321949 };
     var centerlatLng = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
 
-    map = new google.maps.Map(mapDiv, {
+    map_pickmap = new google.maps.Map(mapDiv, {
         center: centerlatLng,
         zoom: 16,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
 
-
     mapPoints.push(centerlatLng)
-    AddMarker(officeLatLng.lat, officeLatLng.lng);
+    AddMarker(officeLatLng.lat, officeLatLng.lng,map_pickmap);
    
-    map.addListener('click', function (args) {
-        debugger;
+    map_pickmap.addListener('click', function (args) {
+     
         var lat = args.latLng.lat();
         var lng = args.latLng.lng();
         var LatLng = new google.maps.LatLng(lat, lng);
+        
+        RemoveMarker(allMarker);
         //console.log(args.latLng.lat() + ' : ' + args.latLng.lng())
-        AddMarker(lat, lng);
+        var marker = AddMarker(lat,lng, map_pickmap);
+        allMarker.push(marker);
+
         mapPoints.push(args.latLng);
         getLocnameFromPinnedAddress(LatLng)
         $("#UserInfo_Latitude").val(lat);
@@ -39,15 +43,15 @@ function initialize(div_id) {
     //initAutocomplete();
     //showSuggestion();
 
-    google.maps.event.addListenerOnce(map, 'idle', function () {
-        google.maps.event.trigger(map, 'resize');
+    google.maps.event.addListenerOnce(map_pickmap, 'idle', function () {
+        google.maps.event.trigger(map_pickmap, 'resize');
     });
 
 }
 
 function getLocnameFromPinnedAddress(LatLng) {
 
-    var service = new google.maps.places.PlacesService(map);
+    var service = new google.maps.places.PlacesService(map_pickmap);
    
         var request = {
             location: LatLng,
@@ -79,10 +83,10 @@ function initAutocomplete() {
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    map_pickmap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     // Bias the SearchBox results towards current map's viewport.
-    map.addListener('bounds_changed', function () {
-        searchBox.setBounds(map.getBounds());
+    map_pickmap.addListener('bounds_changed', function () {
+        searchBox.setBounds(map_pickmap.getBounds());
     });
 
     var markers = [];
@@ -118,7 +122,7 @@ function initAutocomplete() {
 
             // Create a marker for each place.
             markers.push(new google.maps.Marker({
-                map: map,
+                map: map_pickmap,
                 title: place.name,
                 position: place.geometry.location
             }));
@@ -130,7 +134,7 @@ function initAutocomplete() {
                 bounds.extend(place.geometry.location);
             }
         });
-        map.fitBounds(bounds);
+        map_pickmap.fitBounds(bounds);
     });
 }
 

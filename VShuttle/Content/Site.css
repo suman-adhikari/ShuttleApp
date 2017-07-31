@@ -3,6 +3,15 @@
 
 /* pick location */
 
+.updatelocation-btn {
+  background-color:#ece7e7;
+}
+
+
+.map-icon-color {
+  color:#b53010;
+}
+
 .picklocationcontainer{
     height:550px;
     width:100%;
