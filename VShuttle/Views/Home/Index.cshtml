@@ -18,12 +18,7 @@
         <input type="hidden" id="latnag" />
 
         <span class="form-element row">
-            <div class="col-md-6 checkbox-row" required>
-
-                @*<div class="checkbox checkbox-success checkbox-inline">
-                    <input type="checkbox" name="all" id="all" value="5">
-                    <label for="all"> All </label>
-                </div>*@
+            <div class="col-md-6 checkbox-row" required>   
 
                 <div class="checkbox checkbox-success checkbox-inline">
                     <input type="checkbox" name="mon" id="mon" value="0">
@@ -66,51 +61,48 @@
             @Html.HiddenFor(m => m.UserInfo.Name)
             @Html.HiddenFor(m => m.UserInfo.Latitude)
             @Html.HiddenFor(m => m.UserInfo.Longitude)
-            @Html.HiddenFor(m=>m.UserInfo.SubLocation)
+            @Html.HiddenFor(m => m.UserInfo.SubLocation)
         </span>  
        }
-   
-
-    <div class="picklocationcontainer">
-        <input id="pac-input" class="controls" type="text" placeholder="Search location">  
-        <div id="picklocation"></div>
-    </div>
 
 </div>
+}
 
-
-
-
-<div class="clearfix"></div>
+<div class="col-md-12 picklocationcontainer" style="margin-bottom:50px; padding-top:2px;">
+    <input id="pac-input" class="controls" type="text" placeholder="Search location">
+    <div id="picklocation"></div>
+</div>
 
 <hr id="registerHr">
 
-    <script>
+<script>
         initialize("picklocation");
-    </script>
+</script>
 
-}
+<div class="clearfix"></div>
+
+<div class="row-fluid">
 
 <div class="col-md-12 route-info">
     Location Details
 </div>
 
-<div id="report" class="row-fluid">
+    <div id="report" class="row-fluid">
 
-         
+
         <div class="col-md-9">
 
             @if (Session["Id"] == null)
             {
-                <div class="row-fluid">              
-                     <div class="col-md-offset-3 pull-right search">
-                    
-                         <div class="form-inline">
+                <div class="row-fluid">
+                    <div class="col-md-offset-3 pull-right search">
+
+                        <div class="form-inline">
                             <input type="text" id="searchName" />
-                            <button id="ajaxgridSearch" >Search</button>
+                            <button id="ajaxgridSearch">Search</button>
                             <button id="ajaxgridExport" onclick="location.href='@Url.Action("ExportToExcel", "Home")'">Export</button>
                         </div>
-                    
+
                     </div>
                 </div>
             }
@@ -130,16 +122,18 @@
             </table>
         </div>
 
-    <div class="col-md-3">
-        <table class="table table-bordered table-responsive table-striped" id="UserInfoTotal">
-            <thead>
-                <tr>
-                    <th><a class="table-header" field-name="Route">Route</a></th>
-                    <th><a class="table-header" field-name="Total">Total</a></th>                   
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="col-md-3">
+            <table class="table table-bordered table-responsive table-striped" id="UserInfoTotal">
+                <thead>
+                    <tr>
+                        <th><a class="table-header" field-name="Route">Route</a></th>
+                        <th><a class="table-header" field-name="Total">Total</a></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
     </div>
 
     <div class="clearfix"></div>
@@ -173,16 +167,14 @@
     <div class="modal-dialog">
        
         
-        @*<input id="pac-input" class="controls" type="text" placeholder="Search location">*@  
+        @*<input id="pac-input" class="controls" type="text" placeholder="Search location">*@
         <div class="modal-content">
 
             <div class="modal-title">               
                 <button type="button" id="closemodal" class="btn btn-danger pull-right" data-dismiss="modal">X</button>
             </div>
             
-            <div class="modal-body">    
-                            
-                    @*<div id="update-location"></div>*@
+            <div class="modal-body">                 
                     <div id="map-canvas"></div>  
                     <div id="map-canvas-showlocation"></div>             
             </div>
@@ -201,10 +193,10 @@
 
     $(function () {
 
-         LoadMap(1);
-         setTimeout(function () { LoadMap(2); }, 6000);
-         setTimeout(function () { LoadMap(3); }, 8000);
-         setTimeout(function () { LoadMap(4); }, 10000);
+         setTimeout(function () { LoadMap(1); }, 3000);
+         setTimeout(function () { LoadMap(2); }, 5000);
+         setTimeout(function () { LoadMap(3); }, 7000);
+         setTimeout(function () { LoadMap(4); }, 9000);
        
         $(".routeMap").on("click", function () {        
             var OnlyMap = false;

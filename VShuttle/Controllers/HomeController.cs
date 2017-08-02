@@ -169,7 +169,7 @@ namespace VShuttle.Controllers
                 for (int k = 0; k < TotalColumns - 1; k++)
                 {
                     var newValue = table.Rows[j].ItemArray[k + 1].ToString();
-                    if (table.Columns[k + 1].ColumnName=="Location")
+                    if (table.Columns[k + 1].ColumnName=="Route")
                     {
                         if (newValue == previousValue)
                         {
@@ -190,7 +190,7 @@ namespace VShuttle.Controllers
                         }
                         if (j == TotalRows - 1)
                         {
-                            range_total.Value = count;
+                            if (range_total != null) range_total.Value = count;
                             var right = WorkSheet.Range(ExcelRangeCharacter[0] + (TotalRows + 2) + ":" + ExcelRangeCharacter[(TotalColumns/2)-1] + (TotalRows + 2));
                             var left = WorkSheet.Range(ExcelRangeCharacter[(TotalColumns/2)] + (TotalRows + 2) + ":"+ ExcelRangeCharacter[TotalColumns-2] + (TotalRows + 2));
                             right.Merge().Value = "Total";

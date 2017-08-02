@@ -57,6 +57,11 @@
         $("#updatelocation-btn").on("click", function () {           
             initialize("map-canvas");
         })
+        
+        //reinitialize map to picklocation, so that the marker is applicable on picklocation
+        $("#closemodal").on("click", function () {           
+            initialize("picklocation");
+        })
 
     });
 

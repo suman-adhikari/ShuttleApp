@@ -145,9 +145,9 @@ namespace VShuttle.Repository
         
             dt.Columns.Add("Id");
             dt.Columns.Add("Name");
-            dt.Columns.Add("Location");
+            dt.Columns.Add("Route");
             dt.Columns.Add("Total");
-            dt.Columns.Add("SubLocation");
+            dt.Columns.Add("Location");
             dt.Columns.Add("Date");
 
             foreach (var item in userInfo.ToList())

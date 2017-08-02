@@ -5,29 +5,34 @@ var allMarker = new Array();
 
 
 function initialize(div_id) {
+    debugger;
     var mapDiv = document.getElementById(div_id);   
     var officeLatLng = { lat: 27.711703, lng: 85.321949 };
-    var centerlatLng = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
+    var centerlatLng = GetLatLng(officeLatLng.lat, officeLatLng.lng);
 
     map_pickmap = new google.maps.Map(mapDiv, {
         center: centerlatLng,
-        zoom: 16,
+        zoom: 13,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-
-    mapPoints.push(centerlatLng)
-    AddMarker(officeLatLng.lat, officeLatLng.lng,map_pickmap);
    
+    mapPoints.push(centerlatLng)
+    var markOffice = AddMarker(officeLatLng.lat, officeLatLng.lng, map_pickmap, "purple");
+
+    if (div_id == "picklocation") {
+        ShowRoutesMainLocation(markOffice);
+    }
+
     map_pickmap.addListener('click', function (args) {
-     
+        
         var lat = args.latLng.lat();
         var lng = args.latLng.lng();
         var LatLng = new google.maps.LatLng(lat, lng);
         
         RemoveMarker(allMarker);
-        //console.log(args.latLng.lat() + ' : ' + args.latLng.lng())
-        var marker = AddMarker(lat,lng, map_pickmap);
+        console.log(args.latLng.lat() + ' : ' + args.latLng.lng())
+        var marker = AddMarker(lat,lng, map_pickmap, "red");
         allMarker.push(marker);
 
         mapPoints.push(args.latLng);
@@ -40,13 +45,29 @@ function initialize(div_id) {
     });
   
     //search location in google map
-    //initAutocomplete();
+    initAutocomplete();
     //showSuggestion();
 
     google.maps.event.addListenerOnce(map_pickmap, 'idle', function () {
         google.maps.event.trigger(map_pickmap, 'resize');
     });
 
+}
+
+function ShowRoutesMainLocation(markOffice) {
+
+    var BhaktapurLatLng = { lat: 27.67186062999479, lng: 85.42299270629883 };
+    var KalankiLatLng = { lat: 27.693835831182454, lng: 85.28155982494354 };
+    var ChabahilLatLng = { lat: 27.717287079373634, lng: 85.321949 };
+
+    var markBhaktapur = AddMarker(BhaktapurLatLng.lat, BhaktapurLatLng.lng, map_pickmap,"green");
+    var markKalanki = AddMarker(KalankiLatLng.lat, KalankiLatLng.lng, map_pickmap, "green");
+    var markChabahil = AddMarker(ChabahilLatLng.lat, ChabahilLatLng.lng, map_pickmap, "green");   
+
+    ShowPopUpInfo(map_pickmap, markOffice,    "<span style='color:purple; font-size:16px;'>Office<span>");
+    ShowPopUpInfo(map_pickmap, markBhaktapur, "<span style='color:green; font-size:16px;'>Route One, Bhanktapur<span>");
+    ShowPopUpInfo(map_pickmap, markKalanki, "<span style='color:green; font-size:16px;'>Route Two, Kalanki<span>");
+    ShowPopUpInfo(map_pickmap, markChabahil, "<span style='color:green; font-size:16px;'>Route Three, Chabahil<span>");
 }
 
 function getLocnameFromPinnedAddress(LatLng) {
@@ -79,7 +100,7 @@ function getLocnameFromPinnedAddress(LatLng) {
 }
 
 function initAutocomplete() {
-
+    debugger;
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
@@ -137,7 +158,6 @@ function initAutocomplete() {
         map_pickmap.fitBounds(bounds);
     });
 }
-
 
 function showSuggestion() {
     $("#pac-input").css("display", "block");

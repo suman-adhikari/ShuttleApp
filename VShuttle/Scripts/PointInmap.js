@@ -2,7 +2,7 @@
 var routeid;
 var loadOnlyMap;
 
-//var map;
+var map;
 var directionsService 
 var directionsRenderer
 var service;
@@ -16,24 +16,26 @@ var IsDataAvailabel = false;
 function initializeRouteMap(latlngList, _routeid, OnlyMap) {
     debugger;
     routeid = _routeid;
+    officeLatLng = { lat: 27.711753319439183, lng: 85.32223284244537 };
+    originOfc = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
+    var mapDiv = document.getElementById('map-canvas');
+
+    map = new google.maps.Map(mapDiv, {
+        center: originOfc,
+        zoom: 13,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    
     if (latlngList.length > 0) {
         IsDataAvailabel = true;
         loadOnlyMap = OnlyMap;
         _location = new Array();
         _sublocation = new Array();
-        officeLatLng = { lat: 27.711753319439183, lng: 85.32223284244537 };
-        var mapDiv = document.getElementById('map-canvas');
+        
         mapPoints = new Array();
         distanceList = new Array();
         HideSearchInput();
-        originOfc = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
-
-        map = new google.maps.Map(mapDiv, {
-            center: originOfc,
-            zoom: 16,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
-
+       
         service = new google.maps.places.PlacesService(map);
 
         mapPoints.push(originOfc);
@@ -43,7 +45,6 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap) {
         directionsRenderer.setOptions({
             draggable: true
         });
-
 
         map.addListener('click', function (args) {
             // AddMarker(args.latLng.lat(),args.latLng.lng());         
@@ -57,17 +58,16 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap) {
 
         getDesination();
 
-        google.maps.event.addListenerOnce(map, 'idle', function () {
-            google.maps.event.trigger(map, 'resize');
-        });
-
     } else {
         IsDataAvailabel = false;
         setRoute();
     }
    
-}
+    google.maps.event.addListenerOnce(map, 'idle', function () {
+        google.maps.event.trigger(map, 'resize');
+    });
 
+}
 
 function HideSearchInput() {
     $("#pac-input").css("display", "none");
@@ -90,18 +90,6 @@ function CalculateDistance() {
     });
 
 }
-
-
-//AddMarker(officeLatLng.lat, officeLatLng.lng);
-//function AddMarker(lat, lng) {
-//    var latLng = new google.maps.LatLng(lat, lng)
-//    var mark = new google.maps.Marker({
-//        position: latLng,
-//        map: map,
-//        title: 'Home',
-//        description: 'Home'
-//    });
-//}
 
 function GetMapPoints(latlngList) {
     latlngList.forEach(function (item) {

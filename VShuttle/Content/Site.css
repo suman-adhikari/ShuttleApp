@@ -82,14 +82,27 @@
         font-family: Roboto;
         font-size: 15px;
         font-weight: 300;
-        margin-left: 12px;
+        margin-left: 111px;
         padding: 0 11px 0 13px;
         text-overflow: ellipsis;
-        width: 400px;
-        /*position: absolute;
-        top: 47px;
-        z-index: 2;
-        left: 110px;*/
+        width: 250px;
+        position: absolute;
+        top: 14px;
+        z-index: 2;      
+      }
+
+      #pac-input-update {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 111px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 250px;
+        position: absolute;
+        top: 48px;
+        z-index: 2;    
       }
 
       #pac-input:focus {
@@ -344,8 +357,7 @@ body {
 }
 
 .container{
-    background-color:whitesmoke;
-    padding-top: 40px;
+    background-color:whitesmoke;   
     min-height:600px;
     padding-bottom:30px;
 }
@@ -533,6 +545,10 @@ table .btn{
     .navbar {
         border-radius: 0px;
     }
+
+#registerUser {
+  padding-top:40px;
+}
 
     #registerUser input[type="text"] , #registerUser select {
         margin-bottom: 5px;

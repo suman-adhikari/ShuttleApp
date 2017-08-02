@@ -398,10 +398,15 @@
     <Content Include="Content\Image\45.gif" />
     <Content Include="Content\Image\a.gif" />
     <Content Include="Content\Image\b.gif" />
+    <Content Include="Content\Image\blue.png" />
     <Content Include="Content\Image\c.gif" />
     <Content Include="Content\Image\d.gif" />
     <Content Include="Content\Image\error.png" />
+    <Content Include="Content\Image\green.png" />
     <Content Include="Content\Image\loading.gif" />
+    <Content Include="Content\Image\pink.png" />
+    <Content Include="Content\Image\purple.png" />
+    <Content Include="Content\Image\red.png" />
     <Content Include="Content\Image\success.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="favicon.ico" />
