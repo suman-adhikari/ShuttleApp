@@ -14,7 +14,6 @@ var _sublocation;
 var IsDataAvailabel = false;
 
 function initializeRouteMap(latlngList, _routeid, OnlyMap) {
-    debugger;
     routeid = _routeid;
     officeLatLng = { lat: 27.711753319439183, lng: 85.32223284244537 };
     originOfc = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
@@ -271,10 +270,12 @@ function getlocnameFromLatLong(optimizedRouteLatLong) {
 }
 
 function locationstring(_location) {
+
+    _location = _location.map(function (item) { return ExtractLocation(item) })
     var unique = _location.filter(function (elem, index, self) {
         return index == self.indexOf(elem);
     })    
-    var allLocation = unique.map(function (item) { return ExtractLocation(item) }).join(" -> ");
+    var allLocation = unique.join(" -> ");
     $("#route_location").val("");
     $("#route_location").val(allLocation);
     setRoute();

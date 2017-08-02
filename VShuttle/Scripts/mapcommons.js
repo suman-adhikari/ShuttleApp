@@ -19,7 +19,7 @@ function RemoveMarker(allMarker) {
 }
 
 function ExtractLocation(location) {
-    return location.replace("Bus Stop", "").replace("Bus Stand", "").replace("just standa", "").replace("BUS STOP", "");
+    return location.replace("Bus Stop", "").replace("Bus Stand", "").replace("just standa", "").replace("BUS STOP", "").replace("Koteshwore", "Koteshwor");
 }
 
 function resizeMap(map) {

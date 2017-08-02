@@ -43,10 +43,6 @@
                     <label for="fri"> Friday </label>
                 </div>
 
-                <div id="selectday-msg" class="checkbox-inline">
-                    <span>* Please select at least a day !</span>
-                </div>
-
             </div>
 
             <span class="form-element col-md-3">
@@ -62,16 +58,23 @@
             @Html.HiddenFor(m => m.UserInfo.Latitude)
             @Html.HiddenFor(m => m.UserInfo.Longitude)
             @Html.HiddenFor(m => m.UserInfo.SubLocation)
-        </span>  
+        </span>
+
+        <div id="selectday-msg" class="checkbox-inline">
+            <span>* Please select at least a day !</span>
+        </div>
        }
 
 </div>
 }
 
-<div class="col-md-12 picklocationcontainer" style="margin-bottom:50px; padding-top:2px;">
-    <input id="pac-input" class="controls" type="text" placeholder="Search location">
-    <div id="picklocation"></div>
+<div class="row row-map">
+    <div class="col-md-12 picklocationcontainer">
+        <input id="pac-input" class="controls" type="text" placeholder="Search location">
+        <div id="picklocation"></div>
+    </div>
 </div>
+
 
 <hr id="registerHr">
 

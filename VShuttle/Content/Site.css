@@ -1,6 +1,12 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 @import url(https://fonts.googleapis.com/css?family=Bubbler+One);
 
+
+.row-map {
+  margin-right:-29px !important;
+  margin-left:-29px !important;
+}
+
 /* pick location */
 
 .updatelocation-btn {
@@ -15,6 +21,8 @@
 .picklocationcontainer{
     height:550px;
     width:100%;
+    padding-top: 1px;
+    margin-bottom:50px;
 }
 
 #picklocation {
@@ -163,6 +171,8 @@
     color:red;
     font-size:12px;
     display:none;
+    padding-left: 30px;
+    margin-top: -16px;
 }
 
 /* Jquery UI */
@@ -562,14 +572,15 @@ table .btn{
 
 
     #registerUser select {
-        padding:10px;
+        padding:3px;
     }
 
     #registerUser button{
         font-size:16px;
-        background-color: white;
-        border-color:rebeccapurple;     
-        color:rebeccapurple;
+        padding:1px;
+        background-color: #201a6f;
+        border-color:#201a6f;     
+        color:white;
     }
 
     .btn-save {

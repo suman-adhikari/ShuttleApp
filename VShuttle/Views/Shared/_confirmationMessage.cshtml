@@ -2,7 +2,7 @@
 {
     if (Convert.ToString(Session["Status"]) == "Failed")
     {
-        <div class="alert alert-danger alert-dismissible" role="alert">
+        <div class="alert alert-danger alert-dismissible" role="alert" style="margin-top:10px;" >
             <button type='button' class='close' data-dismiss='alert' aria-label=''><span aria-hidden='true' style='color: red;'> x </span></button>
             <span style="display: inline-block; position: relative; top: 0px;"><img src="~/Content/Image/error.png" /></span>
             <span>@Convert.ToString(Session["Message"])</span>

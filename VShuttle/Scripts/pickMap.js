@@ -5,7 +5,6 @@ var allMarker = new Array();
 
 
 function initialize(div_id) {
-    debugger;
     var mapDiv = document.getElementById(div_id);   
     var officeLatLng = { lat: 27.711703, lng: 85.321949 };
     var centerlatLng = GetLatLng(officeLatLng.lat, officeLatLng.lng);
@@ -100,7 +99,6 @@ function getLocnameFromPinnedAddress(LatLng) {
 }
 
 function initAutocomplete() {
-    debugger;
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
