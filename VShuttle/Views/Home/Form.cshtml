@@ -54,7 +54,13 @@
         //    };
         //})
 
-        $("#updatelocation-btn").on("click", function () {           
+        $("#updatelocation-btn").on("click", function () {
+            debugger;
+            $(".picklocationcontainer").find("input").remove();
+            var searchBox = '<input id="pac-input" class="controls" type="text" placeholder="Search location">';
+            if ($("#pac-input").length < 1) {
+                $("#mapModel").append(searchBox);
+            }        
             initialize("map-canvas");
         })
         

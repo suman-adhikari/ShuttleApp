@@ -14,8 +14,6 @@ namespace VShuttle.Controllers
         private readonly IUserInfoRepository userInfoRepository;
         private readonly IRoutesRepository routesRepository;
         private readonly ILocationRepository locationRepository;
-        private static string UserId = "";
-
 
         public HomeController(IUserInfoRepository userInfoRepository, IRoutesRepository routesRepository, ILocationRepository locationRepository)
         {
@@ -28,7 +26,7 @@ namespace VShuttle.Controllers
         public ActionResult Index()
         {
 
-            UserId = Session["Id"] != null ? Session["Id"].ToString() : "";
+            var UserId = Session["Id"] != null ? Session["Id"].ToString() : "";
             RouteUserinfo routeUserinfo = new RouteUserinfo();
             var userinfo = new UserInfo();
             var usedDate = "empty";
@@ -51,6 +49,7 @@ namespace VShuttle.Controllers
         [HttpPost]
         public ActionResult Index(UserInfo userInfo, string days)
         {
+            var UserId = Session["Id"] != null ? Session["Id"].ToString() : "";
             var status = false;
             var successAction = "Added";
             var FailedAction = "Addition";
@@ -84,7 +83,7 @@ namespace VShuttle.Controllers
 
         public ActionResult FindAll(int offset, int rowNumber, string sortExpression, string sortOrder, int pageNumber, string Name = "")
         {
-
+            var UserId = Session["Id"] != null ? Session["Id"].ToString() : "";
             List<UserInfoLocation> userdata;
             int count = 0;
 

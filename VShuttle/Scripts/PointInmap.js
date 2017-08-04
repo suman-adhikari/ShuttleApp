@@ -14,6 +14,7 @@ var _sublocation;
 var IsDataAvailabel = false;
 
 function initializeRouteMap(latlngList, _routeid, OnlyMap) {
+    //$("#mapModel").find("input").remove();
     routeid = _routeid;
     officeLatLng = { lat: 27.711753319439183, lng: 85.32223284244537 };
     originOfc = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
@@ -33,7 +34,7 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap) {
         
         mapPoints = new Array();
         distanceList = new Array();
-        HideSearchInput();
+        //HideSearchInput();
        
         service = new google.maps.places.PlacesService(map);
 
@@ -178,6 +179,7 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
     //This will take the request and draw the route and return response and status as output
     directionsService.route(_request, function (_response, _status) {
         if (_status == google.maps.DirectionsStatus.OK) {
+            debugger;
             directionsRenderer.setDirections(_response);
 
             if (!loadOnlyMap) {              

@@ -44,7 +44,9 @@ function initialize(div_id) {
     });
   
     //search location in google map
-    initAutocomplete();
+    if (div_id != "picklocation") {
+        initAutocomplete();
+    }
     //showSuggestion();
 
     google.maps.event.addListenerOnce(map_pickmap, 'idle', function () {
@@ -86,7 +88,6 @@ function getLocnameFromPinnedAddress(LatLng) {
         });
 
         function callbackSearchNearByPlaces(result, status) {
-            debugger;
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var subloc = result[0].name;
                 var loc = result[0].vicinity;
@@ -102,7 +103,7 @@ function initAutocomplete() {
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
-    map_pickmap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    //map_pickmap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     // Bias the SearchBox results towards current map's viewport.
     map_pickmap.addListener('bounds_changed', function () {
         searchBox.setBounds(map_pickmap.getBounds());
