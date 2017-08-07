@@ -157,6 +157,15 @@ namespace VShuttle.Repository
             return dt;
         }
 
+        public string FindLocationByLatLng(string lat,string lng) {
+            var query = from userinfo in db.UserInfos
+                        where userinfo.Latitude.StartsWith(lat) && userinfo.Longitude.StartsWith(lng)
+                        select userinfo.SubLocation;
+            if(query.Count()>0)
+               return query.First();
+            return "NotFound";
+        }
+
         public List<LatLng> GetLocations(int routeid)
         {
 

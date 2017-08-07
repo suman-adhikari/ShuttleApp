@@ -11,6 +11,8 @@ var originOfc;
 var officeLatLng;
 var _location;
 var _sublocation;
+
+var _locationWithLatLng;
 var IsDataAvailabel = false;
 
 function initializeRouteMap(latlngList, _routeid, OnlyMap) {
@@ -31,6 +33,7 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap) {
         loadOnlyMap = OnlyMap;
         _location = new Array();
         _sublocation = new Array();
+        _locationWithLatLng = new Array();
         
         mapPoints = new Array();
         distanceList = new Array();
@@ -129,7 +132,6 @@ function getDesination() {
 
 }
 
-
 function getRoutePointsAndWaypoints() {
 
     var waypoints = new Array();
@@ -179,7 +181,6 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
     //This will take the request and draw the route and return response and status as output
     directionsService.route(_request, function (_response, _status) {
         if (_status == google.maps.DirectionsStatus.OK) {
-            debugger;
             directionsRenderer.setDirections(_response);
 
             if (!loadOnlyMap) {              
@@ -194,7 +195,8 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
                     });
                 }
                 optimizedRouteLatLong.push(_response.request.destination);
-                getlocnameFromLatLong(optimizedRouteLatLong);
+                GetLocationName(optimizedRouteLatLong);
+                //getlocnameFromLatLong(optimizedRouteLatLong);
             } else {
                 SetMapCenter();
             }
@@ -205,74 +207,35 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
    
 }
 
-function getlocname(placeIdList) {
-  
-    var index = 0;
-   // var service = new google.maps.places.PlacesService(map);
-    placeIdList.forEach(function (item) {      
-        service.getDetails({
-            placeId: item.place_id
-        }, function (place, status) {
-            
-            if (status === google.maps.places.PlacesServiceStatus.OK) {             
-                index++;
-                
-                 getlocnameFromLatLong(index, place.geometry.location);
+function GetLocationName(optimizedRouteLatLong) {
 
-                //_location.push(place.address_components[0].long_name);
-                //_sublocation.push(place.address_components[1].long_name);
-                //if (index == placeIdList.length - 1) {
-                //  locationstring()
-                // };
-
-            }
-            else {
-                alert("getlocname : GetDetail ")
-            }
-        });
-
+    optimizedRouteLatLong.forEach(function (item) {
+        var location = GetLocationNameFromDb(item);
+        _locationWithLatLng.push(location);
     });
-    
+
+    if (_locationWithLatLng.length > optimizedRouteLatLong.length - 1) {
+        locationstring(_locationWithLatLng)
+    };
 }
 
-function getlocnameFromLatLong(optimizedRouteLatLong) {
-  
-    //var service = new google.maps.places.PlacesService(map);
-    optimizedRouteLatLong.forEach(function (item) {
-        var request = {
-            location: item,
-            radius: '500',
-            types: ['bus_station']
-        };
-
-        
-        // service.nearbySearch(request, callbackSearchNearByPlaces);
-        service.nearbySearch(request, function (result, status) {          
-            callbackSearchNearByPlaces(result, status)
-        });
-
-        function callbackSearchNearByPlaces(result, status) {
-         
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                var subloc = result[0].name;
-                var loc = result[0].vicinity;
-
-                _location.push(result[0].name);
-                _sublocation.push(result[0].vicinity);
-                if (_location.length > optimizedRouteLatLong.length-1) {
-                    locationstring(_location)
-                };
-            }
-            else {
-                alert("Near By");
-            }
-
+function GetLocationNameFromDb(LatLng) {
+    var loc = "";
+    $.ajax({
+        url: '/Home/FindLocationByLatLng',
+        async:false,
+        type: 'get',
+        data: { lat: LatLng.lat(), lng: LatLng.lng() },
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            loc = result;
         }
     })
+    return loc;
 }
 
 function locationstring(_location) {
-
+    debugger;
     _location = _location.map(function (item) { return ExtractLocation(item) })
     var unique = _location.filter(function (elem, index, self) {
         return index == self.indexOf(elem);
@@ -295,6 +258,10 @@ function setRoute() {
     $("#route-body-" + routeid).text(alllocation);
 }
 
+
+
+// Function Not Used
+
 function GetlatLngFromPlaceId(placeId) {
     var geocoder = new google.maps.Geocoder;
     geocoder.geocode({'placeId': placeId}, function(results, status) {
@@ -303,4 +270,105 @@ function GetlatLngFromPlaceId(placeId) {
             return x;
         }
     });
+}
+
+function getlocname(placeIdList) {
+
+    var index = 0;
+    // var service = new google.maps.places.PlacesService(map);
+    placeIdList.forEach(function (item) {
+        service.getDetails({
+            placeId: item.place_id
+        }, function (place, status) {
+
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                index++;
+
+                getlocnameFromLatLong(index, place.geometry.location);
+
+                //_location.push(place.address_components[0].long_name);
+                //_sublocation.push(place.address_components[1].long_name);
+                //if (index == placeIdList.length - 1) {
+                //  locationstring()
+                // };
+
+            }
+            else {
+                alert("getlocname : GetDetail ")
+            }
+        });
+
+    });
+
+}
+
+function GetLocationNameInOrderOfRoute(location, optimizedRouteLatLong) {
+    debugger;
+    optimizedRouteLatLong.forEach(function (otpimizedItem) {
+        location.forEach(function (item) {
+            if (otpimizedItem.lat() == item.lat) {
+                _location.push(item.location.trim());
+            }
+        })
+    })
+    locationstring(_location);
+}
+// Fetch from DB, if not found call NearByPlaceService
+function getlocnameFromLatLong(optimizedRouteLatLong) {
+    debugger;
+    optimizedRouteLatLong.forEach(function (item) {
+        var request = {
+            location: item,
+            radius: '500',
+            types: ['bus_station']
+        };
+
+        var location = GetLocationNameFromDb(item);
+
+        var loc = function () { };
+        loc.lat = item.lat();
+        loc.lng = item.lng();
+
+        if (location != "NotFound") {
+            loc.location = location;
+            _locationWithLatLng.push(loc);
+
+            //_location.push(location);
+            //_sublocation.push(location);
+        }
+        else {
+            // alert("servicecall");
+            // service.nearbySearch(request, callbackSearchNearByPlaces);
+            service.nearbySearch(request, function (result, status) {
+                callbackSearchNearByPlaces(result, status, item)
+            });
+        }
+
+        function callbackSearchNearByPlaces(result, status, item) {
+
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                alert("wtf");
+                var subloc = result[0].name;
+                var _loc = result[0].vicinity;
+                var loc = function () { };
+                loc.lat = item.lat();
+                loc.lng = item.lng();
+                loc.location = subloc;
+                _locationWithLatLng.push(loc);
+
+                if (_locationWithLatLng.length > optimizedRouteLatLong.length - 1) {
+                    GetLocationNameInOrderOfRoute(_locationWithLatLng, optimizedRouteLatLong)
+                };
+            }
+            else {
+                alert("Near By");
+            }
+
+        }
+    })
+
+    if (_locationWithLatLng.length > optimizedRouteLatLong.length - 1) {
+        GetLocationNameInOrderOfRoute(_locationWithLatLng, optimizedRouteLatLong)
+    };
+
 }

@@ -25,6 +25,8 @@ namespace VShuttle.Repository.Interface
         List<LatLng> GetLocations(int id);   
 
         string GetUsedDate(string userid);
-        UserInfo GetUserInfoById(string userid);       
+        UserInfo GetUserInfoById(string userid);
+
+        string FindLocationByLatLng(string lat, string lng);
     }
 }

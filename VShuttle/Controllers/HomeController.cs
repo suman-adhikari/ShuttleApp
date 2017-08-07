@@ -46,6 +46,13 @@ namespace VShuttle.Controllers
             return View(routeUserinfo);
         }
 
+        public string FindLocationByLatLng(float lat, float lng) {
+            var Lat = (Math.Truncate(lat * 1000) / 1000).ToString();
+            var Lng = (Math.Truncate(lng * 1000) / 1000).ToString();
+            var location = userInfoRepository.FindLocationByLatLng(Lat, Lng);
+            return location;
+        }
+
         [HttpPost]
         public ActionResult Index(UserInfo userInfo, string days)
         {
