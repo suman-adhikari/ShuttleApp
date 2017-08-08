@@ -146,6 +146,12 @@ namespace VShuttle.Controllers
             return Json(loctaions, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetAllLocation()
+        {
+            var loctaions = userInfoRepository.GetAllLocations();
+            return Json(loctaions, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult ExportToExcel()
         {
 

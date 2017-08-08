@@ -2,6 +2,51 @@
 @import url(https://fonts.googleapis.com/css?family=Bubbler+One);
 
 
+/*Map Info*/
+
+.map-location-info{
+    position: absolute;
+    z-index: 2;
+    width: 114px;
+    padding: 10px;
+    right: 25px;
+    top:85px;
+    background-color:rgba(0,0,0,0.2)
+}
+
+.map-location-info li{
+    font-size:12px;
+    margin-top:5px;
+    padding:3px;
+    color:white;
+    list-style-type: none;
+    
+}
+
+#office-info {
+     background-color:rgba(147,103,253,0.7);
+     /*color:rgba(147,103,253,1);*/
+}
+
+#route1-info {
+    background-color:rgba(0,230,77,0.7);
+    /*color:green;*/
+}
+
+#route2-info {
+    background-color:rgba(230,97,172,0.7);
+    /*color:rgba(230,97,172,1);*/
+}
+
+#route3-info {
+    background-color:rgba(103,221,221,0.9);
+    /*color:green;*/
+}
+
+#route4-info {
+
+}
+
 .row-map {
   margin-right:-29px !important;
   margin-left:-29px !important;
@@ -363,7 +408,7 @@ hr{
 
 
 body {
-  background-color:#d6dbe8 /*#715570*/;
+  /*background-color:#d6dbe8*/ /*#715570*/;
 }
 
 .container{

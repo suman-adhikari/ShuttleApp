@@ -69,6 +69,14 @@
 }
 
 <div class="row row-map">
+
+    <div class="col-md-12 map-location-info">     
+        <li id="office-info"><i class="glyphicon glyphicon-map-marker"></i> Office</li>
+        <li id="route1-info"><i class="glyphicon glyphicon-map-marker"></i> Bhaktapur 10</li>
+        <li id="route2-info"><i class="glyphicon glyphicon-map-marker"></i> Kalanki 12</li>
+        <li id="route3-info"><i class="glyphicon glyphicon-map-marker"></i> Chabahil 14</li>
+    </div>
+
     <div class="col-md-12 picklocationcontainer">
         @*<input id="pac-input" class="controls" type="text" placeholder="Search location">*@
         <div id="picklocation"></div>
@@ -79,7 +87,7 @@
 <hr id="registerHr">
 
 <script>
-        initialize("picklocation");
+        //initialize("picklocation");
 </script>
 
 <div class="clearfix"></div>
@@ -196,10 +204,12 @@
 
     $(function () {
 
-         setTimeout(function () { LoadMap(1); }, 1000);
-         setTimeout(function () { LoadMap(2); }, 2000);
-         setTimeout(function () { LoadMap(3); }, 3000);
-         setTimeout(function () { LoadMap(4); }, 4000);
+         DisplayHomeMap();
+
+         setTimeout(function () { LoadMap(1); }, 3000);
+         setTimeout(function () { LoadMap(2); }, 4000);
+         setTimeout(function () { LoadMap(3); }, 5000);
+         setTimeout(function () { LoadMap(4); }, 6000);
        
         $(".routeMap").on("click", function () {        
             var OnlyMap = false;
@@ -355,6 +365,15 @@
             success: function (result) {
                 initializeRouteMap(result, id, OnlyMap);
                 
+            }
+        });
+    }
+
+    function DisplayHomeMap() {
+        $.ajax({
+            url: '@Url.Action("GetAllLocation", "Home")',
+            success: function (result) {
+                initialize("picklocation", result);
             }
         });
     }

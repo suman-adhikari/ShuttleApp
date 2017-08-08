@@ -2,9 +2,12 @@
 var mapPoints = new Array();
 var latlng = new Array();
 var allMarker = new Array();
+var routeonecount = 0;
+var routetwocount = 0;
+var routethreecount = 0;
 
 
-function initialize(div_id) {
+function initialize(div_id, locationList) {
     var mapDiv = document.getElementById(div_id);   
     var officeLatLng = { lat: 27.711703, lng: 85.321949 };
     var centerlatLng = GetLatLng(officeLatLng.lat, officeLatLng.lng);
@@ -20,7 +23,7 @@ function initialize(div_id) {
     var markOffice = AddMarker(officeLatLng.lat, officeLatLng.lng, map_pickmap, "purple");
 
     if (div_id == "picklocation") {
-        ShowRoutesMainLocation(markOffice);
+        ShowRoutesMainLocation(markOffice,locationList);
     }
 
     map_pickmap.addListener('click', function (args) {
@@ -55,20 +58,26 @@ function initialize(div_id) {
 
 }
 
-function ShowRoutesMainLocation(markOffice) {
+function ShowRoutesMainLocation(markOffice,locationList) {
 
+    var colorList = ["green", "pink", "blue"];
     var BhaktapurLatLng = { lat: 27.67186062999479, lng: 85.42299270629883 };
     var KalankiLatLng = { lat: 27.693835831182454, lng: 85.28155982494354 };
     var ChabahilLatLng = { lat: 27.717287079373634, lng: 85.321949 };
 
     var markBhaktapur = AddMarker(BhaktapurLatLng.lat, BhaktapurLatLng.lng, map_pickmap,"green");
-    var markKalanki = AddMarker(KalankiLatLng.lat, KalankiLatLng.lng, map_pickmap, "green");
-    var markChabahil = AddMarker(ChabahilLatLng.lat, ChabahilLatLng.lng, map_pickmap, "green");   
+    var markKalanki = AddMarker(KalankiLatLng.lat, KalankiLatLng.lng, map_pickmap, "pink");
+    var markChabahil = AddMarker(ChabahilLatLng.lat, ChabahilLatLng.lng, map_pickmap, "blue");
+
+    locationList.forEach(function (item) {
+        var color = colorList[item.RouteId-1];
+        AddMarker(item.Latitude, item.Longitude, map_pickmap, color);
+    });
 
     ShowPopUpInfo(map_pickmap, markOffice,    "<span style='color:purple; font-size:16px;'>Office<span>");
-    ShowPopUpInfo(map_pickmap, markBhaktapur, "<span style='color:green; font-size:16px;'>Route One, Bhanktapur<span>");
-    ShowPopUpInfo(map_pickmap, markKalanki, "<span style='color:green; font-size:16px;'>Route Two, Kalanki<span>");
-    ShowPopUpInfo(map_pickmap, markChabahil, "<span style='color:green; font-size:16px;'>Route Three, Chabahil<span>");
+    ShowPopUpInfo(map_pickmap, markBhaktapur, "<span style='color:green; font-size:16px;'>Bhanktapur<span>");
+    ShowPopUpInfo(map_pickmap, markKalanki, "<span style='color:#d4818f; font-size:16px;'>Kalanki<span>");
+    ShowPopUpInfo(map_pickmap, markChabahil, "<span style='color:#008e4e; font-size:16px;'>Chabahil<span>");
 }
 
 function getLocnameFromPinnedAddress(LatLng) {

@@ -181,5 +181,22 @@ namespace VShuttle.Repository
             return query.ToList();
 
         }
+
+        public List<AllLocation> GetAllLocations()
+        {
+
+            var query = (from userinfo in db.UserInfos
+                         where DbFunctions.TruncateTime(userinfo.Date) == DbFunctions.TruncateTime(DateTime.Now)
+                         select new AllLocation
+                         {
+                             Latitude = userinfo.Latitude,
+                             Longitude = userinfo.Longitude,
+                             RouteId = userinfo.RouteId
+                         });
+
+            return query.ToList();
+
+        }
+        
     }
 }

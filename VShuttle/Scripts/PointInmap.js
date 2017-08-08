@@ -235,7 +235,6 @@ function GetLocationNameFromDb(LatLng) {
 }
 
 function locationstring(_location) {
-    debugger;
     _location = _location.map(function (item) { return ExtractLocation(item) })
     var unique = _location.filter(function (elem, index, self) {
         return index == self.indexOf(elem);
@@ -257,8 +256,6 @@ function setRoute() {
     var alllocation = IsDataAvailabel ? $("#route_location").val() : "No Data Found";
     $("#route-body-" + routeid).text(alllocation);
 }
-
-
 
 // Function Not Used
 
