@@ -60,6 +60,7 @@
 /// <reference path="json2.js" />
 /// <reference path="mapcommons.js" />
 /// <reference path="modernizr-2.6.2.js" />
+/// <reference path="moment.js" />
 /// <reference path="pickmap.js" />
 /// <reference path="pointinmap.js" />
 /// <reference path="prettify.js" />

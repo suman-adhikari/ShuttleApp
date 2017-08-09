@@ -22,6 +22,7 @@ namespace VShuttle
 
             bundles.Add(new ScriptBundle("~/bundles/ajaxGrid").Include(                      
                         "~/Scripts/chart.js",
+                        "~/Scripts/moment.js",
                         "~/Scripts/query.ui.timepicker.js",
                         "~/Scripts/dateTimepicker.js",
                         "~/Scripts/jquery.validationEngine.js",
@@ -53,7 +54,7 @@ namespace VShuttle
                       "~/Content/jquery-ui.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/fontawesome").Include(
+            bundles.Add(new StyleBundle("~/Content/fontawesome").Include(                 
                      "~/Content/font-awesome.css"));
         }
     }

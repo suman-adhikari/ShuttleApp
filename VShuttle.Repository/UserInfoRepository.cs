@@ -46,7 +46,7 @@ namespace VShuttle.Repository
             var userinfo = (from userinfos in db.UserInfos
                             join route in db.Route
                             on userinfos.RouteId equals route.Id
-                            where (DbFunctions.TruncateTime(userinfos.Date) >= DbFunctions.TruncateTime(DateTime.Now) && userinfos.INumber== iNumber)
+                            where (DbFunctions.TruncateTime(userinfos.Date) >= DbFunctions.TruncateTime(DateTime.Now) && userinfos.INumber == iNumber)
                             select new UserInfoLocation
                             {
                                 Id = userinfos.Id,

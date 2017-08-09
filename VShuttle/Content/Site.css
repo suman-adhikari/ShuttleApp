@@ -1,5 +1,33 @@
-﻿@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-@import url(https://fonts.googleapis.com/css?family=Bubbler+One);
+﻿
+/*@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);*/
+
+@font-face {
+  font-family: 'MyWebFont';
+  src:  url('/fonts/OpenSansCondensed-Light.ttf');
+}
+
+
+/*Alert*/
+
+.alert {
+  margin-bottom:0px !important;
+
+}
+
+/* Show Route Icon */
+.routeMap{
+    visibility:hidden;
+    cursor:pointer;
+    color: #f0ad4e;
+    font-size: small;
+    float: right;  
+    font-family: "Roboto", sans-serif;
+}
+
+
+.routeMap:hover{
+    color: #ff9600;  
+}
 
 
 /*Map Info*/
@@ -7,10 +35,10 @@
 .map-location-info{
     position: absolute;
     z-index: 2;
-    width: 114px;
+    width:150px;
     padding: 10px;
-    right: 25px;
-    top:85px;
+    right: 35px;
+    top:10px;
     background-color:rgba(0,0,0,0.2)
 }
 
@@ -39,7 +67,7 @@
 }
 
 #route3-info {
-    background-color:rgba(103,221,221,0.9);
+    background-color:rgba(103,221,221,1);
     /*color:green;*/
 }
 
@@ -384,7 +412,7 @@ hr{
 
 .navbar-default .navbar-brand {
     color:#ca19ca;
-    font-family: 'Bubbler One', sans-serif;
+    font-family: 'MyWebFont'; /*'Bubbler One', sans-serif;*/
     font-size:35px;
     padding:25px 90px;
 }
@@ -427,7 +455,7 @@ body {
   border-radius:0px;
 }
 
-#UserInfoTotal tr td {
+#UserInfoTotal tr td, #UserInfoList tr td{
     padding: 8px !important;
   }
 

@@ -3,94 +3,89 @@
     ViewBag.Title = "Home Page";
 }
 
-@if (Session["Id"] !=null)
-{
-
-<div id="registerUser" class="row-fluid">
-
-      <div class="col-md-12 route-info">
-        Register Location
-      </div> 
-
-       @using (Html.BeginForm("Index", "Home", FormMethod.Post))
-       {
-
-        <input type="hidden" id="latnag" />
-
-        <span class="form-element row">
-            <div class="col-md-6 checkbox-row" required>   
-
-                <div class="checkbox checkbox-success checkbox-inline">
-                    <input type="checkbox" name="mon" id="mon" value="0">
-                    <label for="mon"> Monday </label>
-                </div>
-                <div class="checkbox checkbox-success checkbox-inline">
-                    <input type="checkbox" name="tue" id="tue" value="1">
-                    <label for="tue"> Tuesday </label>
-                </div>
-                <div class="checkbox checkbox-success checkbox-inline">
-                    <input type="checkbox" name="wed" id="wed" value="2">
-                    <label for="wed"> Wednesday </label>
-                </div>
-
-                <div class="checkbox checkbox-success checkbox-inline">
-                    <input type="checkbox" name="thu" id="thu" value="3">
-                    <label for="thu"> Thursday </label>
-                </div>
-
-                <div class="checkbox checkbox-success checkbox-inline">
-                    <input type="checkbox" name="fri" id="fri" value="4">
-                    <label for="fri"> Friday </label>
-                </div>
-
-            </div>
-
-            <span class="form-element col-md-3">
-                @Html.DropDownListFor(m => m.UserInfo.RouteId, new SelectList(ViewBag.route, "Id", "RouteLocations"), "Select Route", new { @required = "required" })
-            </span>
-
-            <span class="form-element col-md-3">
-                <button class="btn btn-primary btn-save" onclick="return GetDate();" type="submit">Save</button>
-            </span>
-
-            @Html.Hidden("days", new { @id = "days", @name = "days" })
-            @Html.HiddenFor(m => m.UserInfo.Name)
-            @Html.HiddenFor(m => m.UserInfo.Latitude)
-            @Html.HiddenFor(m => m.UserInfo.Longitude)
-            @Html.HiddenFor(m => m.UserInfo.SubLocation)
-        </span>
-
-        <div id="selectday-msg" class="checkbox-inline">
-            <span>* Please select at least a day !</span>
-        </div>
-       }
-
-</div>
-}
 
 <div class="row row-map">
 
-    <div class="col-md-12 map-location-info">     
-        <li id="office-info"><i class="glyphicon glyphicon-map-marker"></i> Office</li>
-        <li id="route1-info"><i class="glyphicon glyphicon-map-marker"></i> Bhaktapur 10</li>
-        <li id="route2-info"><i class="glyphicon glyphicon-map-marker"></i> Kalanki 12</li>
-        <li id="route3-info"><i class="glyphicon glyphicon-map-marker"></i> Chabahil 14</li>
-    </div>
-
     <div class="col-md-12 picklocationcontainer">
+
+        <div class="col-md-12 map-location-info">
+            <li id="office-info"><i class="glyphicon glyphicon-map-marker"></i> Office</li>
+            <li id="route1-info"><i class="glyphicon glyphicon-map-marker"></i> Bhaktapur - <span> </span></li>
+            <li id="route2-info"><i class="glyphicon glyphicon-map-marker"></i> Kalanki - <span> </span></li>
+            <li id="route3-info"><i class="glyphicon glyphicon-map-marker"></i> Chabahil - <span> </span></li>
+        </div>
         @*<input id="pac-input" class="controls" type="text" placeholder="Search location">*@
         <div id="picklocation"></div>
     </div>
 </div>
 
+<div class="clearfix"></div>
+
+@if (Session["Id"] != null)
+{
+    <div id="registerUser" class="row-fluid">
+
+        <div class="col-md-12 route-info">
+            Register Location
+        </div>
+
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+        {
+
+            <input type="hidden" id="latnag" />
+
+            <span class="form-element row">
+                <div class="col-md-6 checkbox-row" required>
+
+                    <div class="checkbox checkbox-success checkbox-inline">
+                        <input type="checkbox" name="mon" id="mon" value="0">
+                        <label for="mon"> Monday </label>
+                    </div>
+                    <div class="checkbox checkbox-success checkbox-inline">
+                        <input type="checkbox" name="tue" id="tue" value="1">
+                        <label for="tue"> Tuesday </label>
+                    </div>
+                    <div class="checkbox checkbox-success checkbox-inline">
+                        <input type="checkbox" name="wed" id="wed" value="2">
+                        <label for="wed"> Wednesday </label>
+                    </div>
+
+                    <div class="checkbox checkbox-success checkbox-inline">
+                        <input type="checkbox" name="thu" id="thu" value="3">
+                        <label for="thu"> Thursday </label>
+                    </div>
+
+                    <div class="checkbox checkbox-success checkbox-inline">
+                        <input type="checkbox" name="fri" id="fri" value="4">
+                        <label for="fri"> Friday </label>
+                    </div>
+
+                </div>
+
+                <span class="form-element col-md-3">
+                    @Html.DropDownListFor(m => m.UserInfo.RouteId, new SelectList(ViewBag.route, "Id", "RouteLocations"), "Select Route", new { @required = "required" })
+                </span>
+
+                <span class="form-element col-md-3">
+                    <button class="btn btn-primary btn-save" onclick="return GetDate();" type="submit">Save</button>
+                </span>
+
+                @Html.Hidden("days", new { @id = "days", @name = "days" })
+                @Html.HiddenFor(m => m.UserInfo.Name)
+                @Html.HiddenFor(m => m.UserInfo.Latitude)
+                @Html.HiddenFor(m => m.UserInfo.Longitude)
+                @Html.HiddenFor(m => m.UserInfo.SubLocation, new { @required = "required" })
+            </span>
+
+            <div id="selectday-msg" class="checkbox-inline">
+                <span>* Please select at least a day !</span>
+            </div>
+        }
+
+    </div>
+}
 
 <hr id="registerHr">
-
-<script>
-        //initialize("picklocation");
-</script>
-
-<div class="clearfix"></div>
 
 <div class="row-fluid">
 
@@ -101,7 +96,7 @@
     <div id="report" class="row-fluid">
 
 
-        <div class="col-md-9">
+        <div class="col-md-12">
 
             @if (Session["Id"] == null)
             {
@@ -126,14 +121,17 @@
                         <th class="sorting"><a class="table-header" field-name="Route">Route</a></th>
                         <th><a class="table-header" field-name="SubLocation">SubLocation</a></th>
                         <th><a class="table-header" field-name="Date">Date</a></th>
-                        <th>Actions</th>
+                        @if (Session["Id"] != null)
+                        {
+                         <th>Actions</th>
+                        }
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
         </div>
 
-        <div class="col-md-3">
+        @*<div class="col-md-3">
             <table class="table table-bordered table-responsive table-striped" id="UserInfoTotal">
                 <thead>
                     <tr>
@@ -143,7 +141,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>
+        </div>*@
 
     </div>
 
@@ -164,7 +162,7 @@
         <div class="col-md-3 route">
             <div>
                 <span class="route-header">@route.RouteLocations
-                    <a class="routeMap" id="routeMap1" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i></a>          
+                    <a class="routeMap" id="routeMap1" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i>View-Route</a>          
                  </span>
                 <input type="hidden" id="hiddenrouteid" value="@routeId" />
                 <span id=@routebodyId >Generating Route <img src="~/Content/Image/d.gif"></span>
@@ -212,7 +210,7 @@
          setTimeout(function () { LoadMap(4); }, 6000);
        
         $(".routeMap").on("click", function () {        
-            var OnlyMap = false;
+            var OnlyMap = true;
             var id = $(this).closest("div").find("input").val();
             LoadMap(id, OnlyMap);
         })
@@ -227,12 +225,12 @@
             loadingImage: $('#loading-msg-subscribers-management'),
             NoRecordsFound: 'No Records Found',
             postContent: [
-                {
+                @*{
                     control: $('<button type="button" class="btn btn-primary" ' +
                     'onclick=\'showEditForm(this,"Edit", "@Url.Action("Form","Home")",300,250)\'>' +
                     '<small class="glyphicon glyphicon-edit"></small></small>' +
                     '</button>')
-                },
+                },*@
                 {
                     control: $('<form action="@Url.Action("Delete","Home")" method="POST" style="display:inline-block">' +
                     '<input type="hidden" name="Id" id="Id"/>' +
@@ -261,6 +259,7 @@
                     var _date = parseInt($(this).find("td:eq(4)").text().replace(/\/Date\(/g, "").replace(/\)\//, ""));
                     if (!isNaN(_date)) {
                         var x = new Date(_date);
+                        //var x = new Date(new Date(_date) - (3600000 * 5.5));
                         var finaldate = x.getMonth() + 1 + "/" + x.getDate() + "/" + x.getFullYear();
                         $(this).find("td:eq(4)").text(finaldate)
                     }
@@ -336,7 +335,25 @@
 
     $("#UserInfo_Name").val("@Session["UserName"]");
 
+    function SetLocationName() {
+        debugger;
+        var lat = $("#UserInfo_Latitude").val();
+        var lng = $("#UserInfo_Longitude").val();
+        var LatLng = new google.maps.LatLng(lat, lng);
+        getLocnameFromPinnedAddress(LatLng);
+        setTimeOut(function () { GetDate(); }, 3000);
+    }
+
     function GetDate() {
+        debugger;
+
+        var location = $("#UserInfo_SubLocation").val();
+        if (location == "") {      
+            $("#selectday-msg").text("* Please select a location in map");
+            $("#selectday-msg").css("display", "block");
+            return false;
+        }
+
         var day = "";
         $("input[type='checkbox']").each(function (k, v) {
             if ($(this).prop('checked')) {
@@ -345,6 +362,7 @@
         })
         $("#days").val(day);
         if (day == "") {
+            $("#selectday-msg").text("* Please select a date");
             $("#selectday-msg").css("display", "inline-block");
             return false;
         } else

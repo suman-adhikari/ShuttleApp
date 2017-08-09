@@ -182,7 +182,6 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
     directionsService.route(_request, function (_response, _status) {
         if (_status == google.maps.DirectionsStatus.OK) {
             directionsRenderer.setDirections(_response);
-
             if (!loadOnlyMap) {              
                 placeIdList = _response.geocoded_waypoints;
                 var i = -1;
@@ -198,7 +197,8 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
                 GetLocationName(optimizedRouteLatLong);
                 //getlocnameFromLatLong(optimizedRouteLatLong);
             } else {
-                SetMapCenter();
+                setTimeout(function () { SetMapCenter(); }, 0000);
+                //SetMapCenter();
             }
 
             
@@ -208,10 +208,9 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
 }
 
 function GetLocationName(optimizedRouteLatLong) {
-
     optimizedRouteLatLong.forEach(function (item) {
-        var location = GetLocationNameFromDb(item);
-        _locationWithLatLng.push(location);
+        var location = GetLocationNameFromDb(item.location);        
+            _locationWithLatLng.push(location);       
     });
 
     if (_locationWithLatLng.length > optimizedRouteLatLong.length - 1) {
@@ -235,7 +234,8 @@ function GetLocationNameFromDb(LatLng) {
 }
 
 function locationstring(_location) {
-    _location = _location.map(function (item) { return ExtractLocation(item) })
+    _location = _location.map(function (item) { return ExtractLocation(item) });
+    _location = _location.filter(Boolean);
     var unique = _location.filter(function (elem, index, self) {
         return index == self.indexOf(elem);
     })    
@@ -247,14 +247,18 @@ function locationstring(_location) {
 }
 
 function SetMapCenter() {
-    map.setCenter(originOfc);
-    map.setZoom(13);
+
+    var centre = { lat: 27.796261815236115, lng: 85.111083984375 };
+    map.setCenter(centre);
+    map.setZoom(12);
 }
 
 function setRoute() {
-    
     var alllocation = IsDataAvailabel ? $("#route_location").val() : "No Data Found";
     $("#route-body-" + routeid).text(alllocation);
+    if (routeid == 4) {
+        $(".routeMap").css("visibility", "visible");
+    }
 }
 
 // Function Not Used
@@ -300,7 +304,6 @@ function getlocname(placeIdList) {
 }
 
 function GetLocationNameInOrderOfRoute(location, optimizedRouteLatLong) {
-    debugger;
     optimizedRouteLatLong.forEach(function (otpimizedItem) {
         location.forEach(function (item) {
             if (otpimizedItem.lat() == item.lat) {
@@ -312,7 +315,6 @@ function GetLocationNameInOrderOfRoute(location, optimizedRouteLatLong) {
 }
 // Fetch from DB, if not found call NearByPlaceService
 function getlocnameFromLatLong(optimizedRouteLatLong) {
-    debugger;
     optimizedRouteLatLong.forEach(function (item) {
         var request = {
             location: item,
@@ -342,9 +344,7 @@ function getlocnameFromLatLong(optimizedRouteLatLong) {
         }
 
         function callbackSearchNearByPlaces(result, status, item) {
-
             if (status == google.maps.places.PlacesServiceStatus.OK) {
-                alert("wtf");
                 var subloc = result[0].name;
                 var _loc = result[0].vicinity;
                 var loc = function () { };

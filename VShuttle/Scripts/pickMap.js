@@ -27,7 +27,6 @@ function initialize(div_id, locationList) {
     }
 
     map_pickmap.addListener('click', function (args) {
-        
         var lat = args.latLng.lat();
         var lng = args.latLng.lng();
         var LatLng = new google.maps.LatLng(lat, lng);
@@ -38,7 +37,8 @@ function initialize(div_id, locationList) {
         allMarker.push(marker);
 
         mapPoints.push(args.latLng);
-        getLocnameFromPinnedAddress(LatLng)
+        // setTimeout(function () { getLocnameFromPinnedAddress(LatLng) }, 0000);
+        getLocnameFromPinnedAddress(LatLng);
         $("#UserInfo_Latitude").val(lat);
         $("#UserInfo_Longitude").val(lng);
         //for update
@@ -59,7 +59,10 @@ function initialize(div_id, locationList) {
 }
 
 function ShowRoutesMainLocation(markOffice,locationList) {
-
+    var countRoute1 = 0;
+    var countRoute2 = 0;
+    var countRoute3 = 0;
+    var countRoute4 = 0;
     var colorList = ["green", "pink", "blue"];
     var BhaktapurLatLng = { lat: 27.67186062999479, lng: 85.42299270629883 };
     var KalankiLatLng = { lat: 27.693835831182454, lng: 85.28155982494354 };
@@ -70,26 +73,36 @@ function ShowRoutesMainLocation(markOffice,locationList) {
     var markChabahil = AddMarker(ChabahilLatLng.lat, ChabahilLatLng.lng, map_pickmap, "blue");
 
     locationList.forEach(function (item) {
+        if (item.RouteId == 1) countRoute1++
+        else if (item.RouteId == 2) countRoute2++
+        else if (item.RouteId == 3) countRoute3++
+        else if (item.RouteId == 4) countRoute4++
         var color = colorList[item.RouteId-1];
         AddMarker(item.Latitude, item.Longitude, map_pickmap, color);
     });
+    
+    DisplayTotalUserFromEachRoute(countRoute1, countRoute2,countRoute3);
 
-    ShowPopUpInfo(map_pickmap, markOffice,    "<span style='color:purple; font-size:16px;'>Office<span>");
-    ShowPopUpInfo(map_pickmap, markBhaktapur, "<span style='color:green; font-size:16px;'>Bhanktapur<span>");
-    ShowPopUpInfo(map_pickmap, markKalanki, "<span style='color:#d4818f; font-size:16px;'>Kalanki<span>");
-    ShowPopUpInfo(map_pickmap, markChabahil, "<span style='color:#008e4e; font-size:16px;'>Chabahil<span>");
+    //ShowPopUpInfo(map_pickmap, markOffice,    "<span style='color:purple; font-size:16px;'>Office<span>");
+    //ShowPopUpInfo(map_pickmap, markBhaktapur, "<span style='color:green; font-size:16px;'>Bhanktapur<span>");
+    //ShowPopUpInfo(map_pickmap, markKalanki, "<span style='color:#d4818f; font-size:16px;'>Kalanki<span>");
+    //ShowPopUpInfo(map_pickmap, markChabahil, "<span style='color:#008e4e; font-size:16px;'>Chabahil<span>");
+}
+
+function DisplayTotalUserFromEachRoute(countRoute1, countRoute2, countRoute3) {
+    $("#route1-info span").text(countRoute1);
+    $("#route2-info span").text(countRoute2);
+    $("#route3-info span").text(countRoute3);
 }
 
 function getLocnameFromPinnedAddress(LatLng) {
 
-    var service = new google.maps.places.PlacesService(map_pickmap);
-   
+    var service = new google.maps.places.PlacesService(map_pickmap);  
         var request = {
             location: LatLng,
-            radius: '500',
-            types: ['bus_station']
+            types: ['bus_station'],
+            rankBy: google.maps.places.RankBy.DISTANCE
         };
-
 
         // service.nearbySearch(request, callbackSearchNearByPlaces);
         service.nearbySearch(request, function (result, status) {
@@ -103,6 +116,9 @@ function getLocnameFromPinnedAddress(LatLng) {
                 subloc = ExtractLocation(subloc);
                 $("#UserInfo_SubLocation").val(subloc);
                 $("#SubLocation").val(subloc);
+
+            } else {
+                alert("near By");
             }
 
         }

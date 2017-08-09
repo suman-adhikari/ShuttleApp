@@ -567,6 +567,9 @@
     <Content Include="fonts\Roboto-ThinItalic-webfont.eot" />
     <Content Include="fonts\Roboto-ThinItalic-webfont.ttf" />
     <Content Include="fonts\Roboto-ThinItalic-webfont.woff" />
+    <Content Include="fonts\OpenSansCondensed-Bold.ttf" />
+    <Content Include="fonts\OpenSansCondensed-Light.ttf" />
+    <Content Include="fonts\OpenSansCondensed-LightItalic.ttf" />
     <None Include="Properties\PublishProfiles\vshuttle.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\dateTimepicker.js" />
@@ -596,6 +599,7 @@
     <Content Include="Scripts\json2.js" />
     <Content Include="Scripts\mapcommons.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\pickMap.js" />
     <Content Include="Scripts\PointInmap.js" />
     <Content Include="Scripts\prettify.js" />
