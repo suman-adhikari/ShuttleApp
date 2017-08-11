@@ -208,6 +208,8 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
 }
 
 function GetLocationName(optimizedRouteLatLong) {
+    //var AllLocation = GetTodaysAllLocation();
+    debugger;
     optimizedRouteLatLong.forEach(function (item) {
         var location = GetLocationNameFromDb(item.location);        
             _locationWithLatLng.push(location);       
@@ -216,6 +218,20 @@ function GetLocationName(optimizedRouteLatLong) {
     if (_locationWithLatLng.length > optimizedRouteLatLong.length - 1) {
         locationstring(_locationWithLatLng)
     };
+}
+
+function GetTodaysAllLocation() {
+    var locations;
+    $.ajax({
+        url: '/Home/FindTodaysAllLocation',
+        async: false,
+        type: 'get',
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            locations = result;
+        }
+    })
+    return locations;
 }
 
 function GetLocationNameFromDb(LatLng) {

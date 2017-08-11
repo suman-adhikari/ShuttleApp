@@ -53,8 +53,14 @@ namespace VShuttle.Controllers
             return location;
         }
 
+        public ActionResult FindTodaysAllLocation()
+        {
+            var location = userInfoRepository.FindTodaysAllLocation();
+            return Json(location, JsonRequestBehavior.AllowGet);
+        }   
+
         [HttpPost]
-        public string Index(UserInfo userInfo, string days)
+        public ActionResult Index(UserInfo userInfo, string days)
         {
             var UserId = Session["Id"] != null ? Session["Id"].ToString() : "";
             var status = false;
@@ -83,9 +89,9 @@ namespace VShuttle.Controllers
             }
 
             //Session["Status"] = status ? "Success" : "Failed";
-           // Session["Message"] = status ? "UserInfo Successfully " + successAction + "" : "UserInfo " + FailedAction + " Failed";
-
-            return days;
+            // Session["Message"] = status ? "UserInfo Successfully " + successAction + "" : "UserInfo " + FailedAction + " Failed";
+            var data = new { RouteId = userInfo.RouteId, Days = days };
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult FindAll(int offset, int rowNumber, string sortExpression, string sortOrder, int pageNumber, string Name = "")

@@ -261,8 +261,9 @@
 
                     var _date = parseInt($(this).find("td:eq(4)").text().replace(/\/Date\(/g, "").replace(/\)\//, ""));
                     if (!isNaN(_date)) {
-                        var x = new Date(_date);
-                        var finaldate = x.getMonth() + 1 + "/" + x.getDate() + "/" + x.getFullYear();
+                        var date = new Date(_date);
+                        var finaldate = currentDate(date);
+                        //var finaldate = x.getMonth() + 1 + "/" + x.getDate() + "/" + x.getFullYear();
                         $(this).find("td:eq(4)").text(finaldate)
                     }
                 })  
@@ -338,21 +339,20 @@
                      //refresh grid
                      $('#UserInfoList').trigger('refreshGrid');
 
-                     debugger;
-                     //update RouteInfo
-                     var currentdate = currentDate();
-                     if (currentdate == rowDate) {                        
-                         var routeArray = ["Route Bhaktapur", "Route Kalanki", "Route Chabahil", "Route Misc"];                       
-                         var routeId = routeArray.indexOf(rowrouteName);
-                         var routeDivId = "#route-body-" + (routeId + 1);
-                         var routeText_old = $(routeDivId).text();
-                         var routeText_new = $(routeDivId).text(routeText_old.replace("-> " + rowlocation, ""));
-                     }
-                     
-                     function currentDate() {
-                         let date = new Date();
-                         return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
-                     }
+                    //update RouteInfo
+
+                     var routeArray = ["Route Bhaktapur", "Route Kalanki", "Route Chabahil", "Route Misc"];
+                     var routeId = routeArray.indexOf(rowrouteName);
+                     LoadMap(routeId+1, false);
+              
+                     //var currentdate = currentDate();
+                     //if (currentdate == rowDate) {                        
+                     //    var routeArray = ["Route Bhaktapur", "Route Kalanki", "Route Chabahil", "Route Misc"];                       
+                     //    var routeId = routeArray.indexOf(rowrouteName);
+                     //    var routeDivId = "#route-body-" + (routeId + 1);
+                     //    var routeText_old = $(routeDivId).text();
+                     //    var routeText_new = $(routeDivId).text(routeText_old.replace("-> " + rowlocation, ""));
+                     //}
 
                 }
             }
@@ -392,7 +392,7 @@
     }
 
     function GetDate() {
-        debugger;
+  
         var location = $("#UserInfo_SubLocation").val();
         if (location == "") {      
             $("#selectday-msg").text("* Please select a location in map");
@@ -433,9 +433,8 @@
             data: data,
             //contentType: "application/json; charset=utf-8",
             success: function (result) {
-                debugger;
                 $('#UserInfoList').trigger('refreshGrid');
-                var dates = result.trim().split(" ");
+                var dates = result.Days.trim().split(" ");
 
                 dates.forEach(function (item) {
                     var weeks = ["mon", "tue", "wed", "thu", "fri"];
@@ -447,8 +446,20 @@
                     $("#registerUser,#registerHr").hide();
                 }
 
+                //Update Route Info
+                LoadMap(result.RouteId, false);
+
             }
         })
+    }
+
+    function currentDate(_date) {
+        if (_date) {
+            var date = new Date(_date);
+        } else {
+            var date = new Date();
+        }
+        return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
     }
 
     function LoadMap(id, OnlyMap) {

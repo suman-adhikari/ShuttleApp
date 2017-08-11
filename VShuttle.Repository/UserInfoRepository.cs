@@ -166,6 +166,18 @@ namespace VShuttle.Repository
             return "NotFound";
         }
 
+        public List<LatLngLocation> FindTodaysAllLocation() {
+            var query = (from userinfo in db.UserInfos
+                        where DbFunctions.TruncateTime(userinfo.Date) == DbFunctions.TruncateTime(DateTime.Now)
+                        select new LatLngLocation {
+                            Latitude = userinfo.Latitude,
+                            Longitude = userinfo.Longitude,
+                            Location = userinfo.SubLocation
+                        });
+
+            return query.ToList();
+        }
+
         public List<LatLng> GetLocations(int routeid)
         {
 

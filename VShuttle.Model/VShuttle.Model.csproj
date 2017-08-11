@@ -45,6 +45,7 @@
     <Compile Include="AjaxGridResult.cs" />
     <Compile Include="AjaxModel.cs" />
     <Compile Include="AllLocation.cs" />
+    <Compile Include="LatLngLocation.cs" />
     <Compile Include="LatLng.cs" />
     <Compile Include="Locations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
