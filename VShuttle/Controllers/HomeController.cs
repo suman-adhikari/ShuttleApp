@@ -54,7 +54,7 @@ namespace VShuttle.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(UserInfo userInfo, string days)
+        public string Index(UserInfo userInfo, string days)
         {
             var UserId = Session["Id"] != null ? Session["Id"].ToString() : "";
             var status = false;
@@ -82,10 +82,10 @@ namespace VShuttle.Controllers
                 }
             }
 
-            Session["Status"] = status ? "Success" : "Failed";
-            Session["Message"] = status ? "UserInfo Successfully " + successAction + "" : "UserInfo " + FailedAction + " Failed";
+            //Session["Status"] = status ? "Success" : "Failed";
+           // Session["Message"] = status ? "UserInfo Successfully " + successAction + "" : "UserInfo " + FailedAction + " Failed";
 
-            return RedirectToAction("Index");
+            return days;
         }
 
         public ActionResult FindAll(int offset, int rowNumber, string sortExpression, string sortOrder, int pageNumber, string Name = "")
@@ -123,11 +123,11 @@ namespace VShuttle.Controllers
             return View(userinfo);
         }
 
-        public ActionResult Delete(int id) {
+        public string Delete(int id) {
             var status = userInfoRepository.Delete(id);
-            Session["Status"] = status ? "Success" : "Failed";
-            Session["Message"] = status ? "UserInfo Successfully Deleted" : "UserInfo Deletion Failed";
-            return RedirectToAction("Index");
+            //Session["Status"] = status ? "Success" : "Failed";
+            //Session["Message"] = status ? "UserInfo Successfully Deleted" : "UserInfo Deletion Failed";
+            return status ? id.ToString() : "0";
         }
 
         public ActionResult FindAllTotal(AjaxModel ajaxGrid)

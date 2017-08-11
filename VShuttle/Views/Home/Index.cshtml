@@ -29,8 +29,10 @@
             Register Location
         </div>
 
-        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
-        {
+     
+        <form id="UserInfoForm">
+
+           
 
             <input type="hidden" id="latnag" />
 
@@ -67,7 +69,7 @@
                 </span>
 
                 <span class="form-element col-md-3">
-                    <button class="btn btn-primary btn-save" onclick="return GetDate();" type="submit">Save</button>
+                    <button class="btn btn-primary btn-save" onclick="return GetDate();" type="button">Save</button>
                 </span>
 
                 @Html.Hidden("days", new { @id = "days", @name = "days" })
@@ -80,7 +82,9 @@
             <div id="selectday-msg" class="checkbox-inline">
                 <span>* Please select at least a day !</span>
             </div>
-        }
+         
+             </form>
+       
 
     </div>
 }
@@ -203,7 +207,6 @@
     $(function () {
 
          DisplayHomeMap();
-
          setTimeout(function () { LoadMap(1); }, 3000);
          setTimeout(function () { LoadMap(2); }, 4000);
          setTimeout(function () { LoadMap(3); }, 5000);
@@ -232,12 +235,12 @@
                     '</button>')
                 },*@
                 {
-                    control: $('<form action="@Url.Action("Delete","Home")" method="POST" style="display:inline-block">' +
+                    control: $(
                     '<input type="hidden" name="Id" id="Id"/>' +
                     '<input type="hidden" name="INumber" id="INumber"/>' +
                     '<button type="submit" class="btn btn-danger" ' +
-                    'onclick=\'return confirm("Are you sure you want to Remove this List?")\'>' +
-                    '<span class="glyphicon glyphicon-remove"></span></button></form>'),
+                    'onclick=\'deleteUserInfo(this);\'>' +
+                    '<span class="glyphicon glyphicon-remove"></span></button>'),
                     properties: [
                         {
                             propertyField: 'input[type=hidden]#Id',
@@ -259,18 +262,10 @@
                     var _date = parseInt($(this).find("td:eq(4)").text().replace(/\/Date\(/g, "").replace(/\)\//, ""));
                     if (!isNaN(_date)) {
                         var x = new Date(_date);
-                        //var x = new Date(new Date(_date) - (3600000 * 5.5));
                         var finaldate = x.getMonth() + 1 + "/" + x.getDate() + "/" + x.getFullYear();
                         $(this).find("td:eq(4)").text(finaldate)
                     }
-                })
-
-                $("#UserInfoList .btn").prop("disabled", true);
-                $("#UserInfoList #INumber").each(function (k, v) {
-                    if($(this).val() == "@Session["Id"]"){
-                        $(this).closest("tr").find(".btn").prop("disabled",false);
-                    }
-                });
+                })  
             },
             id: 'Id'
         });
@@ -305,15 +300,68 @@
                 $(selector).prop('disabled',true);         
               }
         }
-
         if ($("input:checkbox:not(:disabled)").length<1) {
             $("#registerUser,#registerHr").hide();
         }
 
     });
 
-    $("#ajaxgridSearch").on('click', function () {
+    function deleteUserInfo(obj) {     
+        var id = $(obj).closest("tr").find("td:eq(0)").text()
+        $.ajax({
+            url: '/Home/Delete',
+            async: false,
+            type: 'get',
+            data: { id: id },
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+               
+                if (result != "0") {  
 
+                    // enable select day checkbox
+                    var row;
+                    $.each( $("#UserInfoList").find("tr"), function (key, val) {
+                        if ($(this).find("td:eq(0)").text() == result)
+                            row = $(this).closest("tr");
+                    });
+
+                    var rowDate = row.find("td:eq(4)").html();
+                    var rowlocation = row.find("td:eq(3)").html();
+                    var rowrouteName = row.find("td:eq(2)").html();
+
+                     var weeks = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+                     var date = new Date();
+                     weekday = weeks[date.getDay(rowDate)];
+                     $("#" + weekday + "").prop('disabled', false);
+                     $("#registerUser,#registerHr").show();
+
+                     //refresh grid
+                     $('#UserInfoList').trigger('refreshGrid');
+
+                     debugger;
+                     //update RouteInfo
+                     var currentdate = currentDate();
+                     if (currentdate == rowDate) {                        
+                         var routeArray = ["Route Bhaktapur", "Route Kalanki", "Route Chabahil", "Route Misc"];                       
+                         var routeId = routeArray.indexOf(rowrouteName);
+                         var routeDivId = "#route-body-" + (routeId + 1);
+                         var routeText_old = $(routeDivId).text();
+                         var routeText_new = $(routeDivId).text(routeText_old.replace("-> " + rowlocation, ""));
+                     }
+                     
+                     function currentDate() {
+                         let date = new Date();
+                         return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
+                     }
+
+                }
+            }
+        })
+    }
+
+   
+
+    $("#ajaxgridSearch").on('click', function () {
         var name = $("#searchName").val();
         $('#UserInfoList').trigger('refreshGrid', { Name: name });
         $("#searchName").val("");
@@ -336,7 +384,6 @@
     $("#UserInfo_Name").val("@Session["UserName"]");
 
     function SetLocationName() {
-        debugger;
         var lat = $("#UserInfo_Latitude").val();
         var lng = $("#UserInfo_Longitude").val();
         var LatLng = new google.maps.LatLng(lat, lng);
@@ -346,10 +393,15 @@
 
     function GetDate() {
         debugger;
-
         var location = $("#UserInfo_SubLocation").val();
         if (location == "") {      
             $("#selectday-msg").text("* Please select a location in map");
+            $("#selectday-msg").css("display", "block");
+            return false;
+        }
+
+        if ($("#UserInfo_RouteId").val() == "") {
+            $("#selectday-msg").text("* Please select a route");
             $("#selectday-msg").css("display", "block");
             return false;
         }
@@ -365,8 +417,8 @@
             $("#selectday-msg").text("* Please select a date");
             $("#selectday-msg").css("display", "inline-block");
             return false;
-        } else
-            return true;
+        }
+        SaveUserInfo($("#UserInfoForm").serializeArray());
     }
 
     $("input[type='checkbox']").on('click', function () {
@@ -374,7 +426,30 @@
     });
 
 
-    
+    function SaveUserInfo(data) {
+        $.ajax({
+            url: '/Home/Index',
+            type: 'post',
+            data: data,
+            //contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                debugger;
+                $('#UserInfoList').trigger('refreshGrid');
+                var dates = result.trim().split(" ");
+
+                dates.forEach(function (item) {
+                    var weeks = ["mon", "tue", "wed", "thu", "fri"];
+                    weekday = weeks[parseInt(item)];
+                    $("#" + weekday + "").prop('checked', false).prop('disabled', true);
+                })
+                
+                if ($("input:checkbox:not(:disabled)").length < 1) {
+                    $("#registerUser,#registerHr").hide();
+                }
+
+            }
+        })
+    }
 
     function LoadMap(id, OnlyMap) {
         $.ajax({
