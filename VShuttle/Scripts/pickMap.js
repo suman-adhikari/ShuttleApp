@@ -20,10 +20,10 @@ function initialize(div_id, locationList) {
 
    
     mapPoints.push(centerlatLng)
-    var markOffice = AddMarker(officeLatLng.lat, officeLatLng.lng, map_pickmap, "purple");
+    //var markOffice = AddMarker(officeLatLng.lat, officeLatLng.lng, map_pickmap, "office2");
 
     if (div_id == "picklocation") {
-        ShowRoutesMainLocation(markOffice,locationList);
+        ShowRoutesMainLocation(locationList);
     }
 
     map_pickmap.addListener('click', function (args) {
@@ -58,12 +58,12 @@ function initialize(div_id, locationList) {
 
 }
 
-function ShowRoutesMainLocation(markOffice,locationList) {
+function ShowRoutesMainLocation(locationList) {
     var countRoute1 = 0;
     var countRoute2 = 0;
     var countRoute3 = 0;
     var countRoute4 = 0;
-    var colorList = ["green", "pink", "blue"];
+    var colorList = ["green", "pink", "blue", "purple"];
     var BhaktapurLatLng = { lat: 27.67186062999479, lng: 85.42299270629883 };
     var KalankiLatLng = { lat: 27.693835831182454, lng: 85.28155982494354 };
     var ChabahilLatLng = { lat: 27.717287079373634, lng: 85.321949 };
@@ -81,7 +81,7 @@ function ShowRoutesMainLocation(markOffice,locationList) {
         AddMarker(item.Latitude, item.Longitude, map_pickmap, color);
     });
     
-    DisplayTotalUserFromEachRoute(countRoute1, countRoute2,countRoute3);
+    DisplayTotalUserFromEachRoute(countRoute1, countRoute2,countRoute3,countRoute4);
 
     //ShowPopUpInfo(map_pickmap, markOffice,    "<span style='color:purple; font-size:16px;'>Office<span>");
     //ShowPopUpInfo(map_pickmap, markBhaktapur, "<span style='color:green; font-size:16px;'>Bhanktapur<span>");
@@ -89,10 +89,11 @@ function ShowRoutesMainLocation(markOffice,locationList) {
     //ShowPopUpInfo(map_pickmap, markChabahil, "<span style='color:#008e4e; font-size:16px;'>Chabahil<span>");
 }
 
-function DisplayTotalUserFromEachRoute(countRoute1, countRoute2, countRoute3) {
+function DisplayTotalUserFromEachRoute(countRoute1, countRoute2, countRoute3,countRoute4) {
     $("#route1-info span").text(countRoute1);
     $("#route2-info span").text(countRoute2);
     $("#route3-info span").text(countRoute3);
+    $("#route4-info span").text(countRoute4);
 }
 
 function getLocnameFromPinnedAddress(LatLng) {

@@ -11,13 +11,15 @@ var originOfc;
 var officeLatLng;
 var _location;
 var _sublocation;
+var AllLocation;
 
 var _locationWithLatLng;
 var IsDataAvailabel = false;
 
-function initializeRouteMap(latlngList, _routeid, OnlyMap) {
+function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
     //$("#mapModel").find("input").remove();
     routeid = _routeid;
+    AllLocation = _allLocation;
     officeLatLng = { lat: 27.711753319439183, lng: 85.32223284244537 };
     originOfc = new google.maps.LatLng(officeLatLng.lat, officeLatLng.lng);
     var mapDiv = document.getElementById('map-canvas');
@@ -209,30 +211,21 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
 
 function GetLocationName(optimizedRouteLatLong) {
     //var AllLocation = GetTodaysAllLocation();
-    debugger;
     optimizedRouteLatLong.forEach(function (item) {
-        var location = GetLocationNameFromDb(item.location);        
-            _locationWithLatLng.push(location);       
-    });
+        AllLocation.forEach(function (row) {
+            if (item.location.lat() == row.Latitude && item.location.lng() == row.Longitude) {
+                _locationWithLatLng.push(row.Location);
+            };
+            //var location = GetLocationNameFromDb(item.location);
+            // _locationWithLatLng.push(location);       
+        });
 
+    });
     if (_locationWithLatLng.length > optimizedRouteLatLong.length - 1) {
         locationstring(_locationWithLatLng)
     };
 }
 
-function GetTodaysAllLocation() {
-    var locations;
-    $.ajax({
-        url: '/Home/FindTodaysAllLocation',
-        async: false,
-        type: 'get',
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            locations = result;
-        }
-    })
-    return locations;
-}
 
 function GetLocationNameFromDb(LatLng) {
     var loc = "";

@@ -9,10 +9,11 @@
     <div class="col-md-12 picklocationcontainer">
 
         <div class="col-md-12 map-location-info">
-            <li id="office-info"><i class="glyphicon glyphicon-map-marker"></i> Office</li>
+            @*<li id="office-info"><i class="glyphicon glyphicon-map-marker"></i> office</li>*@
             <li id="route1-info"><i class="glyphicon glyphicon-map-marker"></i> Bhaktapur - <span> </span></li>
             <li id="route2-info"><i class="glyphicon glyphicon-map-marker"></i> Kalanki - <span> </span></li>
             <li id="route3-info"><i class="glyphicon glyphicon-map-marker"></i> Chabahil - <span> </span></li>
+            <li id="route4-info"><i class="glyphicon glyphicon-map-marker"></i> Misc - <span> </span></li>
         </div>
         @*<input id="pac-input" class="controls" type="text" placeholder="Search location">*@
         <div id="picklocation"></div>
@@ -205,17 +206,17 @@
 
 
     $(function () {
-
          DisplayHomeMap();
-         setTimeout(function () { LoadMap(1); }, 3000);
-         setTimeout(function () { LoadMap(2); }, 4000);
-         setTimeout(function () { LoadMap(3); }, 5000);
-         setTimeout(function () { LoadMap(4); }, 6000);
+         var AllLocation = GetTodaysAllLocation();
+         setTimeout(function () { LoadMap(1, AllLocation); }, 3000);
+         setTimeout(function () { LoadMap(2, AllLocation); }, 4000);
+         setTimeout(function () { LoadMap(3, AllLocation); }, 5000);
+         setTimeout(function () { LoadMap(4, AllLocation); }, 6000);
        
         $(".routeMap").on("click", function () {        
             var OnlyMap = true;
             var id = $(this).closest("div").find("input").val();
-            LoadMap(id, OnlyMap);
+            LoadMap(id,AllLocation,OnlyMap);
         })
 
         $('#UserInfoList').ajaxGrid({
@@ -318,7 +319,7 @@
             success: function (result) {
                
                 if (result != "0") {  
-
+                    debugger;
                     // enable select day checkbox
                     var row;
                     $.each( $("#UserInfoList").find("tr"), function (key, val) {
@@ -331,19 +332,21 @@
                     var rowrouteName = row.find("td:eq(2)").html();
 
                      var weeks = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-                     var date = new Date();
-                     weekday = weeks[date.getDay(rowDate)];
+                     var date = new Date(rowDate);
+                     weekday = weeks[date.getDay()];
                      $("#" + weekday + "").prop('disabled', false);
                      $("#registerUser,#registerHr").show();
 
                      //refresh grid
                      $('#UserInfoList').trigger('refreshGrid');
 
-                    //update RouteInfo
+                    // Update Map Marker
+                     DisplayHomeMap();
 
+                    //update RouteInfo
                      var routeArray = ["Route Bhaktapur", "Route Kalanki", "Route Chabahil", "Route Misc"];
                      var routeId = routeArray.indexOf(rowrouteName);
-                     LoadMap(routeId+1, false);
+                     LoadMap(routeId+1,AllLocation, false);
               
                      //var currentdate = currentDate();
                      //if (currentdate == rowDate) {                        
@@ -433,9 +436,12 @@
             data: data,
             //contentType: "application/json; charset=utf-8",
             success: function (result) {
+                debugger;
+                //update grid
                 $('#UserInfoList').trigger('refreshGrid');
-                var dates = result.Days.trim().split(" ");
 
+                // disable checkbox days
+                var dates = result.Days.trim().split(" ");
                 dates.forEach(function (item) {
                     var weeks = ["mon", "tue", "wed", "thu", "fri"];
                     weekday = weeks[parseInt(item)];
@@ -447,8 +453,14 @@
                 }
 
                 //Update Route Info
-                LoadMap(result.RouteId, false);
+                LoadMap(result.UserInfo.RouteId, AllLocation, false);
 
+                //Add Marker
+                DisplayHomeMap();
+                //var colorList = ["green", "pink", "blue", "purple"];
+               // map = "picklocation";
+                //var color = colorList[result.UserInfo.RouteId - 1];
+               // AddMarker(result.UserInfo.Latitude, result.UserInfo.Longitude, map, color)
             }
         })
     }
@@ -462,12 +474,27 @@
         return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
     }
 
-    function LoadMap(id, OnlyMap) {
+    function GetTodaysAllLocation() {
+        var locations;
+        $.ajax({
+            url: '/Home/FindTodaysAllLocation',
+            async: false,
+            type: 'get',
+            data: { routeId: 1 },
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                locations = result;
+            }
+        })
+        return locations;
+    }
+
+    function LoadMap(id,AllLocation,OnlyMap) {
         $.ajax({
             data:"id="+id,
             url: '@Url.Action("GetLocation", "Home")',
             success: function (result) {
-                initializeRouteMap(result, id, OnlyMap);
+                initializeRouteMap(result, id, OnlyMap, AllLocation);
                 
             }
         });

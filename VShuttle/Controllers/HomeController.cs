@@ -53,9 +53,9 @@ namespace VShuttle.Controllers
             return location;
         }
 
-        public ActionResult FindTodaysAllLocation()
+        public ActionResult FindTodaysAllLocation(int routeid)
         {
-            var location = userInfoRepository.FindTodaysAllLocation();
+            var location = userInfoRepository.FindTodaysAllLocation(routeid);
             return Json(location, JsonRequestBehavior.AllowGet);
         }   
 
@@ -90,7 +90,7 @@ namespace VShuttle.Controllers
 
             //Session["Status"] = status ? "Success" : "Failed";
             // Session["Message"] = status ? "UserInfo Successfully " + successAction + "" : "UserInfo " + FailedAction + " Failed";
-            var data = new { RouteId = userInfo.RouteId, Days = days };
+            var data = new { UserInfo = userInfo, Days = days };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 

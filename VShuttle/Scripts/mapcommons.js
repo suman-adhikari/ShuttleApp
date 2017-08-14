@@ -1,4 +1,6 @@
 ﻿
+
+
 function AddMarker(lat, lng, map, Icon) {
     var latLng = new google.maps.LatLng(lat, lng)
     var iconurl = "Content/Image/color.png".replace("color", Icon);
