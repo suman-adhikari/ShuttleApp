@@ -9,7 +9,7 @@
     <div class="col-md-12 picklocationcontainer">
 
         <div class="col-md-12 map-location-info">
-            @*<li id="office-info"><i class="glyphicon glyphicon-map-marker"></i> office</li>*@
+            <li id="office-info"><i class="glyphicon glyphicon-map-marker"></i> office</li>
             <li id="route1-info"><i class="glyphicon glyphicon-map-marker"></i> Bhaktapur - <span> </span></li>
             <li id="route2-info"><i class="glyphicon glyphicon-map-marker"></i> Kalanki - <span> </span></li>
             <li id="route3-info"><i class="glyphicon glyphicon-map-marker"></i> Chabahil - <span> </span></li>
@@ -166,7 +166,7 @@
         var routebodyId = "route-body-" + routeId;
         <div class="col-md-3 route">
             <div>
-                <span class="route-header">@route.RouteLocations
+                <span class="route-header">@route.RouteLocations <label id="distancetime-taken">0 Km</label>
                     <a class="routeMap" id="routeMap1" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i>View-Route</a>          
                  </span>
                 <input type="hidden" id="hiddenrouteid" value="@routeId" />
@@ -176,6 +176,19 @@
     }
 
 </div>
+
+<hr />
+
+
+<div class="clearfix"></div>
+
+@*<div id="distance-info" class="row-fluid">
+    <div class="col-md-12">      
+         <h1>distance</h1>
+        <span></span>
+    </div>
+</div>*@
+
 <div class="modal fade" id="mapModel" role="dialog">
     
     <div class="modal-dialog">
@@ -204,10 +217,10 @@
 
 <script>
 
-
+    var AllLocation;
     $(function () {
          DisplayHomeMap();
-         var AllLocation = GetTodaysAllLocation();
+         AllLocation = GetTodaysAllLocation();
          setTimeout(function () { LoadMap(1, AllLocation); }, 3000);
          setTimeout(function () { LoadMap(2, AllLocation); }, 4000);
          setTimeout(function () { LoadMap(3, AllLocation); }, 5000);
@@ -421,6 +434,7 @@
             $("#selectday-msg").css("display", "inline-block");
             return false;
         }
+        $("#selectday-msg").css("display", "none");
         SaveUserInfo($("#UserInfoForm").serializeArray());
     }
 
@@ -453,6 +467,7 @@
                 }
 
                 //Update Route Info
+                AllLocation = GetTodaysAllLocation();
                 LoadMap(result.UserInfo.RouteId, AllLocation, false);
 
                 //Add Marker

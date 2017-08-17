@@ -20,10 +20,10 @@ function initialize(div_id, locationList) {
 
    
     mapPoints.push(centerlatLng)
-    //var markOffice = AddMarker(officeLatLng.lat, officeLatLng.lng, map_pickmap, "office2");
+    var markOffice = AddMarker(officeLatLng.lat, officeLatLng.lng, map_pickmap, "ofc");
 
     if (div_id == "picklocation") {
-        ShowRoutesMainLocation(locationList);
+        ShowRoutesMainLocation(markOffice,locationList);
     }
 
     map_pickmap.addListener('click', function (args) {
@@ -58,7 +58,9 @@ function initialize(div_id, locationList) {
 
 }
 
-function ShowRoutesMainLocation(locationList) {
+//ShowRoutesMainLocation(markOffice, locationList);
+
+function ShowRoutesMainLocation(markOffice,locationList) {
     var countRoute1 = 0;
     var countRoute2 = 0;
     var countRoute3 = 0;
@@ -83,7 +85,7 @@ function ShowRoutesMainLocation(locationList) {
     
     DisplayTotalUserFromEachRoute(countRoute1, countRoute2,countRoute3,countRoute4);
 
-    //ShowPopUpInfo(map_pickmap, markOffice,    "<span style='color:purple; font-size:16px;'>Office<span>");
+    //ShowPopUpInfo(map_pickmap, markOffice, "<span style='color:purple; font-size:16px;'>Office<span>");
     //ShowPopUpInfo(map_pickmap, markBhaktapur, "<span style='color:green; font-size:16px;'>Bhanktapur<span>");
     //ShowPopUpInfo(map_pickmap, markKalanki, "<span style='color:#d4818f; font-size:16px;'>Kalanki<span>");
     //ShowPopUpInfo(map_pickmap, markChabahil, "<span style='color:#008e4e; font-size:16px;'>Chabahil<span>");
