@@ -158,7 +158,277 @@
        Route Information
     </div>
 
-    @{ int i = -1; var routearray = new string[] { "One", "Two", "Three", "Four"}; }
+    @*<div class="col-md-8">
+        <div id="map-canvas"></div>  
+    </div>*@
+
+    <div class="col-md-12">
+        <div class="row" style="background-color; padding:7px; ">
+            <section id="conference-timeline">
+                <div class="timeline-start">Start</div>
+                <div class="conference-center-line"></div>
+                <div class="conference-timeline-content">
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Anamnagar</p>
+                            </div>
+                            @*<span class="timeline-author">2Km</span>*@
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Suman Adhikari</p>
+                                <p>Suman Adhikari <span class="article-number"></span></p>
+                                <p>Suman Adhikari <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">1</span>
+                            @*@<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Ishan Hospital<span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Dilasha Shah <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">2</span>
+                            @*<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Hanumansthan <span class="article-number"></span></p>
+                            </div>                          
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Shakar Bhattarai <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">3</span>
+                            @*<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Anamnagar</p>
+                            </div>
+                            @*<span class="timeline-author">2Km</span>*@
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Suman Adhikari</p>
+                                <p>Suman Adhikari <span class="article-number"></span></p>
+                                <p>Suman Adhikari <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">4</span>
+                            @*@<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Ishan Hospital<span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Dilasha Shah <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">5</span>
+                            @*<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Hanumansthan <span class="article-number"></span></p>
+                            </div>
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Shakar Bhattarai <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">6</span>
+                            @*<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Anamnagar</p>
+                            </div>
+                            @*<span class="timeline-author">2Km</span>*@
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Suman Adhikari</p>
+                                <p>Suman Adhikari <span class="article-number"></span></p>
+                                <p>Suman Adhikari <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">1</span>
+                            @*@<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Ishan Hospital<span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Dilasha Shah <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">2</span>
+                            @*<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Hanumansthan <span class="article-number"></span></p>
+                            </div>
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Shakar Bhattarai <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">3</span>
+                            @*<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Anamnagar</p>
+                            </div>
+                            @*<span class="timeline-author">2Km</span>*@
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Suman Adhikari</p>
+                                <p>Suman Adhikari <span class="article-number"></span></p>
+                                <p>Suman Adhikari <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">4</span>
+                            @*@<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Ishan Hospital<span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Dilasha Shah <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">5</span>
+                            @*<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                    <!-- Article -->
+                    <div class="timeline-article">
+                        <div class="content-left-container">
+                            <div class="content-left">
+                                <p>Hanumansthan <span class="article-number"></span></p>
+                            </div>
+                        </div>
+                        <div class="content-right-container">
+                            <div class="content-right">
+                                <p>Shakar Bhattarai <span class="article-number"></span></p>
+                            </div>
+                            @*<span class="timeline-author">John Doe</span>*@
+                        </div>
+                        <div class="meta-date">
+                            <span class="date">6</span>
+                            @*<span class="month">APR</span>*@
+                        </div>
+                    </div>
+                    <!-- // Article -->
+                </div>
+                <div class="timeline-end">End</div>
+            </section>
+
+            @*<div class="col-md-6">
+                Distance
+            </div>
+
+            <div class="col-md-6">
+                Time
+            </div>*@
+
+        </div>
+
+    </div>
+
+    @*@{ int i = -1; var routearray = new string[] { "One", "Two", "Three", "Four"}; }
     @foreach (var route in Model.Routes)
     {
         i++;
@@ -173,7 +443,9 @@
                 <span id=@routebodyId >Generating Route <img src="~/Content/Image/d.gif"></span>
             </div>
         </div>
-    }
+    }*@
+
+
 
 </div>
 
@@ -222,9 +494,9 @@
          DisplayHomeMap();
          AllLocation = GetTodaysAllLocation();
          setTimeout(function () { LoadMap(1, AllLocation); }, 3000);
-         setTimeout(function () { LoadMap(2, AllLocation); }, 4000);
-         setTimeout(function () { LoadMap(3, AllLocation); }, 5000);
-         setTimeout(function () { LoadMap(4, AllLocation); }, 6000);
+         //setTimeout(function () { LoadMap(2, AllLocation); }, 4000);
+        // setTimeout(function () { LoadMap(3, AllLocation); }, 5000);
+        // setTimeout(function () { LoadMap(4, AllLocation); }, 6000);
        
         $(".routeMap").on("click", function () {        
             var OnlyMap = true;

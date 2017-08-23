@@ -84,7 +84,6 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
     }
 
     function CalculateDistance(DistanceList, routeId) {
-        debugger;
         var distance;
         var TotalDistance = 0;
         var TotalTime = 0;
