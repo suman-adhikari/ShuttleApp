@@ -407,7 +407,9 @@
     <Content Include="Content\Image\pink.png" />
     <Content Include="Content\Image\purple.png" />
     <Content Include="Content\Image\red.png" />
+    <Content Include="Content\Image\route.svg" />
     <Content Include="Content\Image\success.png" />
+    <Content Include="Content\Image\warning.svg" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -606,6 +608,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Shared.js" />
+    <Content Include="Scripts\timeline.js" />
     <Content Include="Scripts\validation.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">

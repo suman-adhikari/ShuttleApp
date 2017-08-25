@@ -35,7 +35,8 @@ namespace VShuttle
                         "~/Scripts/jquery.flot.min.js",
                         "~/Scripts/jquery.flot.resize.min.js",
                         "~/Scripts/jquery.cookie.js",
-                         "~/Scripts/ajaxGrid.js"));
+                         "~/Scripts/ajaxGrid.js",
+                         "~/Scripts/timeline.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/Shared").Include(
                         "~/Scripts/Shared.js"));

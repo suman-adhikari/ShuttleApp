@@ -67,12 +67,14 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
         Array.prototype.max = function () {
             return Math.max.apply(Math, this);
         };
-
+        
         getDesination(_routeid);
+        
 
     } else {
         IsDataAvailabel = false;
         setRoute(_routeid);
+        RemovePreviousTimeLine();
     }
 
     google.maps.event.addListenerOnce(map, 'idle', function () {
@@ -219,6 +221,7 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
     }
 
     function GetLocationName(optimizedRouteLatLong, _routeid) {
+       
         optimizedRouteLatLong.forEach(function (item) {
             AllLocation.forEach(function (row) {
                 if (item.location.lat() == row.Latitude && item.location.lng() == row.Longitude) {
@@ -228,7 +231,9 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
 
         });
         if (_locationWithLatLng.length > optimizedRouteLatLong.length - 1) {
+
             locationstring(_locationWithLatLng, _routeid)
+            GenerateTimelineRoute(_locationWithLatLng, _routeid);
         };
     }
 

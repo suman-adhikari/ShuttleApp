@@ -66,4 +66,5 @@
 /// <reference path="prettify.js" />
 /// <reference path="respond.js" />
 /// <reference path="shared.js" />
+/// <reference path="timeline.js" />
 /// <reference path="validation.js" />
