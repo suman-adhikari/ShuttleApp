@@ -411,6 +411,7 @@
     <Content Include="Content\Image\success.png" />
     <Content Include="Content\Image\warning.svg" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\timeline.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -610,6 +611,7 @@
     <Content Include="Scripts\Shared.js" />
     <Content Include="Scripts\timeline.js" />
     <Content Include="Scripts\validation.js" />
+    <Content Include="Scripts\velocity.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -653,6 +655,7 @@
     <Content Include="Views\Home\Form.cshtml" />
     <Content Include="Views\Register\Index.cshtml" />
     <Content Include="Views\Shared\_confirmationMessage.cshtml" />
+    <Content Include="Scripts\velocity.ui.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

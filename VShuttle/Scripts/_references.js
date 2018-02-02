@@ -68,3 +68,5 @@
 /// <reference path="shared.js" />
 /// <reference path="timeline.js" />
 /// <reference path="validation.js" />
+/// <reference path="velocity.js" />
+/// <reference path="velocity.ui.js" />

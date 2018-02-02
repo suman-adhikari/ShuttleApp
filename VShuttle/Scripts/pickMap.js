@@ -17,6 +17,7 @@ function initialize(div_id, locationList) {
         zoom: 13,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
+    map.setTilt(45);
 
    
     mapPoints.push(centerlatLng)

@@ -67,8 +67,8 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
         Array.prototype.max = function () {
             return Math.max.apply(Math, this);
         };
-        
         getDesination(_routeid);
+        
         
 
     } else {
@@ -85,7 +85,7 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
         $("#pac-input").css("display", "none");
     }
 
-    function CalculateDistance(DistanceList, routeId) {
+    function CalculateDistance(DistanceList, routeId) {     
         var distance;
         var TotalDistance = 0;
         var TotalTime = 0;
@@ -132,7 +132,7 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
                 var index = distanceFromOrigin.indexOf(x);
                 destination = mapPoints[index]; // response.destinationAddresses[index];
                 mapPoints.splice(index, 1);
-                mapPoints.push(destination);
+                mapPoints.push(destination);               
                 getRoutePointsAndWaypoints(_routeid)
             } else {
                 alert("distance error");
@@ -241,7 +241,7 @@ function initializeRouteMap(latlngList, _routeid, OnlyMap, _allLocation) {
     function GetLocationNameFromDb(LatLng) {
         var loc = "";
         $.ajax({
-            url: '/Home/FindLocationByLatLng',
+            url: '/vshuttle/Home/FindLocationByLatLng',
             async: false,
             type: 'get',
             data: { lat: LatLng.lat(), lng: LatLng.lng() },

@@ -1,259 +1,9 @@
 ﻿
-/*@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);*/
-
 
 @font-face {
   font-family: 'MyWebFont';
   src:  url('/fonts/OpenSansCondensed-Light.ttf');
 }
-
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-}
-
-/* TimeLine Animation */
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/*ol {  
-  animation: 1s ease-out 0s 1 slideInFromLeft;
-}*/
-
-/* .section SECTION
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-.timeline-location-number{
-    color:purple;
-}
-
-.section {
-  font-family:'MyWebFont';
-  padding: 20px 0;
-}
-
-.section .container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.section h1 {
-  font-size: 2.5rem;
-}
-
-.section h2 {
-  font-size: 1.3rem;
-}
-
-
-/* TIMELINE
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-.routenotfound{
-    text-align: center;
-    font-family: monospace;
-    font-size: xx-large;
-    color: red;
-    font-family:'MyWebFont';
-    padding-bottom:40px;
-}
-
-.timeline {
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.timeline ol {
-  font-size: 0;
-  width: 100vw;
-  padding: 125px 0;
-  transition: all 1s;
-}
-
-.timeline ol li {
-  position: relative;
-  display: inline-block;
-  list-style-type: none;
-  width: 90px;
-  height: 2px;
-  background: #00b0bd;
-}
-
-.timeline ol li:last-child {
-  width: 100px;
-}
-
-.timeline ol li:not(:first-child) {
-  margin-left: 17px;
-}
-
-.timeline ol li:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: calc(100% + 1px);
-  bottom: 0;
-  width: 15px;
-  height: 15px;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: #F45B69;
-}
-
-.timeline ol li div {
-  position: absolute;
-  left: calc(100% + 7px);
-  width: 120px;
-  padding: 15px;
-  height:auto;
-  font-size: 1rem;
-  white-space: normal;
-  color: black;
-  background: white;
-  border : 0px solid lightgray;
-    /*box-shadow: 2px 2px 19px 3px lightgrey;*/
-}
-
-.timeline ol li div::before {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-}
-
-.timeline ol li:nth-child(odd) div {
-  top: -16px;
-  transform: translateY(-100%);
-
-}
-
-.timeline ol li:nth-child(odd) div::before {
-  top: 100%;
-  border-width: 8px 8px 0 0;
-  border-color: white transparent transparent transparent;
-}
-
-.timeline ol li:nth-child(even) div {
-  top: calc(100% + 16px);
-}
-
-.timeline ol li:nth-child(even) div::before {
-  top: -8px;
-  border-width: 8px 0 0 8px;
-  border-color: transparent transparent transparent white;
-}
-
-.timeline time {
-  display: block;
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-
-/* TIMELINE ARROWS
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-.timeline .arrows {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.timeline .arrows .arrow__prev {
-  margin-right: 20px;
-}
-
-.timeline .disabled {
-  opacity: .5;
-}
-
-.timeline .arrows img {
-  width: 45px;
-  height: 45px;
-}
-
-
-/* GENERAL MEDIA QUERIES
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-@media screen and (max-width: 599px) {
-  .timeline ol,
-  .timeline ol li {
-    width: auto; 
-  }
-  
-  .timeline ol {
-    padding: 0;
-    transform: none !important;
-  }
-  
-  .timeline ol li {
-    display: block;
-    height: auto;
-    background: transparent;
-  }
-  
-  .timeline ol li:first-child {
-    margin-top: 25px;
-  }
-  
-  .timeline ol li:not(:first-child) {
-    margin-left: auto;
-  }
-  
-  .timeline ol li div {
-    width: 94%;
-    height: auto !important;
-    margin: 0 auto 25px;
-  }
-  
-  .timeline ol li div {
-    position: static;
-  }
-  
-  .timeline ol li:nth-child(odd) div {
-    transform: none;
-  }
-  
-  .timeline ol li:nth-child(odd) div::before,
-  .timeline ol li:nth-child(even) div::before {
-    left: 50%;
-    top: 100%;
-    transform: translateX(-50%);
-    border: none;
-    border-left: 1px solid white;
-    height: 25px;
-  }
-  
-  .timeline ol li:last-child,
-  .timeline ol li:nth-last-child(2) div::before,
-  .timeline ol li:not(:last-child)::after,
-  .timeline .arrows {
-    display: none;
-  }
-}
-
 
 
 #distancetime-taken{
@@ -331,8 +81,8 @@ button {
 }
 
 .row-map {
-  margin-right:-29px !important;
-  margin-left:-29px !important;
+  margin-right:0px !important;
+  margin-left:0px !important;
 }
 
 /* pick location */
@@ -350,6 +100,8 @@ button {
     height:550px;
     width:100%;
     padding-top: 1px;
+    padding-left:0px;
+    padding-right:0px;
 }
 
 #picklocation {
@@ -366,7 +118,6 @@ button {
 /*Map search Box*/
 
  #description {
-        font-family: Roboto;
         font-size: 15px;
         font-weight: 300;
       }
@@ -512,6 +263,10 @@ button {
 
 .checkbox-row{
     margin-bottom: 15px;
+    font-family:MyWebFont;
+    font-weight:bold;
+    font-size:22px;
+    margin-left: 10px;
 }
 
 .checkbox {
@@ -519,17 +274,18 @@ button {
   .checkbox label {
     display: inline-block;
     position: relative;
-    padding-left: 5px; }
+    padding-left: 9px; }
     .checkbox label::before {
       content: "";
       display: inline-block;
       position: absolute;
-      width: 17px;
-      height: 17px;
+      width: 25px;
+      height: 25px;
       left: 0;
-      margin-left: -20px;
-      border: 1px solid #cccccc;
-      border-radius: 3px;
+      top:5px;
+      border: 1px solid rebeccapurple;
+      margin-left: -27px;
+      border-radius: 0px;
       background-color: #fff;
       -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
       -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
@@ -539,8 +295,8 @@ button {
       position: absolute;
       width: 16px;
       height: 16px;
-      left: 0;
-      top: 0;
+      left: -3px;
+      top: 9px;
       margin-left: -20px;
       padding-left: 3px;
       padding-top: 1px;
@@ -607,11 +363,12 @@ button {
     border-radius:0px;
     width:60px;
     font-size:11px;
-    background-color:rebeccapurple;
+    background-color:#040C5A;
     color:white;
-    border:none;
+    border:1px solid #040C5A;
     height:26px;
     font-family:"Roboto", sans-serif;
+    padding:6px;
 }
 
 .search input{
@@ -631,7 +388,7 @@ button {
 
 .route-info{
     padding-top:30px;
-    color:#92247a!important;
+    color:#040C5A!important;
     font-family: "Roboto", sans-serif;
     font-size:25px;
 }
@@ -890,44 +647,45 @@ table .btn{
 
 #registerUser {
   padding-top:40px;
+  background-color:#F5F5F5; padding-top:60px; padding-bottom:60px;
 }
 
-    #registerUser input[type="text"] , #registerUser select {
-        margin-bottom: 5px;
-        padding: 7px;
-        width: 230px;
-        border:1px solid rebeccapurple;
+#registerUser input[type="text"] , #registerUser select {
+    margin-top:4px;
+    font-family:MyWebFont;
+    padding: 2px;
+    font-size:20px;
+    width: 230px;
+    border:1px solid rebeccapurple;
 
+}
+
+
+#registerUser button{
+    font-family:MyWebFont;
+    margin-top:4px;
+    font-size:17px;
+    background-color: #201a6f;
+    border-color:#201a6f;     
+    color:white;
+}
+
+.btn-save {
+        width:240px;
     }
 
-        
-
-
-    #registerUser select {
-        padding:3px;
+    #registerUser button:hover{
+    background-color: #01073E;
+    color:white;
     }
 
-    #registerUser button{
-        font-size:16px;
-        padding:1px;
-        background-color: #201a6f;
-        border-color:#201a6f;     
-        color:white;
-    }
+#locationdetails{
+    background-color:#FFFFFF; padding-top:50px; padding-bottom:50px; 
+}
 
-    .btn-save {
-            width:240px;
-        }
-
-     #registerUser button:hover{
-        background-color: rebeccapurple;
-        color:white;
-     }
-
-
-    table, th, td {
-        /*border: 1px solid black;*/
-    }
+#Routeinformation{
+    background-color:#040C5A; padding-top:30px; padding-bottom:30px; color:white !important;
+}
 
 .form-element > button {
   

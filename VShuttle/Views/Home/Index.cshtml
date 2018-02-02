@@ -4,7 +4,7 @@
 }
 
 
-<div class="row row-map">
+<div class="row-map">
 
     <div class="col-md-12 picklocationcontainer">
 
@@ -67,7 +67,7 @@
                     @Html.DropDownListFor(m => m.UserInfo.RouteId, new SelectList(ViewBag.route, "Id", "RouteLocations"), "Select Route", new { @required = "required" })
                 </span>
 
-                <span class="form-element col-md-3">
+                <span class="form-element col-md-2">
                     <button class="btn btn-primary btn-save" onclick="return GetDate();" type="button">Save</button>
                 </span>
 
@@ -88,16 +88,11 @@
     </div>
 }
 
-<hr id="registerHr">
+<div class="row-fluid" id="locationdetails">
 
-<div class="row-fluid">
-
-<div class="col-md-12 route-info" style="background-color:#FFFFFF">
-    Location Details
-</div>
-
-    <div id="report" class="row-fluid" style="background-color:#FFFFF7;">
-
+    <div class="col-md-12 route-info" style="padding-bottom:20px;" >
+        Location Details
+    </div>
 
         <div class="col-md-12">
 
@@ -126,7 +121,7 @@
                         <th><a class="table-header" field-name="Date">Date</a></th>
                         @if (Session["Id"] != null)
                         {
-                         <th>Actions</th>
+                            <th>Actions</th>
                         }
                     </tr>
                 </thead>
@@ -134,32 +129,22 @@
             </table>
         </div>
 
-        @*<div class="col-md-3">
-            <table class="table table-bordered table-responsive table-striped" id="UserInfoTotal">
-                <thead>
-                    <tr>
-                        <th><a class="table-header" field-name="Route">Route</a></th>
-                        <th><a class="table-header" field-name="Total">Total</a></th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>*@
-
-    </div>
-
     <div class="clearfix"></div>
 
-    <div class="col-md-12 route-info" style="background-color:#040C5A; color:white !important;">
+</div>
+
+<div class="row-fluid" id="Routeinformation">
+
+    <div class="col-md-12 route-info" style="color:white !important;">
        Route Information
     </div>
 
-    <div class="col-md-12 selectRoute" style="background-color:#040C5A;">
-       @Html.DropDownListFor(m => m.UserInfo.RouteId, new SelectList(ViewBag.route, "Id", "RouteLocations"), "Select Route", new { @required = "required" })
+    <div class="col-md-12 selectRoute">
+       @Html.DropDownListFor(m => m.UserInfo.RouteId, new SelectList(ViewBag.route, "Id", "RouteLocations"), "Select Route", new { @required = "required", @id="selectroutes" })
        <img class="routeMap" src="~/Content/Image/route.svg" height="46px;" style="float:right;" data-toggle="modal" data-target="#mapModel" />
     </div>
 
-    <div class="col-md-12" style="background-color:#040C5A;">
+    <div class="col-md-12">
         <div class="row timeline-horizontal" style="padding:7px; ">
 
             <section class="timeline">
@@ -184,38 +169,9 @@
 
     </div>
 
-    @*@{ int i = -1; var routearray = new string[] { "One", "Two", "Three", "Four"}; }
-    @foreach (var route in Model.Routes)
-    {
-        i++;
-        var routeId = @route.Id;
-        var routebodyId = "route-body-" + routeId;
-        <div class="col-md-3 route">
-            <div>
-                <span class="route-header">@route.RouteLocations <label id="distancetime-taken">0 Km</label>
-                    <a class="routeMap" id="routeMap1" type="button" data-toggle="modal" data-target="#mapModel"><i class="glyphicon glyphicon-map-marker"></i>View-Route</a>          
-                 </span>
-                <input type="hidden" id="hiddenrouteid" value="@routeId" />
-                <span id=@routebodyId >Generating Route <img src="~/Content/Image/d.gif"></span>
-            </div>
-        </div>
-    }*@
-
-
-
 </div>
 
-<hr />
-
-
 <div class="clearfix"></div>
-
-@*<div id="distance-info" class="row-fluid">
-    <div class="col-md-12">      
-         <h1>distance</h1>
-        <span></span>
-    </div>
-</div>*@
 
 <div class="modal fade" id="mapModel" role="dialog">
     
@@ -232,462 +188,311 @@
             <div class="modal-body">                 
                     <div id="map-canvas">nice</div>  
                     <div id="map-canvas-showlocation"></div>             
-            </div>
-            @*<div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>*@
+            </div>          
         </div>
 
     </div>
 </div>
 
-<input type="hidden" id="route_location"/>
+<div class="row-fluid" style="background-color:#01073E; font-size:x-small; text-align:center; padding-top:10px; padding-bottom:10px; color:white !important;">
+    <span style="">©2017 by Verscend Technologies, Inc. All rights reserved.</span>
+</div>
 
-<script>
+    <input type="hidden" id="route_location" />
 
-    var AllLocation;
-    $(function () {
-         DisplayHomeMap();
-         AllLocation = GetTodaysAllLocation();
-         //setTimeout(function () { LoadMap(1, AllLocation); }, 3000);
-         //setTimeout(function () { LoadMap(2, AllLocation); }, 4000);
-         //setTimeout(function () { LoadMap(3, AllLocation); }, 5000);
-         //setTimeout(function () { LoadMap(1, AllLocation); }, 000);
-       
-         $(".routeMap").on("click", function () {
-             debugger;
-            var OnlyMap = true;
-            // var id = $(this).closest("div").find("input").val();
-            var id=parseInt($("#UserInfo_RouteId").val());
-            LoadMap(id,AllLocation,OnlyMap);
-         })
+    <script>
 
-         $("#UserInfo_RouteId").val(1);
-         LoadMap(1,AllLocation,false);
+        var AllLocation;
+        $(function () {
 
-         $("#UserInfo_RouteId").on("change",function(){
-             debugger;  
-             var OnlyMap = false;
-             // var id = $(this).closest("div").find("input").val();
-             var id=parseInt($(this).val());
-             LoadMap(id,AllLocation,OnlyMap);
-         });
+            $('checkbox').velocity('stop').velocity({ rotateY: '180deg' });
 
-        $('#UserInfoList').ajaxGrid({
-            pageSize: 7,
-            defaultSortExpression: 'Id',
-            defaultSortOrder: 'DESC',
-            tableHeading: '.table-header',
-            url: '@Url.Action("FindAll","Home")',
-            requestType: 'get',
-            loadingImage: $('#loading-msg-subscribers-management'),
-            NoRecordsFound: 'No Records Found',
-            postContent: [
-                @*{
+            DisplayHomeMap();
+            AllLocation = GetTodaysAllLocation();
+
+            $(".routeMap").on("click", function () {
+                var OnlyMap = true;
+                // var id = $(this).closest("div").find("input").val();
+                var id = parseInt($("#selectroutes").val());
+                LoadMap(id, AllLocation, OnlyMap);
+            })
+
+            $("#selectroutes").val(1);
+            LoadMap(1, AllLocation, false);
+
+            $("#selectroutes").change(function () {
+                debugger;
+                var OnlyMap = false;
+                var id = parseInt($(this).val());
+                if (id > 0)
+                    LoadMap(id, AllLocation, OnlyMap);
+            });
+
+            $('#UserInfoList').ajaxGrid({
+                pageSize: 7,
+                defaultSortExpression: 'Id',
+                defaultSortOrder: 'DESC',
+                tableHeading: '.table-header',
+                url: '@Url.Action("FindAll","Home")',
+                requestType: 'get',
+                loadingImage: $('#loading-msg-subscribers-management'),
+                NoRecordsFound: 'No Records Found',
+                postContent: [
+                    @*{
                     control: $('<button type="button" class="btn btn-primary" ' +
                     'onclick=\'showEditForm(this,"Edit", "@Url.Action("Form","Home")",300,250)\'>' +
                     '<small class="glyphicon glyphicon-edit"></small></small>' +
                     '</button>')
                 },*@
-                {
-                    control: $(
-                    '<input type="hidden" name="Id" id="Id"/>' +
-                    '<input type="hidden" name="INumber" id="INumber"/>' +
-                    '<button type="submit" class="btn btn-danger" ' +
-                    'onclick=\'deleteUserInfo(this);\'>' +
-                    '<span class="glyphicon glyphicon-remove"></span></button>'),
-                    properties: [
-                        {
-                            propertyField: 'input[type=hidden]#Id',
-                            property: 'value',
-                            propertyValue: 'Id'
-                        },
-                        {
-                            propertyField: 'input[type=hidden]#INumber',
-                            property: 'value',
-                            propertyValue: 'INumber'
-                        }
-                    ]
-                }
-            ],
-            afterAjaxCallComplete: function () {
-
-                $("#UserInfoList").find("tr").each(function (k, v) {
-
-                    var _date = parseInt($(this).find("td:eq(4)").text().replace(/\/Date\(/g, "").replace(/\)\//, ""));
-                    if (!isNaN(_date)) {
-                        var date = new Date(_date);
-                        var finaldate = currentDate(date);
-                        //var finaldate = x.getMonth() + 1 + "/" + x.getDate() + "/" + x.getFullYear();
-                        $(this).find("td:eq(4)").text(finaldate)
+                    {
+                        control: $(
+                        '<input type="hidden" name="Id" id="Id"/>' +
+                        '<input type="hidden" name="INumber" id="INumber"/>' +
+                        '<button type="submit" class="btn btn-danger" ' +
+                        'onclick=\'deleteUserInfo(this);\'>' +
+                        '<span class="glyphicon glyphicon-remove"></span></button>'),
+                        properties: [
+                            {
+                                propertyField: 'input[type=hidden]#Id',
+                                property: 'value',
+                                propertyValue: 'Id'
+                            },
+                            {
+                                propertyField: 'input[type=hidden]#INumber',
+                                property: 'value',
+                                propertyValue: 'INumber'
+                            }
+                        ]
                     }
-                })  
-            },
-            id: 'Id'
-        });
+                ],
+                afterAjaxCallComplete: function () {
+
+                    $("#UserInfoList").find("tr").each(function (k, v) {
+
+                        var _date = parseInt($(this).find("td:eq(4)").text().replace(/\/Date\(/g, "").replace(/\)\//, ""));
+                        if (!isNaN(_date)) {
+                            var date = new Date(_date);
+                            var finaldate = currentDate(date);
+                            //var finaldate = x.getMonth() + 1 + "/" + x.getDate() + "/" + x.getFullYear();
+                            $(this).find("td:eq(4)").text(finaldate)
+                        }
+                    })
+                },
+                id: 'Id'
+            });
 
 
-        var weekday = new Array(7);
-        weekday[0] = "mon";
-        weekday[1] = "tue";
-        weekday[2] = "wed";
-        weekday[3] = "thu";
-        weekday[4] = "fri";
+            var weekday = new Array(7);
+            weekday[0] = "mon";
+            weekday[1] = "tue";
+            weekday[2] = "wed";
+            weekday[3] = "thu";
+            weekday[4] = "fri";
 
 
-        $("input[type='checkbox']").each(function (k, v) {
-            var today = new Date().getDay();
-            if ($(this).val() < (today - 1)) {
-                $(this).prop('disabled', true);
-            }
-        });
-
-        if("@ViewBag.UsedDate" != "empty")
-        {
-            var dates = "@ViewBag.UsedDate".split(',');
-            var date = new Date();
-            var today = date.getDate();
-            var day = date.getDay()-1;
-            for(var i=0;i<dates.length;i++){               
-                var selector = "#" + weekday[day + (dates[i] - today)];
-                if (selector == "#undefined") {
-                    selector = "#" + weekday[dates[i]];
+            $("input[type='checkbox']").each(function (k, v) {
+                var today = new Date().getDay();
+                if ($(this).val() < (today - 1)) {
+                    $(this).prop('disabled', true);
                 }
-                $(selector).prop('disabled',true);         
-              }
-        }
-        if ($("input:checkbox:not(:disabled)").length<1) {
-            $("#registerUser,#registerHr").hide();
+            });
+
+            if ("@ViewBag.UsedDate" != "empty") {
+                var dates = "@ViewBag.UsedDate".split(',');
+                var date = new Date();
+                var today = date.getDate();
+                var day = date.getDay() - 1;
+                for (var i = 0; i < dates.length; i++) {
+                    var selector = "#" + weekday[day + (dates[i] - today)];
+                    if (selector == "#undefined") {
+                        selector = "#" + weekday[dates[i]];
+                    }
+                    $(selector).prop('disabled', true);
+                }
+            }
+            if ($("input:checkbox:not(:disabled)").length < 1) {
+                $("#registerUser,#registerHr").hide();
+            }
+
+        });
+
+        function deleteUserInfo(obj) {
+            var id = $(obj).closest("tr").find("td:eq(0)").text()
+            $.ajax({
+                url: '../Home/Delete',
+                async: false,
+                type: 'get',
+                data: { id: id },
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+
+                    if (result != "0") {
+                        // enable select day checkbox
+                        var row;
+                        $.each($("#UserInfoList").find("tr"), function (key, val) {
+                            if ($(this).find("td:eq(0)").text() == result)
+                                row = $(this).closest("tr");
+                        });
+
+                        var rowDate = row.find("td:eq(4)").html();
+                        var rowlocation = row.find("td:eq(3)").html();
+                        var rowrouteName = row.find("td:eq(2)").html();
+
+                        var weeks = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+                        var date = new Date(rowDate);
+                        weekday = weeks[date.getDay()];
+                        $("#" + weekday + "").prop('disabled', false);
+                        $("#registerUser,#registerHr").show();
+
+                        //refresh grid
+                        $('#UserInfoList').trigger('refreshGrid');
+
+                        // Update Map Marker
+                        DisplayHomeMap();
+
+                        //update RouteInfo
+                        var routeArray = ["Route Bhaktapur", "Route Kalanki", "Route Chabahil", "Route Misc"];
+                        var routeId = routeArray.indexOf(rowrouteName);
+                        LoadMap(routeId + 1, AllLocation, false);
+
+                    }
+                }
+            })
         }
 
-    });
 
-    function deleteUserInfo(obj) {     
-        var id = $(obj).closest("tr").find("td:eq(0)").text()
-        $.ajax({
-            url: '/Home/Delete',
-            async: false,
-            type: 'get',
-            data: { id: id },
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-               
-                if (result != "0") {  
+        $("#ajaxgridSearch").on('click', function () {
+            var name = $("#searchName").val();
+            $('#UserInfoList').trigger('refreshGrid', { Name: name });
+            $("#searchName").val("");
+        });
+
+        $("#UserInfo_Name").val("@Session["UserName"]");
+
+        function SetLocationName() {
+            var lat = $("#UserInfo_Latitude").val();
+            var lng = $("#UserInfo_Longitude").val();
+            var LatLng = new google.maps.LatLng(lat, lng);
+            getLocnameFromPinnedAddress(LatLng);
+            setTimeOut(function () { GetDate(); }, 3000);
+        }
+
+        function GetDate() {
+
+            var location = $("#UserInfo_SubLocation").val();
+            if (location == "") {
+                $("#selectday-msg").text("* Please select a location in map");
+                $("#selectday-msg").css("display", "block");
+                return false;
+            }
+
+            if ($("#UserInfo_RouteId").val() == "") {
+                $("#selectday-msg").text("* Please select a route");
+                $("#selectday-msg").css("display", "block");
+                return false;
+            }
+
+            var day = "";
+            $("input[type='checkbox']").each(function (k, v) {
+                if ($(this).prop('checked')) {
+                    day += " " + $(this).val();
+                }
+            })
+            $("#days").val(day);
+            if (day == "") {
+                $("#selectday-msg").text("* Please select a date");
+                $("#selectday-msg").css("display", "inline-block");
+                return false;
+            }
+            $("#selectday-msg").css("display", "none");
+            SaveUserInfo();
+        }
+
+        $("input[type='checkbox']").on('click', function () {
+            $("#selectday-msg").css("display", "none");
+        });
+
+
+        function SaveUserInfo(data) {
+            $.ajax({
+                url: '../Home/Index',
+                type: 'POST',
+                data: $("#UserInfoForm").serializeArray(),
+                //contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    //update grid
                     debugger;
-                    // enable select day checkbox
-                    var row;
-                    $.each( $("#UserInfoList").find("tr"), function (key, val) {
-                        if ($(this).find("td:eq(0)").text() == result)
-                            row = $(this).closest("tr");
-                    });
+                    $('#UserInfoList').trigger('refreshGrid');
 
-                    var rowDate = row.find("td:eq(4)").html();
-                    var rowlocation = row.find("td:eq(3)").html();
-                    var rowrouteName = row.find("td:eq(2)").html();
+                    // disable checkbox days
+                    var dates = result.Days.trim().split(" ");
+                    dates.forEach(function (item) {
+                        var weeks = ["mon", "tue", "wed", "thu", "fri"];
+                        weekday = weeks[parseInt(item)];
+                        $("#" + weekday + "").prop('checked', false).prop('disabled', true);
+                    })
 
-                     var weeks = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-                     var date = new Date(rowDate);
-                     weekday = weeks[date.getDay()];
-                     $("#" + weekday + "").prop('disabled', false);
-                     $("#registerUser,#registerHr").show();
-
-                     //refresh grid
-                     $('#UserInfoList').trigger('refreshGrid');
-
-                    // Update Map Marker
-                     DisplayHomeMap();
-
-                    //update RouteInfo
-                     var routeArray = ["Route Bhaktapur", "Route Kalanki", "Route Chabahil", "Route Misc"];
-                     var routeId = routeArray.indexOf(rowrouteName);
-                     LoadMap(routeId+1,AllLocation, false);
-              
-                     //var currentdate = currentDate();
-                     //if (currentdate == rowDate) {                        
-                     //    var routeArray = ["Route Bhaktapur", "Route Kalanki", "Route Chabahil", "Route Misc"];                       
-                     //    var routeId = routeArray.indexOf(rowrouteName);
-                     //    var routeDivId = "#route-body-" + (routeId + 1);
-                     //    var routeText_old = $(routeDivId).text();
-                     //    var routeText_new = $(routeDivId).text(routeText_old.replace("-> " + rowlocation, ""));
-                     //}
-
-                }
-            }
-        })
-    }
-
-   
-
-    $("#ajaxgridSearch").on('click', function () {
-        var name = $("#searchName").val();
-        $('#UserInfoList').trigger('refreshGrid', { Name: name });
-        $("#searchName").val("");
-    });
-
-    $('#UserInfoTotal').ajaxGrid({
-        pageSize: 2,
-        defaultSortExpression: 'Id',
-        defaultSortOrder: 'DESC',
-        tableHeading: '.table-header',
-        url: '@Url.Action("FindAllTotal","Home")',
-        requestType: 'get',
-        loadingImage: $('#loading-msg-subscribers-management'),
-        NoRecordsFound: 'No Records Found',
-        afterAjaxCallComplete: function () {
-        }
-
-    });
-
-    $("#UserInfo_Name").val("@Session["UserName"]");
-
-    function SetLocationName() {
-        var lat = $("#UserInfo_Latitude").val();
-        var lng = $("#UserInfo_Longitude").val();
-        var LatLng = new google.maps.LatLng(lat, lng);
-        getLocnameFromPinnedAddress(LatLng);
-        setTimeOut(function () { GetDate(); }, 3000);
-    }
-
-    function GetDate() {
-  
-        var location = $("#UserInfo_SubLocation").val();
-        if (location == "") {      
-            $("#selectday-msg").text("* Please select a location in map");
-            $("#selectday-msg").css("display", "block");
-            return false;
-        }
-
-        if ($("#UserInfo_RouteId").val() == "") {
-            $("#selectday-msg").text("* Please select a route");
-            $("#selectday-msg").css("display", "block");
-            return false;
-        }
-
-        var day = "";
-        $("input[type='checkbox']").each(function (k, v) {
-            if ($(this).prop('checked')) {
-                day += " " + $(this).val();
-            }
-        })
-        $("#days").val(day);
-        if (day == "") {
-            $("#selectday-msg").text("* Please select a date");
-            $("#selectday-msg").css("display", "inline-block");
-            return false;
-        }
-        $("#selectday-msg").css("display", "none");
-        SaveUserInfo($("#UserInfoForm").serializeArray());
-    }
-
-    $("input[type='checkbox']").on('click', function () {
-        $("#selectday-msg").css("display", "none");
-    });
-
-
-    function SaveUserInfo(data) {
-        $.ajax({
-            url: '/Home/Index',
-            type: 'post',
-            data: data,
-            //contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                debugger;
-                //update grid
-                $('#UserInfoList').trigger('refreshGrid');
-
-                // disable checkbox days
-                var dates = result.Days.trim().split(" ");
-                dates.forEach(function (item) {
-                    var weeks = ["mon", "tue", "wed", "thu", "fri"];
-                    weekday = weeks[parseInt(item)];
-                    $("#" + weekday + "").prop('checked', false).prop('disabled', true);
-                })
-                
-                if ($("input:checkbox:not(:disabled)").length < 1) {
-                    $("#registerUser,#registerHr").hide();
-                }
-
-                //Update Route Info
-                AllLocation = GetTodaysAllLocation();
-                LoadMap(result.UserInfo.RouteId, AllLocation, false);
-
-                //Add Marker
-                DisplayHomeMap();
-                //var colorList = ["green", "pink", "blue", "purple"];
-               // map = "picklocation";
-                //var color = colorList[result.UserInfo.RouteId - 1];
-               // AddMarker(result.UserInfo.Latitude, result.UserInfo.Longitude, map, color)
-            }
-        })
-    }
-
-    function currentDate(_date) {
-        if (_date) {
-            var date = new Date(_date);
-        } else {
-            var date = new Date();
-        }
-        return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
-    }
-
-    function GetTodaysAllLocation() {
-        var locations;
-        $.ajax({
-            url: '/Home/FindTodaysAllLocation',
-            async: false,
-            type: 'get',
-            data: { routeId: 1 },
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                locations = result;
-            }
-        })
-        return locations;
-    }
-
-    function LoadMap(id,AllLocation,OnlyMap) {
-        $.ajax({
-            data:"id="+id,
-            url: '@Url.Action("GetLocation", "Home")',
-            success: function (result) {
-                initializeRouteMap(result, id, OnlyMap, AllLocation);
-                
-            }
-        });
-    }
-
-    function DisplayHomeMap() {
-        $.ajax({
-            url: '@Url.Action("GetAllLocation", "Home")',
-            success: function (result) {
-                initialize("picklocation", result);
-            }
-        });
-    }
-
-
-    /* TIMELINE*/
-
-    (function() {
-        debugger;
-        // VARIABLES
-        const timeline = document.querySelector(".timeline ol"),
-          elH = document.querySelectorAll(".timeline li > div"),
-          arrows = document.querySelectorAll(".timeline .arrows .arrow"),
-          arrowPrev = document.querySelector(".timeline .arrows .arrow__prev"),
-          arrowNext = document.querySelector(".timeline .arrows .arrow__next"),
-          xScrolling = 280,
-          disabledClass = "disabled";
-
-        // START
-        window.addEventListener("load", init);
-
-        function init() {
-            setEqualHeights(elH);
-            animateTl(xScrolling, arrows, timeline);
-            setKeyboardFn(arrowPrev, arrowNext);
-        }
-
-        // SET EQUAL HEIGHTS
-        function setEqualHeights(el) {
-            let counter = 0;
-            for (let i = 0; i < el.length; i++) {
-                const singleHeight = el[i].offsetHeight;
-
-                if (counter < singleHeight) {
-                    counter = singleHeight;
-                }
-            }
-
-            for (let i = 0; i < el.length; i++) {
-                el[i].style.height = `${counter}px`;
-            }
-        }
-
-        // CHECK IF AN ELEMENT IS IN VIEWPORT
-        // http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
-        function isElementInViewport(el) {
-            debugger;
-            const rect = el.getBoundingClientRect();
-            return (
-              rect.top >= 0 &&
-              rect.left >= 0 &&
-              rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-              rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        }
-
-        // SET STATE OF PREV/NEXT ARROWS
-        function setBtnState(el, flag=true) {
-            debugger;
-            if (flag) {
-                el.classList.add(disabledClass);
-            } else {
-                if (el.classList.contains(disabledClass)) {
-                    el.classList.remove(disabledClass);
-                }
-                el.disabled = false;
-            }
-        }
-
-            // ANIMATE TIMELINE
-            function animateTl(scrolling, el, tl) {
-                let counter = 0;
-                for (let i = 0; i < el.length; i++) {
-                    el[i].addEventListener("click", function() {
-                        if (!arrowPrev.disabled) {
-                            arrowPrev.disabled = true;
-                        }
-                        if (!arrowNext.disabled) {
-                            arrowNext.disabled = true;
-                        }
-                        const sign = (this.classList.contains("arrow__prev")) ? "" : "-";
-                        if (counter === 0) {
-                            tl.style.transform = `translateX(-${scrolling}px)`;
-                        } else {
-                            const tlStyle = getComputedStyle(tl);
-                            // add more browser prefixes if needed here
-                            const tlTransform = tlStyle.getPropertyValue("-webkit-transform") || tlStyle.getPropertyValue("transform");
-                            const values = parseInt(tlTransform.split(",")[4]) + parseInt(`${sign}${scrolling}`);
-                            tl.style.transform = `translateX(${values}px)`;
-                        }
-
-                        setTimeout(() => {
-                            debugger;
-                            firstItem = document.querySelector(".timeline li:first-child"),
-                            lastItem = document.querySelector(".timeline li:last-child"),
-                            isElementInViewport(firstItem) ? setBtnState(arrowPrev) : setBtnState(arrowPrev, false);
-                            isElementInViewport(lastItem) ? setBtnState(arrowNext) : setBtnState(arrowNext, false);
-                        }, 1100);
-
-                        counter++;
-                    });
-                }
-            }
-
-
-            // ADD BASIC KEYBOARD FUNCTIONALITY
-            function setKeyboardFn(prev, next) {
-                document.addEventListener("keydown", (e) => {
-                    if ((e.which === 37) || (e.which === 39)) {
-                        const timelineOfTop = timeline.offsetTop;
-                        const y = window.pageYOffset;
-                        if (timelineOfTop !== y) {
-                            window.scrollTo(0, timelineOfTop);
-                        }
-                        if (e.which === 37) {
-                            prev.click();
-                        } else if (e.which === 39) {
-                            next.click();
-                        }
+                    if ($("input:checkbox:not(:disabled)").length < 1) {
+                        $("#registerUser,#registerHr").hide();
                     }
-                });
+
+                    //Update Route Info
+                    AllLocation = GetTodaysAllLocation();
+                    $("#selectroutes").val(result.UserInfo.RouteId);
+                    LoadMap(result.UserInfo.RouteId, AllLocation, false);
+
+                    //Add Marker
+                    DisplayHomeMap();
+
+                }
+            })
+        }
+
+        function currentDate(_date) {
+            if (_date) {
+                var date = new Date(_date);
+            } else {
+                var date = new Date();
             }
+            return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+        }
 
-        })();
+        function GetTodaysAllLocation() {
+            var locations;
+            $.ajax({
+                url: '../Home/FindTodaysAllLocation',
+                async: false,
+                type: 'get',
+                data: { routeId: 1 },
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    locations = result;
+                }
+            })
+            return locations;
+        }
 
+        function LoadMap(id, AllLocation, OnlyMap) {
+            $.ajax({
+                data: "id=" + id,
+                url: '@Url.Action("GetLocation", "Home")',
+                success: function (result) {
+                    initializeRouteMap(result, id, OnlyMap, AllLocation);
 
-</script>
+                }
+            });
+        }
+
+        function DisplayHomeMap() {
+            $.ajax({
+                url: '@Url.Action("GetAllLocation", "Home")',
+                success: function (result) {
+                    initialize("picklocation", result);
+                }
+            });
+        }
+
+    </script>
 
 
 

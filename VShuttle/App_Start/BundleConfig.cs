@@ -35,11 +35,23 @@ namespace VShuttle
                         "~/Scripts/jquery.flot.min.js",
                         "~/Scripts/jquery.flot.resize.min.js",
                         "~/Scripts/jquery.cookie.js",
-                         "~/Scripts/ajaxGrid.js",
-                         "~/Scripts/timeline.js"));
+                         "~/Scripts/velocity.js",
+                         "~/Scripts/velocity.ui.js",
+                         "~/Scripts/ajaxGrid.js"
+                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/Shared").Include(
                         "~/Scripts/Shared.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/mapcomponents").Include(
+            "~/Scripts/mapcommons.js",
+             "~/Scripts/PointInmap.js",
+            "~/Scripts/pickMap.js"
+            ));
+
+            bundles.Add(new ScriptBundle("~/bundles/Timeline").Include(
+                       "~/Scripts/timeline.js"));
+
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -53,7 +65,9 @@ namespace VShuttle
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/jquery-ui.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/timeline.css"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/fontawesome").Include(                 
                      "~/Content/font-awesome.css"));
